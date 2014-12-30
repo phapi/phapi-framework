@@ -1,8 +1,18 @@
 <?php
 
-
 namespace Phapi;
 
+/**
+ * Class Exception
+ *
+ * Class extending exception
+ *
+ * @category Exception
+ * @package  Phapi
+ * @author   Peter Ahinko <peter@ahinko.se>
+ * @license  MIT (http://opensource.org/licenses/MIT)
+ * @link     https://github.com/ahinko/phapi
+ */
 abstract class Exception extends \Exception {
 
     /**

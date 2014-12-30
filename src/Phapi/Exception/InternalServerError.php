@@ -1,10 +1,20 @@
 <?php
 
-
 namespace Phapi\Exception;
 
 use Phapi\Exception;
 
+/**
+ * Class Internal Server Error
+ *
+ * Class representing a 500 response code
+ *
+ * @category Exception
+ * @package  Phapi\Exception
+ * @author   Peter Ahinko <peter@ahinko.se>
+ * @license  MIT (http://opensource.org/licenses/MIT)
+ * @link     https://github.com/ahinko/phapi
+ */
 class InternalServerError extends Exception
 {
 
