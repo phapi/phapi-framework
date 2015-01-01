@@ -3,28 +3,28 @@
 namespace Phapi\Tests;
 
 use Phapi\Exception;
-use Phapi\Exception\Accepted;
+use Phapi\Exception\MovedPermanently;
 
 /**
- * @coversDefaultClass \Phapi\Exception\Accepted
+ * @coversDefaultClass \Phapi\Exception\MovedPermanently
  */
-class AcceptedTest extends \PHPUnit_Framework_TestCase
+class MovedPermanentlyTest extends \PHPUnit_Framework_TestCase
 {
 
-    public $statusCode = 203;
-    public $statusMessage = 'Accepted';
+    public $statusCode = 301;
+    public $statusMessage = 'Moved Permanently';
     public $link = null;
     public $errorCode = null;
     public $errorMessage = null;
     public $information = null;
-    public $location = null;
+    public $location = 'https://github.com/ahinko/phapi';
 
     /**
      * @covers ::__construct
      */
     public function testConstructor()
     {
-        $exception = new Accepted();
+        $exception = new MovedPermanently($this->location);
         return $exception;
     }
 

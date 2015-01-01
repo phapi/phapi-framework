@@ -3,28 +3,28 @@
 namespace Phapi\Tests;
 
 use Phapi\Exception;
-use Phapi\Exception\Accepted;
+use Phapi\Exception\Conflict;
 
 /**
- * @coversDefaultClass \Phapi\Exception\Accepted
+ * @coversDefaultClass \Phapi\Exception\Conflict
  */
-class AcceptedTest extends \PHPUnit_Framework_TestCase
+class ConflictTest extends \PHPUnit_Framework_TestCase
 {
 
-    public $statusCode = 203;
-    public $statusMessage = 'Accepted';
+    public $statusCode = 409;
+    public $statusMessage = 'Conflict';
     public $link = null;
     public $errorCode = null;
-    public $errorMessage = null;
+    public $errorMessage = 'The submitted data is causing a conflict with the current state of the resource. An accompanying error message will explain why.';
     public $information = null;
     public $location = null;
-
+    
     /**
      * @covers ::__construct
      */
     public function testConstructor()
     {
-        $exception = new Accepted();
+        $exception = new Conflict();
         return $exception;
     }
 

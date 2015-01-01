@@ -3,16 +3,16 @@
 namespace Phapi\Tests;
 
 use Phapi\Exception;
-use Phapi\Exception\Accepted;
+use Phapi\Exception\Created;
 
 /**
- * @coversDefaultClass \Phapi\Exception\Accepted
+ * @coversDefaultClass \Phapi\Exception\Created
  */
-class AcceptedTest extends \PHPUnit_Framework_TestCase
+class CreatedTest extends \PHPUnit_Framework_TestCase
 {
 
-    public $statusCode = 203;
-    public $statusMessage = 'Accepted';
+    public $statusCode = 201;
+    public $statusMessage = 'Created';
     public $link = null;
     public $errorCode = null;
     public $errorMessage = null;
@@ -24,7 +24,7 @@ class AcceptedTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructor()
     {
-        $exception = new Accepted();
+        $exception = new Created();
         return $exception;
     }
 

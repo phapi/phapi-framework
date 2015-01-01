@@ -3,28 +3,28 @@
 namespace Phapi\Tests;
 
 use Phapi\Exception;
-use Phapi\Exception\Accepted;
+use Phapi\Exception\InternalServerError;
 
 /**
- * @coversDefaultClass \Phapi\Exception\Accepted
+ * @coversDefaultClass \Phapi\Exception\InternalServerError
  */
-class AcceptedTest extends \PHPUnit_Framework_TestCase
+class InternalServerErrorTest extends \PHPUnit_Framework_TestCase
 {
 
-    public $statusCode = 203;
-    public $statusMessage = 'Accepted';
-    public $link = null;
-    public $errorCode = null;
-    public $errorMessage = null;
-    public $information = null;
-    public $location = null;
+    public $statusCode = 500;
+    public $statusMessage = 'Internal Server Error';
+    public $link = 'https://github.com/ahinko/phapi';
+    public $errorCode = 10;
+    public $errorMessage = 'An internal server error occurred. Please try again within a few minutes. The error has been logged and we have been notified about the problem and we will fix the problem as soon as possible.';
+    public $information = 'An unexpected error occurred.';
+    public $location = 'https://github.com/ahinko/phapi';
 
     /**
      * @covers ::__construct
      */
     public function testConstructor()
     {
-        $exception = new Accepted();
+        $exception = new InternalServerError($this->errorCode, $this->errorMessage, $this->information, $this->link, $this->location);
         return $exception;
     }
 

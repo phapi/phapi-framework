@@ -3,19 +3,19 @@
 namespace Phapi\Tests;
 
 use Phapi\Exception;
-use Phapi\Exception\Accepted;
+use Phapi\Exception\BadGateway;
 
 /**
- * @coversDefaultClass \Phapi\Exception\Accepted
+ * @coversDefaultClass \Phapi\Exception\BadGateway
  */
-class AcceptedTest extends \PHPUnit_Framework_TestCase
+class BadGatewayTest extends \PHPUnit_Framework_TestCase
 {
 
-    public $statusCode = 203;
-    public $statusMessage = 'Accepted';
+    public $statusCode = 502;
+    public $statusMessage = 'Bad Gateway';
     public $link = null;
     public $errorCode = null;
-    public $errorMessage = null;
+    public $errorMessage = 'The API is down or being upgraded.';
     public $information = null;
     public $location = null;
 
@@ -24,7 +24,7 @@ class AcceptedTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructor()
     {
-        $exception = new Accepted();
+        $exception = new BadGateway();
         return $exception;
     }
 

@@ -3,19 +3,19 @@
 namespace Phapi\Tests;
 
 use Phapi\Exception;
-use Phapi\Exception\Accepted;
+use Phapi\Exception\BadRequest;
 
 /**
- * @coversDefaultClass \Phapi\Exception\Accepted
+ * @coversDefaultClass \Phapi\Exception\BadRequest
  */
-class AcceptedTest extends \PHPUnit_Framework_TestCase
+class BadRequestTest extends \PHPUnit_Framework_TestCase
 {
 
-    public $statusCode = 203;
-    public $statusMessage = 'Accepted';
+    public $statusCode = 400;
+    public $statusMessage = 'Bad Request';
     public $link = null;
     public $errorCode = null;
-    public $errorMessage = null;
+    public $errorMessage = 'The request was invalid or cannot be otherwise served. An accompanying error message will explain further.';
     public $information = null;
     public $location = null;
 
@@ -24,7 +24,7 @@ class AcceptedTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructor()
     {
-        $exception = new Accepted();
+        $exception = new BadRequest();
         return $exception;
     }
 
