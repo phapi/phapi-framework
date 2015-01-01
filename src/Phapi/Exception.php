@@ -73,13 +73,32 @@ abstract class Exception extends \Exception {
      * @param string $link
      * @param string $redirect
      */
-    public function __construct($errorCode = null, $errorMessage = '', $information = '', $link = '', $redirect = null)
+    public function __construct($errorCode = null, $errorMessage = null, $information = null, $link = null, $redirect = null)
     {
-        $this->errorCode = $errorCode;
-        $this->errorMessage = $errorMessage;
-        $this->information = $information;
-        $this->link = $link;
-        $this->location = $redirect;
+        // Check if error code should be set
+        if (!is_null($errorCode)) {
+            $this->errorCode = $errorCode;
+        }
+
+        // Check if error message should be set
+        if (!is_null($errorMessage)) {
+            $this->errorMessage = $errorMessage;
+        }
+
+        // Check if information should be set
+        if (!is_null($information)) {
+            $this->information = $information;
+        }
+
+        // Check if link should be set
+        if (!is_null($link)) {
+            $this->link = $link;
+        }
+
+        // Check if redirect location should be set
+        if (!is_null($redirect)) {
+            $this->location = $redirect;
+        }
     }
 
     /**
