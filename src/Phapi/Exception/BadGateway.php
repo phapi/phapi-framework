@@ -32,9 +32,9 @@ class BadGateway extends Exception {
     protected $statusMessage = 'Bad Gateway';
 
     /**
-     * More information
+     * Error message
      *
      * @var string
      */
-    protected $information = 'The API is down or being upgraded';
+    protected $errorMessage = 'The API is down or being upgraded';
 }

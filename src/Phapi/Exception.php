@@ -37,6 +37,13 @@ abstract class Exception extends \Exception {
     protected $errorCode = null;
 
     /**
+     * Error message
+     *
+     * @var string
+     */
+    protected $errorMessage = '';
+
+    /**
      * More information
      *
      * @var string
@@ -61,13 +68,15 @@ abstract class Exception extends \Exception {
      * Create new exception
      *
      * @param null $errorCode
+     * @param string $errorMessage
      * @param string $information
      * @param string $link
      * @param string $redirect
      */
-    public function __construct($errorCode = null, $information = '', $link = '', $redirect = null)
+    public function __construct($errorCode = null, $errorMessage = '', $information = '', $link = '', $redirect = null)
     {
         $this->errorCode = $errorCode;
+        $this->errorMessage = $errorMessage;
         $this->information = $information;
         $this->link = $link;
         $this->location = $redirect;
