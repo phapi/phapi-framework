@@ -51,17 +51,26 @@ abstract class Exception extends \Exception {
     protected $link = '';
 
     /**
+     * Link used for redirects
+     *
+     * @var null
+     */
+    protected $location = null;
+
+    /**
      * Create new exception
      *
      * @param null $errorCode
      * @param string $information
      * @param string $link
+     * @param string $redirect
      */
-    public function __construct($errorCode = null, $information = '', $link = '')
+    public function __construct($errorCode = null, $information = '', $link = '', $redirect = null)
     {
         $this->errorCode = $errorCode;
         $this->information = $information;
         $this->link = $link;
+        $this->location = $redirect;
     }
 
     /**
@@ -114,5 +123,15 @@ abstract class Exception extends \Exception {
     public function getInformation()
     {
         return $this->information;
+    }
+
+    /**
+     * Get redirect location
+     *
+     * @return null|string
+     */
+    public function getLocation()
+    {
+        return $this->location;
     }
 }
