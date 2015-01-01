@@ -8,7 +8,7 @@ use Phapi\Exception;
  * Class Accepted
  *
  * Request accepted and set to be performed in a background task. Useful if your client is
- * requesting something on the API that is time-consuming and you don?t want the client to have to wait.
+ * requesting something on the API that is time-consuming and you don't want the client to have to wait.
  *
  * @category Exception
  * @package  Phapi\Exception
