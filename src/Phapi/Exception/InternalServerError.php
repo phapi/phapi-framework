@@ -7,7 +7,9 @@ use Phapi\Exception;
 /**
  * Class Internal Server Error
  *
- * Class representing a 500 response code
+ * Response code 500
+ *
+ * Something is broken.
  *
  * @category Exception
  * @package  Phapi\Exception

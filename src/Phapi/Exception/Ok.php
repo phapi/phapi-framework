@@ -7,7 +7,9 @@ use Phapi\Exception;
 /**
  * Class Ok
  *
- * Class representing a 200 response code
+ * Response code 200
+ *
+ * Success!
  *
  * @category Exception
  * @package  Phapi\Exception

@@ -7,7 +7,10 @@ use Phapi\Exception;
 /**
  * Class Bad Gateway
  *
- * The submitted data is causing a conflict with the current state of the resource. An accompanying error message will explain why.
+ * Response code 409
+ *
+ * The submitted data is causing a conflict with the current
+ * state of the resource. An accompanying error message will explain why.
  *
  * @category Exception
  * @package  Phapi\Exception

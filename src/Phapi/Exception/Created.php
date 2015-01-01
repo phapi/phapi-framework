@@ -7,7 +7,9 @@ use Phapi\Exception;
 /**
  * Class Created
  *
- * Class representing a 201 response code
+ * Response code 201
+ *
+ * New resource created
  *
  * @category Exception
  * @package  Phapi\Exception

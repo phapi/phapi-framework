@@ -7,7 +7,9 @@ use Phapi\Exception;
 /**
  * Class Temporary Redirect
  *
- * Class representing a 307 response code
+ * Response code 307
+ *
+ * Temporary redirect
  *
  * @category Exception
  * @package  Phapi\Exception

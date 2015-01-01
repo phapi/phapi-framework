@@ -7,6 +7,8 @@ use Phapi\Exception;
 /**
  * Class No Content
  *
+ * Response code 204
+ *
  * The response does not include any content.
  *
  * @category Exception

@@ -7,6 +7,8 @@ use Phapi\Exception;
 /**
  * Class Bad Gateway
  *
+ * Response code 502
+ *
  * The API is down or being upgraded
  *
  * @category Exception
@@ -36,5 +38,5 @@ class BadGateway extends Exception {
      *
      * @var string
      */
-    protected $errorMessage = 'The API is down or being upgraded';
+    protected $errorMessage = 'The API is down or being upgraded.';
 }

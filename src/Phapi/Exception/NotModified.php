@@ -7,7 +7,9 @@ use Phapi\Exception;
 /**
  * Class Not Modified
  *
- * Class representing a 304 response code
+ * Response code 304
+ *
+ * There was no new data to return
  *
  * @category Exception
  * @package  Phapi\Exception

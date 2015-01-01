@@ -7,6 +7,8 @@ use Phapi\Exception;
 /**
  * Class Bad Request
  *
+ * Response code 400
+ *
  * The request was invalid or cannot be otherwise served. An accompanying error message will explain further.
  *
  * @category Exception

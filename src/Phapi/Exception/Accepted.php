@@ -7,6 +7,8 @@ use Phapi\Exception;
 /**
  * Class Accepted
  *
+ * Response code 203
+ *
  * Request accepted and set to be performed in a background task. Useful if your client is
  * requesting something on the API that is time-consuming and you don't want the client to have to wait.
  *

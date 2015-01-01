@@ -7,7 +7,9 @@ use Phapi\Exception;
 /**
  * Class Moved Permanently
  *
- * Class representing a 301 response code
+ * Response code 301
+ *
+ * Moved Permanently
  *
  * @category Exception
  * @package  Phapi\Exception
