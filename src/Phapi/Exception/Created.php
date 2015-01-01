@@ -33,4 +33,11 @@ class Created extends Exception {
      */
     protected $statusMessage = 'Created';
 
+    /**
+     * Create exception
+     */
+    public function __construct()
+    {
+
+    }
 }

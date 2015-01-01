@@ -33,4 +33,11 @@ class NoContent extends Exception {
      */
     protected $statusMessage = 'No Content';
 
+    /**
+     * Create exception
+     */
+    public function __construct()
+    {
+
+    }
 }

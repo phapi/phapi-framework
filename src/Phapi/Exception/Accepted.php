@@ -34,4 +34,12 @@ class Accepted extends Exception {
      */
     protected $statusMessage = 'Accepted';
 
+    /**
+     * Create exception
+     */
+    public function __construct()
+    {
+
+    }
+
 }
