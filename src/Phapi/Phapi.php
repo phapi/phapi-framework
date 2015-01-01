@@ -112,30 +112,6 @@ class Phapi {
      */
     public function exceptionHandler(\Exception $exception)
     {
-        // write to log
-        $message = sprintf(
-            'Uncaught exception of type %s thrown in file %s at line %s%s.',
-            get_class($exception),
-            $exception->getFile(),
-            $exception->getLine(),
-            $exception->getMessage() ? sprintf(' with message "%s"', $exception->getMessage()) : ''
-        );
-
-        // todo: log error (remember request UUID)
-        /* $this->getLogWriter()->error($message, array(
-            'Exception file'  => $exception->getFile(),
-            'Exception line'  => $exception->getLine(),
-            'Exception trace' => $exception->getTraceAsString()
-        )); */
-
-        // Check if it is an \Exception but not an inherited \Exception.
-        if (get_class($exception) === 'Exception') {
-            // This is an uncaught exception that doesn't have the needed error information
-            // so we need to handle it a little different than predefined exceptions
-            // These exceptions will be handled as an Internal Server Error.
-            $exception = new InternalServerError();
-        }
-
         // Exceptions (response codes) should be handled differently depending on the
         // response code. The first set of codes should not modify the response content.
         // The second set of codes are errors and should therefor change the response
@@ -146,8 +122,35 @@ class Phapi {
             $exception instanceof Accepted ||
             $exception instanceof NoContent
         ) {
-            // todo: set response status, and body (status code, status message, error code, information, link)
+            if (!is_null($exception->getLocation())) {
+                // todo: set response status and redirect location
+            } else {
+                // todo: set response status, and body (status code, status message, error code, information, link)
+            }
         } else {
+            // Prepare log message
+            $message = sprintf(
+                'Uncaught exception of type %s thrown in file %s at line %s%s.',
+                get_class($exception),
+                $exception->getFile(),
+                $exception->getLine(),
+                $exception->getMessage() ? sprintf(' with message "%s"', $exception->getMessage()) : ''
+            );
+
+            // todo: log error (remember request UUID)
+            /* $this->getLogWriter()->error($message, array(
+                'Exception file'  => $exception->getFile(),
+                'Exception line'  => $exception->getLine(),
+                'Exception trace' => $exception->getTraceAsString()
+            )); */
+
+            // Check if it is an \Exception but not an inherited \Exception.
+            if (get_class($exception) === 'Exception') {
+                // This is an uncaught exception that doesn't have the needed error information
+                // so we need to handle it a little different than predefined exceptions
+                // These exceptions will be handled as an Internal Server Error.
+                $exception = new InternalServerError();
+            }
             // todo: set response status, and body (status code, status message, error code, information, link)
         }
 
