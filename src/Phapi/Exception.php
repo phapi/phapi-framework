@@ -41,21 +41,21 @@ abstract class Exception extends \Exception {
      *
      * @var string
      */
-    protected $errorMessage = '';
+    protected $errorMessage = null;
 
     /**
      * More information
      *
      * @var string
      */
-    protected $information = '';
+    protected $information = null;
 
     /**
      * Link to more information
      *
      * @var string
      */
-    protected $link = '';
+    protected $link = null;
 
     /**
      * Link used for redirects
@@ -143,4 +143,15 @@ abstract class Exception extends \Exception {
     {
         return $this->location;
     }
+
+    /**
+     * Get error message
+     *
+     * @return string
+     */
+    public function getErrorMessage()
+    {
+        return $this->errorMessage;
+    }
+
 }
