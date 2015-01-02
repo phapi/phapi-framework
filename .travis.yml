@@ -5,6 +5,8 @@ php:
   - 5.6
 before_script:
   - composer install
+after_script:
+  - vendor/bin/test-reporter
 branches:
   only:
   - master
@@ -12,3 +14,7 @@ branches:
 notifications:
   slack:
     secure: lv5Ih2lfcchQzBV9nyWMuoV4HLZh9fjBZwzbfWS9XKSnzLADwhMFXgDS0FCbptUx6qj7SjKPzAhZWcmPN/9skSg/8Vlnsj1S2XdxZnWTq+9CjAbo0lkcIWS8Q+YreB6bOV23s6i6fvX2zI0O5aRLrYma5eSgBuuwCmJp8zIht6k=
+addons:
+  code_climate:
+    repo_token:
+      secure: "IaXJwRuIRKO0qzE9kU+ROXjl6L0f0+AtsptdwQov+Aa0iyN2gVVzZS71lALf0GxQVeimzdHZEi9pA9GOUJL6sts/ynUNQ3KDj2fk6tTiHfcwlyfRoL1koWT9c+X7lyx3T8QcCytJvsnr/JGp59oH2sa2YI6U6aUFvm+/iJRTGgo="
