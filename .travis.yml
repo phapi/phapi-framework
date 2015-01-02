@@ -7,5 +7,8 @@ before_script:
   - composer install
 branches:
   only:
-    - master
-    - develop
+  - master
+  - develop
+notifications:
+  slack:
+    secure: lv5Ih2lfcchQzBV9nyWMuoV4HLZh9fjBZwzbfWS9XKSnzLADwhMFXgDS0FCbptUx6qj7SjKPzAhZWcmPN/9skSg/8Vlnsj1S2XdxZnWTq+9CjAbo0lkcIWS8Q+YreB6bOV23s6i6fvX2zI0O5aRLrYma5eSgBuuwCmJp8zIht6k=
