@@ -28,23 +28,57 @@ class Phapi {
     const MODE_STAGING = 1;
     const MODE_PRODUCTION = 2;
 
-    public function __construct()
+    /**
+     * Configuration
+     *
+     * @var null|Bucket
+     */
+    public $configuration = null;
+
+    /**
+     * Storage of variables that middlewares
+     * and the application might need.
+     *
+     * @var null|Bucket
+     */
+    public $registry = null;
+
+    public function __construct($configuration)
     {
         // As a default we don't want to display error messages, unless we are in development mode (see bellow).
         ini_set('display_errors', false);
-
-        // todo: Check if we are in development mode
-        //if ($mode === self::MODE_DEVELOPMENT) {
-            // Show all errors
-            error_reporting(E_ALL);
-            // Display errors for easier development
-            ini_set('display_errors', true);
-        //}
 
         // Register exception handler
         set_exception_handler([$this, 'exceptionHandler']);
         // Register error handler
         set_error_handler([$this, 'errorHandler']);
+
+        // Merge the default configuration with provided configuration and
+        // create a new Bucket to save the configuration in.
+        $this->configuration = new Bucket(array_merge($this->getDefaultConfiguration(), $configuration));
+
+        // Create a registry storage
+        $this->registry = new Bucket([]);
+
+        // Check if we are in development mode
+        if ($this->configuration->get('mode') === self::MODE_DEVELOPMENT) {
+            // Show all errors
+            error_reporting(E_ALL);
+            // Display errors for easier development
+            ini_set('display_errors', true);
+        }
+    }
+
+    /**
+     * Get the default configuration
+     *
+     * @return array
+     */
+    protected function getDefaultConfiguration()
+    {
+        return [
+            'mode' => self::MODE_DEVELOPMENT
+        ];
     }
 
     /**
