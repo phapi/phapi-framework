@@ -5,8 +5,11 @@ namespace Phapi;
 use Phapi\Exception\Accepted;
 use Phapi\Exception\Created;
 use Phapi\Exception\InternalServerError;
+use Phapi\Exception\MovedPermanently;
 use Phapi\Exception\NoContent;
+use Phapi\Exception\NotModified;
 use Phapi\Exception\Ok;
+use Phapi\Exception\TemporaryRedirect;
 
 /**
  * Class Phapi
@@ -120,12 +123,15 @@ class Phapi {
             $exception instanceof Ok ||
             $exception instanceof Created ||
             $exception instanceof Accepted ||
-            $exception instanceof NoContent
+            $exception instanceof NoContent ||
+            $exception instanceof NotModified ||
+            $exception instanceof MovedPermanently ||
+            $exception instanceof TemporaryRedirect
         ) {
             if (!is_null($exception->getLocation())) {
                 // todo: set response status and redirect location
             } else {
-                // todo: set response status, and body (status code, status message, error code, information, link)
+                // todo: set response status and leave the body as is
             }
         } else {
             // Prepare log message
