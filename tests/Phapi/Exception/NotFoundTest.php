@@ -5,6 +5,8 @@ namespace Phapi\Tests;
 use Phapi\Exception;
 use Phapi\Exception\NotFound;
 
+require_once __DIR__ . '/ExceptionTraits.php';
+
 /**
  * @coversDefaultClass \Phapi\Exception\NotFound
  */
@@ -13,11 +15,12 @@ class NotFoundTest extends \PHPUnit_Framework_TestCase
 
     public $statusCode = 404;
     public $statusMessage = 'Not Found';
-    public $link = null;
-    public $errorCode = null;
-    public $errorMessage = 'The URI requested is invalid or the resource requested, such as a user, does not exists. Also returned when the requested format is not supported by the requested method.';
-    public $information = null;
+    public $userInformationLink = null;
+    public $code = null;
+    public $message = 'The URI requested is invalid or the resource requested, such as a user, does not exists. Also returned when the requested format is not supported by the requested method.';
+    public $userInformation = null;
     public $location = null;
+    public $logInformation = null;
 
     /**
      * @covers ::__construct
@@ -28,80 +31,5 @@ class NotFoundTest extends \PHPUnit_Framework_TestCase
         return $exception;
     }
 
-    /**
-     * @depends testConstructor
-     * @covers ::getLink
-     *
-     * @param Exception $exception
-     */
-    public function testGetLink(Exception $exception)
-    {
-        $this->assertEquals($this->link, $exception->getLink());
-    }
-
-    /**
-     * @depends testConstructor
-     * @covers ::getStatusCode
-     *
-     * @param Exception $exception
-     */
-    public function testGetStatusCode(Exception $exception)
-    {
-        $this->assertEquals($this->statusCode, $exception->getStatusCode());
-    }
-
-    /**
-     * @depends testConstructor
-     * @covers ::getStatusMessage
-     *
-     * @param Exception $exception
-     */
-    public function testGetStatusMessage(Exception $exception)
-    {
-        $this->assertEquals($this->statusMessage, $exception->getStatusMessage());
-    }
-
-    /**
-     * @depends testConstructor
-     * @covers ::getErrorCode
-     *
-     * @param Exception $exception
-     */
-    public function testGetErrorCode(Exception $exception)
-    {
-        $this->assertEquals($this->errorCode, $exception->getErrorCode());
-    }
-
-    /**
-     * @depends testConstructor
-     * @covers ::getInformation
-     *
-     * @param Exception $exception
-     */
-    public function testGetInformation(Exception $exception)
-    {
-        $this->assertEquals($this->information, $exception->getInformation());
-    }
-
-    /**
-     * @depends testConstructor
-     * @covers ::getLocation
-     *
-     * @param Exception $exception
-     */
-    public function testGetLocation(Exception $exception)
-    {
-        $this->assertEquals($this->location, $exception->getLocation());
-    }
-
-    /**
-     * @depends testConstructor
-     * @covers ::getErrorMessage
-     *
-     * @param Exception $exception
-     */
-    public function testGetErrorMessage(Exception $exception)
-    {
-        $this->assertEquals($this->errorMessage, $exception->getErrorMessage());
-    }
+    use exceptionTests;
 }
