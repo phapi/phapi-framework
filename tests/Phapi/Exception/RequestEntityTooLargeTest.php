@@ -1,6 +1,6 @@
 <?php
 
-namespace Phapi\Tests;
+namespace Phapi\Tests\Exception;
 
 use Phapi\Exception;
 use Phapi\Exception\RequestEntityTooLarge;
