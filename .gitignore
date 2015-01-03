@@ -1,8 +1,3 @@
-app/
-.vagrant
-ansible
-Vagrantfile
-
 ### PhpStorm ###
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm
 
@@ -51,3 +46,10 @@ Icon
 # Files that might appear on external disk
 .Spotlight-V100
 .Trashes
+
+# Project specific ignores
+app/
+.vagrant
+ansible
+Vagrantfile
+build
