@@ -39,6 +39,6 @@ class InternalServerError extends Exception
      *
      * @var string
      */
-    protected $errorMessage = 'An internal server error occurred. Please try again within a few minutes. The error has been logged and we have been notified about the problem and we will fix the problem as soon as possible.';
+    protected $message = 'An internal server error occurred. Please try again within a few minutes. The error has been logged and we have been notified about the problem and we will fix the problem as soon as possible.';
 
 }

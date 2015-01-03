@@ -39,5 +39,5 @@ class Conflict extends Exception {
      *
      * @var string
      */
-    protected $errorMessage = 'The submitted data is causing a conflict with the current state of the resource. An accompanying error message will explain why.';
+    protected $message = 'The submitted data is causing a conflict with the current state of the resource. An accompanying error message will explain why.';
 }

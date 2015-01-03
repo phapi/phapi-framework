@@ -30,32 +30,27 @@ abstract class Exception extends \Exception {
     protected $statusMessage;
 
     /**
-     * Application error code
+     * Information that should be logged.
+     * Useful for giving the developer information
+     * that can be used for debugging problems.
      *
      * @var null
      */
-    protected $errorCode = null;
+    protected $logInformation = null;
 
     /**
-     * Error message
+     * Information shown for the user
      *
      * @var string
      */
-    protected $errorMessage = null;
-
-    /**
-     * More information
-     *
-     * @var string
-     */
-    protected $information = null;
+    protected $userInformation = null;
 
     /**
      * Link to more information
      *
      * @var string
      */
-    protected $link = null;
+    protected $userInformationLink = null;
 
     /**
      * Link used for redirects
@@ -65,57 +60,63 @@ abstract class Exception extends \Exception {
     protected $location = null;
 
     /**
-     * Create new exception
+     * Create exception
      *
-     * @param null $errorCode
-     * @param string $errorMessage
-     * @param string $information
-     * @param string $link
-     * @param string $redirect
+     * @param null          $errorMessage           An error message (shown to the user)
+     * @param null          $errorCode              Error code (shown to the user)
+     * @param \Exception    $previous               Previous exception (used when logging)
+     * @param null          $logInformation         Information that goes in the log. Useful for debugging.
+     * @param null          $userInformation        More information given to the user
+     * @param null          $userInformationLink    A link to error documentation (shown to the user)
+     * @param null          $redirect               Location used for redirects
      */
-    public function __construct($errorCode = null, $errorMessage = null, $information = null, $link = null, $redirect = null)
-    {
-        // Check if error code should be set
-        if (!is_null($errorCode)) {
-            $this->errorCode = $errorCode;
-        }
-
-        // Check if error message should be set
-        if (!is_null($errorMessage)) {
-            $this->errorMessage = $errorMessage;
+    public function __construct(
+        $errorMessage = null,
+        $errorCode = null,
+        \Exception $previous = null,
+        $logInformation = null,
+        $userInformation = null,
+        $userInformationLink = null,
+        $redirect = null
+    ) {
+        // Check if log information should be set
+        if (!is_null($logInformation)) {
+            $this->logInformation = $logInformation;
         }
 
         // Check if information should be set
-        if (!is_null($information)) {
-            $this->information = $information;
+        if (!is_null($userInformation)) {
+            $this->userInformation = $userInformation;
         }
 
         // Check if link should be set
-        if (!is_null($link)) {
-            $this->link = $link;
+        if (!is_null($userInformationLink)) {
+            $this->userInformationLink = $userInformationLink;
         }
 
         // Check if redirect location should be set
         if (!is_null($redirect)) {
             $this->location = $redirect;
         }
+
+        // Do not replace the exception message with null if its predefined in the class
+        if (is_null($errorMessage)) {
+            $errorMessage = $this->message;
+        }
+
+        // Do not replace the exception error code with null if its predefined in the class
+        if (is_null($errorCode)) {
+            $errorCode = $this->code;
+        }
+
+        // make sure everything is assigned properly
+        parent::__construct($errorMessage, $errorCode, $previous);
     }
 
     /**
-     * Get link
+     * Get status code
      *
-     * @return string
-     */
-    public function getLink()
-    {
-        return $this->link;
-    }
-
-    /**
-     * Get response status code.
-     * Example: 500
-     *
-     * @return mixed
+     * @return int
      */
     public function getStatusCode()
     {
@@ -123,10 +124,9 @@ abstract class Exception extends \Exception {
     }
 
     /**
-     * Get response status message.
-     * Example: Internal Server Error
+     * Get status message
      *
-     * @return mixed
+     * @return string
      */
     public function getStatusMessage()
     {
@@ -134,43 +134,42 @@ abstract class Exception extends \Exception {
     }
 
     /**
-     * Get application error code
+     * Get extra information that are logged
      *
      * @return null
      */
-    public function getErrorCode()
+    public function getLogInformation()
     {
-        return $this->errorCode;
+        return $this->logInformation;
     }
 
     /**
-     * Get more information
+     * Get "more information" shown to the user
      *
      * @return string
      */
-    public function getInformation()
+    public function getUserInformation()
     {
-        return $this->information;
+        return $this->userInformation;
+    }
+
+    /**
+     * Get link to more user information
+     *
+     * @return string
+     */
+    public function getUserInformationLink()
+    {
+        return $this->userInformationLink;
     }
 
     /**
      * Get redirect location
      *
-     * @return null|string
+     * @return null
      */
     public function getLocation()
     {
         return $this->location;
     }
-
-    /**
-     * Get error message
-     *
-     * @return string
-     */
-    public function getErrorMessage()
-    {
-        return $this->errorMessage;
-    }
-
 }

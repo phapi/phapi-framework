@@ -38,5 +38,5 @@ class UnsupportedMediaType extends Exception {
      *
      * @var string
      */
-    protected $errorMessage = 'Media type not supported.';
+    protected $message = 'Media type not supported.';
 }

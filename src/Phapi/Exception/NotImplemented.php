@@ -38,5 +38,5 @@ class NotImplemented extends Exception {
      *
      * @var string
      */
-    protected $errorMessage = 'The requested method is not implemented.';
+    protected $message = 'The requested method is not implemented.';
 }

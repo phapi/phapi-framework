@@ -38,5 +38,5 @@ class MethodNotAllowed extends Exception {
      *
      * @var string
      */
-    protected $errorMessage = 'The requested method is not allowed.';
+    protected $message = 'The requested method is not allowed.';
 }

@@ -38,5 +38,5 @@ class UnprocessableEntity extends Exception {
      *
      * @var string
      */
-    protected $errorMessage = 'Returned when an uploaded file is unable to be processed.';
+    protected $message = 'Returned when an uploaded file is unable to be processed.';
 }

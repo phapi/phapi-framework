@@ -38,5 +38,5 @@ class RequestTimeout extends Exception {
      *
      * @var string
      */
-    protected $errorMessage = 'The request timed out.';
+    protected $message = 'The request timed out.';
 }

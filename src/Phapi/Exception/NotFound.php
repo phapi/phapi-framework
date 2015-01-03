@@ -39,5 +39,5 @@ class NotFound extends Exception {
      *
      * @var string
      */
-    protected $errorMessage = 'The URI requested is invalid or the resource requested, such as a user, does not exists. Also returned when the requested format is not supported by the requested method.';
+    protected $message = 'The URI requested is invalid or the resource requested, such as a user, does not exists. Also returned when the requested format is not supported by the requested method.';
 }

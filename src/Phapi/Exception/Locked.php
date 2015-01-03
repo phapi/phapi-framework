@@ -38,5 +38,5 @@ class Locked extends Exception {
      *
      * @var string
      */
-    protected $errorMessage = 'The requested resource is currently locked.';
+    protected $message = 'The requested resource is currently locked.';
 }

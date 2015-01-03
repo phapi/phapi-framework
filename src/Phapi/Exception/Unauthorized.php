@@ -38,5 +38,5 @@ class Unauthorized extends Exception {
      *
      * @var string
      */
-    protected $errorMessage = 'Authentication credentials were missing or incorrect.';
+    protected $message = 'Authentication credentials were missing or incorrect.';
 }

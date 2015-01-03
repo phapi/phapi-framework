@@ -39,5 +39,5 @@ class Gone extends Exception {
      *
      * @var string
      */
-    protected $errorMessage = 'This resource is gone. Used to indicate that an API endpoint has been turned off. For example: "The REST API v1 will soon stop functioning. Please migrate to API v1.1."';
+    protected $message = 'This resource is gone. Used to indicate that an API endpoint has been turned off. For example: "The REST API v1 will soon stop functioning. Please migrate to API v1.1."';
 }

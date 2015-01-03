@@ -38,5 +38,5 @@ class Forbidden extends Exception {
      *
      * @var string
      */
-    protected $errorMessage = 'The request is understood, but it has been refused or access is not allowed. An accompanying error message will explain why.';
+    protected $message = 'The request is understood, but it has been refused or access is not allowed. An accompanying error message will explain why.';
 }
