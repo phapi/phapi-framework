@@ -3,7 +3,7 @@
 namespace Phapi;
 
 use Phapi\Exception\Error;
-use Phapi\Exception\InternalServerError;
+use Phapi\Exception\Error\InternalServerError;
 use Phapi\Exception\Redirect;
 use Phapi\Exception\Success;
 use Psr\Log\LoggerInterface;
