@@ -122,8 +122,8 @@ class Phapi {
             return $this->registry->get($key, $default);
         } else {
             // Check in both
-            if ($value = $this->registry->get($key, $default) !== $default) {
-                return $value;
+            if ($this->registry->get($key, $default) !== $default) {
+                return $this->registry->get($key, $default);
             } else {
                 return $this->configuration->get($key, $default);
             }
