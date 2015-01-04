@@ -3,13 +3,31 @@
 namespace Phapi;
 
 use Phapi\Exception\Accepted;
+use Phapi\Exception\BadGateway;
+use Phapi\Exception\BadRequest;
+use Phapi\Exception\Conflict;
 use Phapi\Exception\Created;
+use Phapi\Exception\Forbidden;
+use Phapi\Exception\Gone;
 use Phapi\Exception\InternalServerError;
+use Phapi\Exception\Locked;
+use Phapi\Exception\MethodNotAllowed;
 use Phapi\Exception\MovedPermanently;
 use Phapi\Exception\NoContent;
+use Phapi\Exception\NotAcceptable;
+use Phapi\Exception\NotFound;
+use Phapi\Exception\NotImplemented;
 use Phapi\Exception\NotModified;
 use Phapi\Exception\Ok;
+use Phapi\Exception\PaymentRequired;
+use Phapi\Exception\RequestEntityTooLarge;
+use Phapi\Exception\RequestTimeout;
+use Phapi\Exception\ServiceUnavailable;
 use Phapi\Exception\TemporaryRedirect;
+use Phapi\Exception\TooManyRequests;
+use Phapi\Exception\Unauthorized;
+use Phapi\Exception\UnprocessableEntity;
+use Phapi\Exception\UnsupportedMediaType;
 
 /**
  * Class Phapi
@@ -152,21 +170,21 @@ class Phapi {
         // Exceptions (response codes) should be handled differently depending on the
         // response code. The first set of codes should not modify the response content.
         // The second set of codes are errors and should therefor change the response
-        // content to the exceptions error information.
+        // content to the exceptions error information and a log entry should be created.
         if (
             $exception instanceof Ok ||
             $exception instanceof Created ||
             $exception instanceof Accepted ||
             $exception instanceof NoContent ||
-            $exception instanceof NotModified ||
+            $exception instanceof NotModified
+        ) {
+            // todo: set response status and leave the body as is
+
+        } elseif (
             $exception instanceof MovedPermanently ||
             $exception instanceof TemporaryRedirect
         ) {
-            if (!is_null($exception->getLocation())) {
-                // todo: set response status and redirect location
-            } else {
-                // todo: set response status and leave the body as is
-            }
+            // todo: set response status and redirect location
         } else {
             // Prepare log message
             $message = sprintf(
@@ -184,12 +202,31 @@ class Phapi {
                 'Exception trace' => $exception->getTraceAsString()
             )); */
 
-            // Check if it is an \Exception but not an inherited \Exception.
-            if (get_class($exception) === 'Exception') {
-                // This is an uncaught exception that doesn't have the needed error information
+            // Check if the Exception is a Phapi Exception
+            if (
+                !($exception instanceof BadGateway) ||
+                !($exception instanceof BadRequest) ||
+                !($exception instanceof Conflict) ||
+                !($exception instanceof Forbidden) ||
+                !($exception instanceof Gone) ||
+                !($exception instanceof Locked) ||
+                !($exception instanceof MethodNotAllowed) ||
+                !($exception instanceof NotAcceptable) ||
+                !($exception instanceof NotFound) ||
+                !($exception instanceof NotImplemented) ||
+                !($exception instanceof PaymentRequired) ||
+                !($exception instanceof RequestEntityTooLarge) ||
+                !($exception instanceof RequestTimeout) ||
+                !($exception instanceof ServiceUnavailable) ||
+                !($exception instanceof TooManyRequests) ||
+                !($exception instanceof Unauthorized) ||
+                !($exception instanceof UnprocessableEntity) ||
+                !($exception instanceof UnsupportedMediaType)
+            ) {
+                // This is an uncaught exception that might not doesn't have the needed error information
                 // so we need to handle it a little different than predefined exceptions
                 // These exceptions will be handled as an Internal Server Error.
-                $exception = new InternalServerError();
+                $exception = new InternalServerError($exception->getMessage(), $exception->getCode(), $exception->getPrevious());
             }
             // todo: set response status, and body (status code, status message, error code, information, link)
         }
