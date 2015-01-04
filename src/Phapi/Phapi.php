@@ -46,6 +46,10 @@ class Phapi {
     const MODE_STAGING = 1;
     const MODE_PRODUCTION = 2;
 
+    const STORAGE_CONFIGURATION = 0;
+    const STORAGE_REGISTRY = 1;
+    const STORAGE_BOTH = 2;
+
     /**
      * Configuration
      *
@@ -84,6 +88,78 @@ class Phapi {
             error_reporting(E_ALL);
             // Display errors for easier development
             ini_set('display_errors', true);
+        }
+    }
+
+    /**
+     * Check if configuration and/or registry has key
+     *
+     * @param $key
+     * @param int $storage
+     * @return bool
+     */
+    public function has($key, $storage = self::STORAGE_BOTH)
+    {
+        // Check were to look
+        if ($storage === self::STORAGE_CONFIGURATION) {
+            // Only check in configuration
+            return $this->configuration->has($key);
+        } elseif ($storage === self::STORAGE_REGISTRY) {
+            // Only check in registry
+            return $this->registry->has($key);
+        } else {
+            // Check in both
+            return ($this->registry->has($key) || $this->configuration->has($key)) ? true : false;
+        }
+    }
+
+    /**
+     * Get value from configuration and/or registry based on key
+     *
+     * @param $key
+     * @param null $default
+     * @param int $storage
+     * @return bool|mixed|null
+     */
+    public function get($key, $default = null, $storage = self::STORAGE_BOTH)
+    {
+        // Check were to look
+        if ($storage === self::STORAGE_CONFIGURATION) {
+            // Only check in configuration
+            return $this->configuration->get($key, $default);
+        } elseif ($storage === self::STORAGE_REGISTRY) {
+            // Only check in registry
+            return $this->registry->get($key, $default);
+        } else {
+            // Check in both
+            if ($value = $this->registry->get($key, $default) !== $default) {
+                return $value;
+            } else {
+                return $this->configuration->get($key, $default);
+            }
+        }
+    }
+
+    /**
+     * Check if configuration and/or registry has the value based on key
+     *
+     * @param $key
+     * @param $value
+     * @param int $storage
+     * @return bool
+     */
+    public function is($key, $value, $storage = self::STORAGE_BOTH)
+    {
+        // Check were to look
+        if ($storage === self::STORAGE_CONFIGURATION) {
+            // Only check in configuration
+            return $this->configuration->is($key, $value);
+        } elseif ($storage === self::STORAGE_REGISTRY) {
+            // Only check in registry
+            return $this->registry->is($key, $value);
+        } else {
+            // Check in both
+            return ($this->registry->is($key, $value) || $this->configuration->is($key, $value)) ? true : false;
         }
     }
 
