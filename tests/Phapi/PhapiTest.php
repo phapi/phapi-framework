@@ -90,4 +90,124 @@ class PhapiTest extends \PHPUnit_Framework_TestCase {
         $this->assertTrue($phapi->is('mode', Phapi::MODE_PRODUCTION, Phapi::STORAGE_CONFIGURATION));
         $this->assertFalse($phapi->is('mode', Phapi::MODE_PRODUCTION, Phapi::STORAGE_REGISTRY));
     }
+
+    /**
+     * @covers ::errorHandler
+     * @throws \Phapi\Exception\Error\InternalServerError
+     */
+    public function testErrorHandler()
+    {
+        $phapi = new Phapi([]);
+
+        $this->setExpectedException('Phapi\Exception\Error\InternalServerError');
+        $phapi->errorHandler(E_WARNING, 'message', 'index.php', 23, []);
+    }
+
+    /**
+     * @covers ::errorHandler
+     * @throws \Phapi\Exception\Error\InternalServerError
+     */
+    public function testErrorHandler2()
+    {
+        $phapi = new Phapi([]);
+
+        $this->setExpectedException('Phapi\Exception\Error\InternalServerError');
+        $phapi->errorHandler(E_USER_ERROR, 'message', 'index.php', 23, []);
+    }
+
+    /**
+     * @covers ::errorHandler
+     * @throws \Phapi\Exception\Error\InternalServerError
+     */
+    public function testErrorHandler3()
+    {
+        $phapi = new Phapi([]);
+
+        $this->setExpectedException('Phapi\Exception\Error\InternalServerError');
+        $phapi->errorHandler(E_USER_WARNING, 'message', 'index.php', 23, []);
+    }
+
+    /**
+     * @covers ::errorHandler
+     * @throws \Phapi\Exception\Error\InternalServerError
+     */
+    public function testErrorHandler4()
+    {
+        $phapi = new Phapi([]);
+
+        $this->setExpectedException('Phapi\Exception\Error\InternalServerError');
+        $phapi->errorHandler(E_USER_NOTICE, 'message', 'index.php', 23, []);
+    }
+
+    /**
+     * @covers ::errorHandler
+     * @throws \Phapi\Exception\Error\InternalServerError
+     */
+    public function testErrorHandler5()
+    {
+        $phapi = new Phapi([]);
+
+        $this->setExpectedException('Phapi\Exception\Error\InternalServerError');
+        $phapi->errorHandler(E_STRICT, 'message', 'index.php', 23, []);
+    }
+
+    /**
+     * @covers ::errorHandler
+     * @throws \Phapi\Exception\Error\InternalServerError
+     */
+    public function testErrorHandler6()
+    {
+        $phapi = new Phapi([]);
+
+        $this->setExpectedException('Phapi\Exception\Error\InternalServerError');
+        $phapi->errorHandler(E_RECOVERABLE_ERROR, 'message', 'index.php', 23, []);
+    }
+
+    /**
+     * @covers ::errorHandler
+     * @throws \Phapi\Exception\Error\InternalServerError
+     */
+    public function testErrorHandler7()
+    {
+        $phapi = new Phapi([]);
+
+        $this->setExpectedException('Phapi\Exception\Error\InternalServerError');
+        $phapi->errorHandler(E_DEPRECATED, 'message', 'index.php', 23, []);
+    }
+
+    /**
+     * @covers ::errorHandler
+     * @throws \Phapi\Exception\Error\InternalServerError
+     */
+    public function testErrorHandler8()
+    {
+        $phapi = new Phapi([]);
+
+        $this->setExpectedException('Phapi\Exception\Error\InternalServerError');
+        $phapi->errorHandler(E_USER_DEPRECATED, 'message', 'index.php', 23, []);
+    }
+
+    /**
+     * @covers ::errorHandler
+     * @throws \Phapi\Exception\Error\InternalServerError
+     */
+    public function testErrorHandler9()
+    {
+        $phapi = new Phapi([]);
+
+        $this->setExpectedException('Phapi\Exception\Error\InternalServerError');
+        $phapi->errorHandler(E_NOTICE, 'message', 'index.php', 23, []);
+    }
+
+    /**
+     * @covers ::errorHandler
+     * @throws \Phapi\Exception\Error\InternalServerError
+     */
+    public function testErrorHandler10()
+    {
+        $phapi = new Phapi([]);
+
+        $this->setExpectedException('Phapi\Exception\Error\InternalServerError');
+        $phapi->errorHandler(E_COMPILE_ERROR, 'message', 'index.php', 23, []);
+    }
 }
