@@ -15,10 +15,10 @@ class ForbiddenTest extends \PHPUnit_Framework_TestCase
 
     public $statusCode = 403;
     public $statusMessage = 'Forbidden';
-    public $userInformationLink = null;
+    public $link = null;
     public $code = null;
-    public $message = 'The request is understood, but it has been refused or access is not allowed. An accompanying error message will explain why.';
-    public $userInformation = null;
+    public $description = 'The request is understood, but it has been refused or access is not allowed. An accompanying error message will explain why.';
+    public $message = null;
     public $location = null;
     public $logInformation = null;
 

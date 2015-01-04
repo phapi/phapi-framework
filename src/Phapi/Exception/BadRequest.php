@@ -38,5 +38,5 @@ class BadRequest extends Exception {
      *
      * @var string
      */
-    protected $message = 'The request was invalid or cannot be otherwise served. An accompanying error message will explain further.';
+    protected $description = 'The request was invalid or cannot be otherwise served. An accompanying error message will explain further.';
 }

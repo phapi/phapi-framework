@@ -15,10 +15,10 @@ class NotImplementedTest extends \PHPUnit_Framework_TestCase
 
     public $statusCode = 501;
     public $statusMessage = 'Not Implemented';
-    public $userInformationLink = null;
+    public $link = null;
     public $code = null;
-    public $message = 'The requested method is not implemented.';
-    public $userInformation = null;
+    public $description = 'The requested method is not implemented.';
+    public $message = null;
     public $location = null;
     public $logInformation = null;
 

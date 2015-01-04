@@ -38,5 +38,5 @@ class PaymentRequired extends Exception {
      *
      * @var string
      */
-    protected $message = 'Payment is required before the requested method/resource can be requested.';
+    protected $description = 'Payment is required before the requested method/resource can be requested.';
 }

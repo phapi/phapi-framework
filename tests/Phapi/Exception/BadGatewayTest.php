@@ -15,10 +15,10 @@ class BadGatewayTest extends \PHPUnit_Framework_TestCase
 
     public $statusCode = 502;
     public $statusMessage = 'Bad Gateway';
-    public $userInformationLink = null;
+    public $link = null;
     public $code = null;
-    public $message = 'The API is down or being upgraded.';
-    public $userInformation = null;
+    public $description = 'The API is down or being upgraded.';
+    public $message = 'Upgrade in progress';
     public $location = null;
     public $logInformation = null;
 
@@ -27,7 +27,7 @@ class BadGatewayTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructor()
     {
-        $exception = new BadGateway();
+        $exception = new BadGateway($this->message);
         return $exception;
     }
 

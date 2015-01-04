@@ -15,10 +15,10 @@ class MethodNotAllowedTest extends \PHPUnit_Framework_TestCase
 
     public $statusCode = 405;
     public $statusMessage = 'Method Not Allowed';
-    public $userInformationLink = null;
+    public $link = null;
     public $code = null;
-    public $message = 'The requested method is not allowed.';
-    public $userInformation = null;
+    public $description = 'The requested method is not allowed.';
+    public $message = null;
     public $location = null;
     public $logInformation = null;
 

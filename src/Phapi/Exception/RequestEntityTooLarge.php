@@ -38,5 +38,5 @@ class RequestEntityTooLarge extends Exception {
      *
      * @var string
      */
-    protected $message = 'The requested entity is too large.';
+    protected $description = 'The requested entity is too large.';
 }

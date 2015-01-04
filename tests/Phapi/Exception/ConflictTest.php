@@ -15,10 +15,10 @@ class ConflictTest extends \PHPUnit_Framework_TestCase
 
     public $statusCode = 409;
     public $statusMessage = 'Conflict';
-    public $userInformationLink = null;
+    public $link = null;
     public $code = null;
-    public $message = 'The submitted data is causing a conflict with the current state of the resource. An accompanying error message will explain why.';
-    public $userInformation = null;
+    public $description = 'The submitted data is causing a conflict with the current state of the resource. An accompanying error message will explain why.';
+    public $message = null;
     public $location = null;
     public $logInformation = null;
     

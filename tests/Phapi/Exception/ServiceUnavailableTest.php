@@ -15,10 +15,10 @@ class ServiceUnavailableTest extends \PHPUnit_Framework_TestCase
 
     public $statusCode = 504;
     public $statusMessage = 'Service Unavailable';
-    public $userInformationLink = null;
+    public $link = null;
     public $code = null;
-    public $message = 'The API is up, but overloaded with requests. Try again later.';
-    public $userInformation = null;
+    public $description = 'The API is up, but overloaded with requests. Try again later.';
+    public $message = null;
     public $location = null;
     public $logInformation = null;
 

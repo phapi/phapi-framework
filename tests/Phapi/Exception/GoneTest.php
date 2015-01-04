@@ -15,10 +15,10 @@ class GoneTest extends \PHPUnit_Framework_TestCase
 
     public $statusCode = 410;
     public $statusMessage = 'Gone';
-    public $userInformationLink = null;
+    public $link = null;
     public $code = null;
-    public $message = 'This resource is gone. Used to indicate that an API endpoint has been turned off. For example: "The REST API v1 will soon stop functioning. Please migrate to API v1.1."';
-    public $userInformation = null;
+    public $description = 'This resource is gone. Used to indicate that an API endpoint has been turned off. For example: "The REST API v1 will soon stop functioning. Please migrate to API v1.1."';
+    public $message = null;
     public $location = null;
     public $logInformation = null;
 

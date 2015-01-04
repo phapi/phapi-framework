@@ -15,10 +15,10 @@ class NotAcceptableTest extends \PHPUnit_Framework_TestCase
 
     public $statusCode = 406;
     public $statusMessage = 'Not Acceptable';
-    public $userInformationLink = null;
+    public $link = null;
     public $code = null;
-    public $message = 'Returned by the API when an invalid format is specified in the request.';
-    public $userInformation = null;
+    public $description = 'Returned by the API when an invalid format is specified in the request.';
+    public $message = null;
     public $location = null;
     public $logInformation = null;
 

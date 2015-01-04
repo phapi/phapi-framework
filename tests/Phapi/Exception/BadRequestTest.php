@@ -15,10 +15,10 @@ class BadRequestTest extends \PHPUnit_Framework_TestCase
 
     public $statusCode = 400;
     public $statusMessage = 'Bad Request';
-    public $userInformationLink = null;
+    public $link = null;
     public $code = null;
-    public $message = 'The request was invalid or cannot be otherwise served. An accompanying error message will explain further.';
-    public $userInformation = null;
+    public $description = 'The request was invalid or cannot be otherwise served. An accompanying error message will explain further.';
+    public $message = 'The request doesn\'t include the identifier header';
     public $location = null;
     public $logInformation = null;
 
@@ -27,7 +27,7 @@ class BadRequestTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructor()
     {
-        $exception = new BadRequest();
+        $exception = new BadRequest($this->message);
         return $exception;
     }
 

@@ -15,10 +15,10 @@ class RequestEntityTooLargeTest extends \PHPUnit_Framework_TestCase
 
     public $statusCode = 413;
     public $statusMessage = 'Request Entity Too Large';
-    public $userInformationLink = null;
+    public $link = null;
     public $code = null;
-    public $message = 'The requested entity is too large.';
-    public $userInformation = null;
+    public $description = 'The requested entity is too large.';
+    public $message = null;
     public $location = null;
     public $logInformation = null;
 

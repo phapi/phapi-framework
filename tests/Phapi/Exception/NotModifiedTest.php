@@ -15,10 +15,10 @@ class NotModifiedTest extends \PHPUnit_Framework_TestCase
 
     public $statusCode = 304;
     public $statusMessage = 'Not Modified';
-    public $userInformationLink = null;
+    public $link = null;
     public $code = null;
     public $message = null;
-    public $userInformation = null;
+    public $description = null;
     public $location = null;
     public $logInformation = null;
 

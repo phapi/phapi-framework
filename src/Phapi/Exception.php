@@ -20,97 +20,111 @@ abstract class Exception extends \Exception {
      *
      * @var int
      */
-    protected $statusCode;
+    protected $statusCode = null;
 
     /**
      * Response status message
      *
      * @var string
      */
-    protected $statusMessage;
-
-    /**
-     * Information that should be logged.
-     * Useful for giving the developer information
-     * that can be used for debugging problems.
-     *
-     * @var null
-     */
-    protected $logInformation = null;
-
-    /**
-     * Information shown for the user
-     *
-     * @var string
-     */
-    protected $userInformation = null;
+    protected $statusMessage = null;
 
     /**
      * Link to more information
      *
-     * @var string
+     * @var null|string
      */
-    protected $userInformationLink = null;
+    protected $link;
 
     /**
-     * Link used for redirects
+     * Extra information sent to the log
      *
-     * @var null
+     * @var null|string
      */
-    protected $location = null;
+    protected $logInformation;
 
     /**
-     * Create exception
+     * Error description
      *
-     * @param null          $errorMessage           An error message (shown to the user)
-     * @param null          $errorCode              Error code (shown to the user)
-     * @param \Exception    $previous               Previous exception (used when logging)
-     * @param null          $logInformation         Information that goes in the log. Useful for debugging.
-     * @param null          $userInformation        More information given to the user
-     * @param null          $userInformationLink    A link to error documentation (shown to the user)
-     * @param null          $redirect               Location used for redirects
+     * @var null|string
+     */
+    protected $description;
+
+    /**
+     * Location used for redirect
+     *
+     * @var null|string
+     */
+    protected $location;
+
+    /**
+     * Create a new exception
+     *
+     * @param null          $message            More information given to the user (shown to the user)
+     * @param null          $code               Error code (shown to the user)
+     * @param \Exception    $previous           Previous exception (used for logging)
+     * @param null          $link               A link to error documentation (shown to the user)
+     * @param null          $logInformation     Information that goes in the log. Useful for debugging. (used for logging)
+     * @param null          $description        An error message (shown to the user). All Phapi Exceptions have predefined error messages so you can pass * **null** * to use the predifined message.
+     * @param null          $location           Location used for redirects
      */
     public function __construct(
-        $errorMessage = null,
-        $errorCode = null,
+        $message = null,
+        $code = null,
         \Exception $previous = null,
+        $link = null,
         $logInformation = null,
-        $userInformation = null,
-        $userInformationLink = null,
-        $redirect = null
+        $description = null,
+        $location = null
     ) {
-        // Check if log information should be set
-        if (!is_null($logInformation)) {
-            $this->logInformation = $logInformation;
-        }
-
-        // Check if information should be set
-        if (!is_null($userInformation)) {
-            $this->userInformation = $userInformation;
-        }
-
-        // Check if link should be set
-        if (!is_null($userInformationLink)) {
-            $this->userInformationLink = $userInformationLink;
-        }
-
-        // Check if redirect location should be set
-        if (!is_null($redirect)) {
-            $this->location = $redirect;
-        }
-
-        // Do not replace the exception message with null if its predefined in the class
-        if (is_null($errorMessage)) {
-            $errorMessage = $this->message;
-        }
-
-        // Do not replace the exception error code with null if its predefined in the class
-        if (is_null($errorCode)) {
-            $errorCode = $this->code;
-        }
+        // Do not overwrite predefined values with null
+        $this->link = (is_null($link)) ? $this->link: $link;
+        $this->logInformation = (is_null($logInformation)) ? $this->logInformation: $logInformation;
+        $this->description = (is_null($description)) ? $this->description: $description;
+        $this->location = (is_null($location)) ? $this->location: $location;
 
         // make sure everything is assigned properly
-        parent::__construct($errorMessage, $errorCode, $previous);
+        parent::__construct($message, $code, $previous);
+    }
+
+    /**
+     * Get link to documentation
+     *
+     * @return null|string
+     */
+    public function getLink()
+    {
+        return $this->link;
+    }
+
+    /**
+     * Get extra log information
+     *
+     * @return null|string
+     */
+    public function getLogInformation()
+    {
+        return $this->logInformation;
+    }
+
+    /**
+     * Get error description
+     *
+     * @return null|string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * Get redirect location
+     *
+     * @return null|string
+     */
+    public function getLocation()
+    {
+        return $this->location;
     }
 
     /**
@@ -131,45 +145,5 @@ abstract class Exception extends \Exception {
     public function getStatusMessage()
     {
         return $this->statusMessage;
-    }
-
-    /**
-     * Get extra information that are logged
-     *
-     * @return null
-     */
-    public function getLogInformation()
-    {
-        return $this->logInformation;
-    }
-
-    /**
-     * Get "more information" shown to the user
-     *
-     * @return string
-     */
-    public function getUserInformation()
-    {
-        return $this->userInformation;
-    }
-
-    /**
-     * Get link to more user information
-     *
-     * @return string
-     */
-    public function getUserInformationLink()
-    {
-        return $this->userInformationLink;
-    }
-
-    /**
-     * Get redirect location
-     *
-     * @return null
-     */
-    public function getLocation()
-    {
-        return $this->location;
     }
 }

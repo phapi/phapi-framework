@@ -15,10 +15,10 @@ class TemporaryRedirectTest extends \PHPUnit_Framework_TestCase
 
     public $statusCode = 307;
     public $statusMessage = 'Temporary Redirect';
-    public $userInformationLink = null;
+    public $link = null;
     public $code = null;
     public $message = null;
-    public $userInformation = null;
+    public $description = null;
     public $location = 'https://github.com/ahinko/phapi';
     public $logInformation = null;
 

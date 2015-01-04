@@ -38,5 +38,5 @@ class ServiceUnavailable extends Exception {
      *
      * @var string
      */
-    protected $message = 'The API is up, but overloaded with requests. Try again later.';
+    protected $description = 'The API is up, but overloaded with requests. Try again later.';
 }

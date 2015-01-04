@@ -15,10 +15,10 @@ class UnauthorizedTest extends \PHPUnit_Framework_TestCase
 
     public $statusCode = 401;
     public $statusMessage = 'Unauthorized';
-    public $userInformationLink = null;
+    public $link = null;
     public $code = null;
-    public $message = 'Authentication credentials were missing or incorrect.';
-    public $userInformation = null;
+    public $description = 'Authentication credentials were missing or incorrect.';
+    public $message = null;
     public $location = null;
     public $logInformation = null;
 

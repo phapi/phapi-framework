@@ -8,13 +8,13 @@ trait exceptionTests
 {
     /**
      * @depends testConstructor
-     * @covers ::getUserInformationLink
+     * @covers ::getLink
      *
      * @param Exception $exception
      */
-    public function testGetUserInformationLink(Exception $exception)
+    public function testGetLink(Exception $exception)
     {
-        $this->assertEquals($this->userInformationLink, $exception->getUserInformationLink());
+        $this->assertEquals($this->link, $exception->getLink());
     }
 
     /**
@@ -52,13 +52,13 @@ trait exceptionTests
 
     /**
      * @depends testConstructor
-     * @covers ::getUserInformation
+     * @covers ::getDescription
      *
      * @param Exception $exception
      */
-    public function testGetUserInformation(Exception $exception)
+    public function testGetDescription(Exception $exception)
     {
-        $this->assertEquals($this->userInformation, $exception->getUserInformation());
+        $this->assertEquals($this->description, $exception->getDescription());
     }
 
     /**

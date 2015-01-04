@@ -15,10 +15,10 @@ class PaymentRequiredTest extends \PHPUnit_Framework_TestCase
 
     public $statusCode = 402;
     public $statusMessage = 'Payment Required';
-    public $userInformationLink = null;
+    public $link = null;
     public $code = null;
-    public $message = 'Payment is required before the requested method/resource can be requested.';
-    public $userInformation = null;
+    public $description = 'Payment is required before the requested method/resource can be requested.';
+    public $message = null;
     public $location = null;
     public $logInformation = null;
 

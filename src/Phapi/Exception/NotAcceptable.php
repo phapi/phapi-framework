@@ -38,5 +38,5 @@ class NotAcceptable extends Exception {
      *
      * @var string
      */
-    protected $message = 'Returned by the API when an invalid format is specified in the request.';
+    protected $description = 'Returned by the API when an invalid format is specified in the request.';
 }

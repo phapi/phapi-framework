@@ -15,10 +15,10 @@ class UnprocessableEntityTest extends \PHPUnit_Framework_TestCase
 
     public $statusCode = 422;
     public $statusMessage = 'Unprocessable Entity';
-    public $userInformationLink = null;
+    public $link = null;
     public $code = null;
-    public $message = 'Returned when an uploaded file is unable to be processed.';
-    public $userInformation = null;
+    public $description = 'Returned when an uploaded file is unable to be processed.';
+    public $message = null;
     public $location = null;
     public $logInformation = null;
 

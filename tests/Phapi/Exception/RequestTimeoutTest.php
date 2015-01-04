@@ -15,10 +15,10 @@ class RequestTimeoutTest extends \PHPUnit_Framework_TestCase
 
     public $statusCode = 408;
     public $statusMessage = 'Request Timeout';
-    public $userInformationLink = null;
+    public $link = null;
     public $code = null;
-    public $message = 'The request timed out.';
-    public $userInformation = null;
+    public $description = 'The request timed out.';
+    public $message = null;
     public $location = null;
     public $logInformation = null;
 

@@ -15,10 +15,10 @@ class LockedTest extends \PHPUnit_Framework_TestCase
 
     public $statusCode = 423;
     public $statusMessage = 'Locked';
-    public $userInformationLink = null;
+    public $link = null;
     public $code = null;
-    public $message = 'The requested resource is currently locked.';
-    public $userInformation = null;
+    public $description = 'The requested resource is currently locked.';
+    public $message = null;
     public $location = null;
     public $logInformation = null;
 
