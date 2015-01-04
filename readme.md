@@ -31,6 +31,7 @@ Phapi Exceptions accepts the following arguments:
 Lets use an Internal Server Error as example:
 
 ```
+<?php
 throw new \Phapi\Exception\InternalServerError(
     'We where unable to change the username due to an unknown error.'
     53,
@@ -78,6 +79,7 @@ Valid responses are:
 
 An example usage in a resource might be that a POST has been made and a new user should be created. When the user has been created the following code can be used to trigger a 201 Created response (no arguments are needed):
 ```
+<?php
 throw new \Phapi\Exception\Created();
 ```
 
@@ -91,7 +93,11 @@ Valid redirects are:
 Take an example where the resource ***/user/peter*** has changed to ***/users/peter***. Then the following code should be included in the resource that previously handleded ***/user/peter***:
 
 ```
+<?php
 throw new \Phapi\Exception\MovedPermanently('/users/peter');
 ```
 
 This will result in a 301 Moved Permanently response with the passed argument (***/users/peter***) assigned to the location header.
+
+## License
+Phapi is licensed under the MIT License - see the LICENSE file for details
