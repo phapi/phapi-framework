@@ -9,10 +9,36 @@ Phapi is a PHP based framework aiming at simplifying API development and a the s
 
 ## Documentation
 1. [Configuration](#configuration)
-2. [Trigger response and error handling](#trigger-response-and-error-handling)
+2. [Logging](#logging)
+3. [Trigger response and error handling](#trigger-response-and-error-handling)
 
 ### Configuration
-*TODO*
+Configuration is easy with Phapi. Create an array and pass it to the Phapi constructor and you are done. As an example we will set up basic logging with [Monolog](https://github.com/Seldaek/monolog):
+```
+<?php
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
+
+// create a log channel
+$logger = new Logger('app');
+$logger->pushHandler(new StreamHandler('./logs/app_'. date('Y-m-d') .'.log', Logger::DEBUG));
+
+$configuration = [
+    'logWriter'     => $logger,
+];
+
+$api = new \Phapi\Phapi($configuration);
+
+```
+
+### Logging
+Registered logger can be accessed by using the Phapi->getLogWriter() function. In a resource the code might look like this:
+```
+<?php
+...
+  $this->app->getLogWriter()->debug('This code just logged this message');
+...
+```
 
 ### Trigger response and error handling
 Phapi uses Exceptions to trigger responses to the client. This approach results in three different types of Exceptions: **Error**, **Success** and **Redirect**.
