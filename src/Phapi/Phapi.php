@@ -194,9 +194,6 @@ class Phapi {
             // the provided log writer isn't an instance of the Psr-3 logger interface so
             // we don't know if its compatible with the framework. Therefore we will:
 
-            // try to write to the log
-            $logWriter->log('The provided log writer might not be PSR-3 compatible since it does not implement the LoggerInterface.');
-
             // create an instance of the NullLogger instead
             $this->logWriter = new NullLogger();
         }
