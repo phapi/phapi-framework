@@ -141,12 +141,12 @@ class Phapi {
     public function equals($key, $value, $storage = self::STORAGE_BOTH)
     {
         // Check were to look
-        if ($storage === self::STORAGE_CONFIGURATION) {
-            // Only check in configuration
-            return $this->configuration->equals($key, $value);
-        } elseif ($storage === self::STORAGE_REGISTRY) {
+        if ($storage === self::STORAGE_REGISTRY) {
             // Only check in registry
             return $this->registry->equals($key, $value);
+        } else if ($storage === self::STORAGE_CONFIGURATION) {
+            // Only check in configuration
+            return $this->configuration->equals($key, $value);
         } else {
             // Check in both
             return ($this->registry->equals($key, $value) || $this->configuration->equals($key, $value)) ? true : false;
