@@ -27,8 +27,7 @@ class RequestEntityTooLargeTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructor()
     {
-        $exception = new RequestEntityTooLarge();
-        return $exception;
+        return new RequestEntityTooLarge();
     }
 
     use exceptionTests;

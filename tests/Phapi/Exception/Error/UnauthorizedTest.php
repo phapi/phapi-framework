@@ -27,8 +27,7 @@ class UnauthorizedTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructor()
     {
-        $exception = new Unauthorized();
-        return $exception;
+        return new Unauthorized();
     }
 
     use exceptionTests;

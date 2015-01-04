@@ -27,8 +27,7 @@ class MethodNotAllowedTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructor()
     {
-        $exception = new MethodNotAllowed();
-        return $exception;
+        return new MethodNotAllowed();
     }
 
     use exceptionTests;

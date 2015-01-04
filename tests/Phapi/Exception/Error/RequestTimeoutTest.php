@@ -27,8 +27,7 @@ class RequestTimeoutTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructor()
     {
-        $exception = new RequestTimeout();
-        return $exception;
+        return new RequestTimeout();
     }
 
     use exceptionTests;

@@ -27,8 +27,7 @@ class MovedPermanentlyTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructor()
     {
-        $exception = new MovedPermanently($this->location);
-        return $exception;
+        return new MovedPermanently($this->location);
     }
 
     use exceptionTests;

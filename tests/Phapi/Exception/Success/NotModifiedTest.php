@@ -27,8 +27,7 @@ class NotModifiedTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructor()
     {
-        $exception = new NotModified();
-        return $exception;
+        return new NotModified();
     }
 
     use exceptionTests;

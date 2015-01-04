@@ -27,8 +27,7 @@ class OkTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructor()
     {
-        $exception = new Ok();
-        return $exception;
+        return new Ok();
     }
 
     use exceptionTests;

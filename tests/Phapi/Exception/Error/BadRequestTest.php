@@ -27,8 +27,7 @@ class BadRequestTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructor()
     {
-        $exception = new BadRequest($this->message);
-        return $exception;
+        return new BadRequest($this->message);
     }
 
     use exceptionTests;

@@ -27,8 +27,7 @@ class NotAcceptableTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructor()
     {
-        $exception = new NotAcceptable();
-        return $exception;
+        return new NotAcceptable();
     }
 
     use exceptionTests;

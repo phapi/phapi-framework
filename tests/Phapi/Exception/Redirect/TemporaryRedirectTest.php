@@ -27,8 +27,7 @@ class TemporaryRedirectTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructor()
     {
-        $exception = new TemporaryRedirect($this->location);
-        return $exception;
+        return new TemporaryRedirect($this->location);
     }
 
     use exceptionTests;

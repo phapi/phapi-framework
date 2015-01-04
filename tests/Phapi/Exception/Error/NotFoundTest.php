@@ -27,8 +27,7 @@ class NotFoundTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructor()
     {
-        $exception = new NotFound();
-        return $exception;
+        return new NotFound();
     }
 
     use exceptionTests;

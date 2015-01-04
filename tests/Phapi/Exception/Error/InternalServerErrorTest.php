@@ -27,8 +27,7 @@ class InternalServerErrorTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructor()
     {
-        $exception = new InternalServerError($this->message, $this->code, null, $this->link, $this->logInformation, $this->description, $this->location);
-        return $exception;
+        return new InternalServerError($this->message, $this->code, null, $this->link, $this->logInformation, $this->description);
     }
 
     use exceptionTests;

@@ -27,8 +27,7 @@ class NotImplementedTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructor()
     {
-        $exception = new NotImplemented();
-        return $exception;
+        return new NotImplemented();
     }
 
     use exceptionTests;

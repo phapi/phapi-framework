@@ -27,8 +27,7 @@ class CreatedTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructor()
     {
-        $exception = new Created();
-        return $exception;
+        return new Created();
     }
 
     use exceptionTests;

@@ -27,8 +27,7 @@ class LockedTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructor()
     {
-        $exception = new Locked();
-        return $exception;
+        return new Locked();
     }
 
     use exceptionTests;

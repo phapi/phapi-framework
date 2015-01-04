@@ -27,8 +27,7 @@ class BadGatewayTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructor()
     {
-        $exception = new BadGateway($this->message);
-        return $exception;
+        return new BadGateway($this->message);
     }
 
     use exceptionTests;

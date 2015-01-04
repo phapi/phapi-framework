@@ -27,8 +27,7 @@ class PaymentRequiredTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructor()
     {
-        $exception = new PaymentRequired();
-        return $exception;
+        return new PaymentRequired();
     }
 
     use exceptionTests;

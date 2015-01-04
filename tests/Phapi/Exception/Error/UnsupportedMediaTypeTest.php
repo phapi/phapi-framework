@@ -27,8 +27,7 @@ class UnsupportedMediaTypeTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructor()
     {
-        $exception = new UnsupportedMediaType();
-        return $exception;
+        return new UnsupportedMediaType();
     }
 
     use exceptionTests;

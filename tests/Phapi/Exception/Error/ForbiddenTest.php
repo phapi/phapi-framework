@@ -27,8 +27,7 @@ class ForbiddenTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructor()
     {
-        $exception = new Forbidden();
-        return $exception;
+        return new Forbidden();
     }
 
     use exceptionTests;

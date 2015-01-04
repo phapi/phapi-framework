@@ -27,8 +27,7 @@ class TooManyRequestsTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructor()
     {
-        $exception = new TooManyRequests();
-        return $exception;
+        return new TooManyRequests();
     }
 
     use exceptionTests;

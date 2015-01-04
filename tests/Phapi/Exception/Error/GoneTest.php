@@ -27,8 +27,7 @@ class GoneTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructor()
     {
-        $exception = new Gone();
-        return $exception;
+        return new Gone();
     }
 
     use exceptionTests;

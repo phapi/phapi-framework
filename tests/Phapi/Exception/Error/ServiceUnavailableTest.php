@@ -27,8 +27,7 @@ class ServiceUnavailableTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructor()
     {
-        $exception = new ServiceUnavailable();
-        return $exception;
+        return new ServiceUnavailable();
     }
 
     use exceptionTests;

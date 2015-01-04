@@ -27,8 +27,7 @@ class NoContentTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructor()
     {
-        $exception = new NoContent();
-        return $exception;
+        return new NoContent();
     }
 
     use exceptionTests;
