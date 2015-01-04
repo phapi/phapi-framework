@@ -3,6 +3,7 @@
 namespace Phapi\Tests;
 
 use Phapi\Phapi;
+use Psr\Log\NullLogger;
 
 
 /**
@@ -10,11 +11,35 @@ use Phapi\Phapi;
  */
 class PhapiTest extends \PHPUnit_Framework_TestCase {
 
-    // getLogWriter
-    // setLogWriter
-    // isSuccessException
-    // isRedirectException
-    // isErrorException
+    /**
+     * @covers ::__construct
+     * @covers ::get
+     */
+    public function testConstruct()
+    {
+        $phapi = new Phapi([
+            'httpVersion' => '1.1',
+            'mode' => Phapi::MODE_DEVELOPMENT
+        ]);
+        $this->assertEquals('1.1', $phapi->get('httpVersion', null));
+    }
+
+    /**
+     * @covers ::setLogWriter
+     * @covers ::getLogWriter
+     */
+    public function testSetLogWriter()
+    {
+        $phapi = new Phapi([]);
+        $phapi->setLogWriter(null);
+        $this->assertInstanceOf('Psr\Log\NullLogger', $phapi->getLogWriter());
+
+        $phapi->setLogWriter(new \stdClass());
+        $this->assertInstanceOf('Psr\Log\NullLogger', $phapi->getLogWriter());
+
+        $phapi->setLogWriter(new NullLogger());
+        $this->assertInstanceOf('Psr\Log\NullLogger', $phapi->getLogWriter());
+    }
 
     /**
      * @covers ::has
@@ -65,5 +90,4 @@ class PhapiTest extends \PHPUnit_Framework_TestCase {
         $this->assertTrue($phapi->is('mode', Phapi::MODE_PRODUCTION, Phapi::STORAGE_CONFIGURATION));
         $this->assertFalse($phapi->is('mode', Phapi::MODE_PRODUCTION, Phapi::STORAGE_REGISTRY));
     }
-
 }
