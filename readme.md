@@ -9,13 +9,39 @@ Phapi is a PHP based framework aiming at simplifying API development and a the s
 
 ## Documentation
 1. [Configuration](#configuration)
-2. [Trigger response and error handling](#trigger-response-and-error-handling)
+2. [Logging](#logging)
+3. [Trigger response and error handling](#trigger-response-and-error-handling)
 
 ### Configuration
-*TODO*
+Configuration is easy with Phapi. Create an array and pass it to the Phapi constructor and you are done. As an example we will set up basic logging with [Monolog](https://github.com/Seldaek/monolog):
+```
+<?php
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
+
+// create a log channel
+$logger = new Logger('app');
+$logger->pushHandler(new StreamHandler('./logs/app_'. date('Y-m-d') .'.log', Logger::DEBUG));
+
+$configuration = [
+    'logWriter'     => $logger,
+];
+
+$api = new \Phapi\Phapi($configuration);
+
+```
+
+### Logging
+Registered logger can be accessed by using the Phapi->getLogWriter() function. In a resource the code might look like this:
+```
+<?php
+...
+  $this->app->getLogWriter()->debug('This code just logged this message');
+...
+```
 
 ### Trigger response and error handling
-Phapi uses Exceptions to trigger responses to the client. This approach results in three different types of Exceptions: **Errors**, **Responses** and **Redirects**.
+Phapi uses Exceptions to trigger responses to the client. This approach results in three different types of Exceptions: **Error**, **Success** and **Redirect**.
 
 Phapi Exceptions accepts the following arguments:
 
@@ -27,11 +53,12 @@ Phapi Exceptions accepts the following arguments:
 * **$description** - An error message (shown to the user). All Phapi Exceptions have predefined error messages so you can pass ***null*** to use the predifined message.
 * **$location** - Location used for redirects
 
-#### Errors
+#### Error
 Lets use an Internal Server Error as example:
 
 ```
-throw new \Phapi\Exception\InternalServerError(
+<?php
+throw new \Phapi\Exception\Error\InternalServerError(
     'We where unable to change the username due to an unknown error.'
     53,
     null,
@@ -66,8 +93,8 @@ When an error occurs that doesn't match any of the other predefined Phapi\Except
 
 It's recommended to extend the InternalServerError Exception to get all of Phapi Exceptions functionality if new Exceptions are created.
 
-#### Responses
-A 200 Ok response are automatically triggered when the request results in a valid response. The Phapi\Exception\Ok Exception is thrown to trigger the registered response handler.
+#### Success
+A 200 Ok response are automatically triggered when the request results in a valid response. The Phapi\Exception\Success\Ok Exception is thrown to trigger the registered response handler.
 
 Valid responses are:
 * Ok (note: should not be thrown manually, it will automatically be thrown by the application)
@@ -78,10 +105,11 @@ Valid responses are:
 
 An example usage in a resource might be that a POST has been made and a new user should be created. When the user has been created the following code can be used to trigger a 201 Created response (no arguments are needed):
 ```
+<?php
 throw new \Phapi\Exception\Created();
 ```
 
-#### Redirects
+#### Redirect
 Redirects are used when a resource has moved, permanently or temporarily.
 
 Valid redirects are:
@@ -91,7 +119,11 @@ Valid redirects are:
 Take an example where the resource ***/user/peter*** has changed to ***/users/peter***. Then the following code should be included in the resource that previously handleded ***/user/peter***:
 
 ```
-throw new \Phapi\Exception\MovedPermanently('/users/peter');
+<?php
+throw new \Phapi\Exception\Redirect\MovedPermanently('/users/peter');
 ```
 
 This will result in a 301 Moved Permanently response with the passed argument (***/users/peter***) assigned to the location header.
+
+## License
+Phapi is licensed under the MIT License - see the LICENSE file for details
