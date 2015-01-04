@@ -123,7 +123,7 @@ class Bucket implements \Countable
      *
      * @return bool
      */
-    public function is($key, $value)
+    public function equals($key, $value)
     {
         return (array_key_exists($key, $this->storage) && $this->storage[$key] === $value) ? true: false;
     }

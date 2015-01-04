@@ -112,17 +112,17 @@ class BucketTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * @depends testConstructor
-     * @covers ::is
+     * @covers ::equals
      *
      * @param Bucket $bucket
      */
-    public function testIs(Bucket $bucket)
+    public function testEquals(Bucket $bucket)
     {
         $bucket->set('aKey', 'aValue');
-        $this->assertTrue($bucket->is('aKey', 'aValue'));
+        $this->assertTrue($bucket->equals('aKey', 'aValue'));
 
         // This will return false since the replace function has been tested earlier
-        $this->assertFalse($bucket->is('underline', 'yes'));
+        $this->assertFalse($bucket->equals('underline', 'yes'));
     }
 
     /**

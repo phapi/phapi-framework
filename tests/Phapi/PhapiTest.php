@@ -14,6 +14,7 @@ class PhapiTest extends \PHPUnit_Framework_TestCase {
     /**
      * @covers ::__construct
      * @covers ::get
+     * @covers ::getDefaultConfiguration
      */
     public function testConstruct()
     {
@@ -78,17 +79,17 @@ class PhapiTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @covers ::is
+     * @covers ::equals
      */
-    public function testIs()
+    public function testEquals()
     {
         $phapi = new Phapi([
             'mode' => Phapi::MODE_PRODUCTION
         ]);
 
-        $this->assertTrue($phapi->is('mode', Phapi::MODE_PRODUCTION));
-        $this->assertTrue($phapi->is('mode', Phapi::MODE_PRODUCTION, Phapi::STORAGE_CONFIGURATION));
-        $this->assertFalse($phapi->is('mode', Phapi::MODE_PRODUCTION, Phapi::STORAGE_REGISTRY));
+        $this->assertTrue($phapi->equals('mode', Phapi::MODE_PRODUCTION));
+        $this->assertTrue($phapi->equals('mode', Phapi::MODE_PRODUCTION, Phapi::STORAGE_CONFIGURATION));
+        $this->assertFalse($phapi->equals('mode', Phapi::MODE_PRODUCTION, Phapi::STORAGE_REGISTRY));
     }
 
     /**
