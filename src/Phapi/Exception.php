@@ -13,7 +13,7 @@ namespace Phapi;
  * @license  MIT (http://opensource.org/licenses/MIT)
  * @link     https://github.com/ahinko/phapi
  */
-abstract class Exception extends \Exception {
+class Exception extends \Exception {
 
     /**
      * Response status code
