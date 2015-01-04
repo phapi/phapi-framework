@@ -39,9 +39,17 @@ class PhapiTest extends \PHPUnit_Framework_TestCase {
             'mode' => Phapi::MODE_PRODUCTION
         ]);
 
-        $this->assertEquals(Phapi::MODE_PRODUCTION, $phapi->get('mode'));
         $this->assertEquals(Phapi::MODE_PRODUCTION, $phapi->get('mode', null, Phapi::STORAGE_CONFIGURATION));
         $this->assertEquals(null, $phapi->get('mode', null, Phapi::STORAGE_REGISTRY));
+        $this->assertEquals(Phapi::MODE_PRODUCTION, $phapi->get('mode'));
+
+        $phapi->registry->add([
+            'mode' => Phapi::MODE_DEVELOPMENT
+        ]);
+
+        $this->assertEquals(Phapi::MODE_DEVELOPMENT, $phapi->get('mode', null, Phapi::STORAGE_REGISTRY));
+
+        $this->assertEquals(Phapi::MODE_DEVELOPMENT, $phapi->get('mode'));
     }
 
     /**
