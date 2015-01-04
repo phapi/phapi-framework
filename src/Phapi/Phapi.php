@@ -28,6 +28,8 @@ use Phapi\Exception\TooManyRequests;
 use Phapi\Exception\Unauthorized;
 use Phapi\Exception\UnprocessableEntity;
 use Phapi\Exception\UnsupportedMediaType;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 
 /**
  * Class Phapi
@@ -58,6 +60,13 @@ class Phapi {
     public $configuration = null;
 
     /**
+     * Log writer
+     *
+     * @var null
+     */
+    protected $logWriter = null;
+
+    /**
      * Storage of variables that middlewares
      * and the application might need.
      *
@@ -81,6 +90,9 @@ class Phapi {
 
         // Create a registry storage
         $this->registry = new Bucket([]);
+
+        // Set up loggers
+        $this->setLogWriter($this->configuration->get('logWriter'));
 
         // Check if we are in development mode
         if ($this->configuration->get('mode') === self::MODE_DEVELOPMENT) {
@@ -173,6 +185,46 @@ class Phapi {
         return [
             'mode' => self::MODE_DEVELOPMENT
         ];
+    }
+
+    /**
+     * Get log writer
+     *
+     * @return mixed|Logger|null
+     */
+    public function getLogWriter()
+    {
+        return $this->logWriter;
+    }
+
+    /**
+     * Set log writer
+     *
+     * @param null $logWriter
+     * @throws \Exception
+     */
+    public function setLogWriter($logWriter = null)
+    {
+        // check if log writer is provided
+        if (is_null($logWriter)) {
+            // if no writer is provider, create an instance of the NullLogger that wont log anything
+            $this->logWriter = new NullLogger();
+        } elseif ($logWriter instanceof LoggerInterface) {
+            // check if provided log writer is an instance of the Psr-3 Logger interface
+            $this->logWriter = $logWriter;
+        } else {
+            // the provided log writer isn't an instance of the Psr-3 logger interface so
+            // we don't know if its compatible with the framework. Therefore we will:
+
+            // try to write to the log
+            $logWriter->log('The provided log writer might not be PSR-3 compatible since it does not implement the LoggerInterface.');
+
+            // create an instance of the NullLogger instead
+            $this->logWriter = new NullLogger();
+        }
+
+        // Remove logWriter from configuration
+        $this->configuration->remove('logWriter');
     }
 
     /**
