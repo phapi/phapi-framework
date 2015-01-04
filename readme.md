@@ -32,6 +32,8 @@ $api = new \Phapi\Phapi($configuration);
 ```
 
 ### Logging
+***Any logger used must implement the PSR-3 LoggerInterface***
+
 Registered logger can be accessed by using the Phapi->getLogWriter() function. In a resource the code might look like this:
 ```php
 <?php
