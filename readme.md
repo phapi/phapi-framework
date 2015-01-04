@@ -78,7 +78,7 @@ This will result in that the exception handler will be cllaed and it will:
       {
         "description": "An internal server error occurred. Please try again within a few minutes. The error has been logged and we have been notified about the problem and we will fix the problem as soon as possible.",
         "message": "We where unable to change the username due to an unknown error.",
-        "code": 53
+        "code": 53,
         "link": "http://docs.some.site/errors/53/"
       }
   }
