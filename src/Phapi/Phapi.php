@@ -2,32 +2,10 @@
 
 namespace Phapi;
 
-use Phapi\Exception\Accepted;
-use Phapi\Exception\BadGateway;
-use Phapi\Exception\BadRequest;
-use Phapi\Exception\Conflict;
-use Phapi\Exception\Created;
-use Phapi\Exception\Forbidden;
-use Phapi\Exception\Gone;
+use Phapi\Exception\Error;
 use Phapi\Exception\InternalServerError;
-use Phapi\Exception\Locked;
-use Phapi\Exception\MethodNotAllowed;
-use Phapi\Exception\MovedPermanently;
-use Phapi\Exception\NoContent;
-use Phapi\Exception\NotAcceptable;
-use Phapi\Exception\NotFound;
-use Phapi\Exception\NotImplemented;
-use Phapi\Exception\NotModified;
-use Phapi\Exception\Ok;
-use Phapi\Exception\PaymentRequired;
-use Phapi\Exception\RequestEntityTooLarge;
-use Phapi\Exception\RequestTimeout;
-use Phapi\Exception\ServiceUnavailable;
-use Phapi\Exception\TemporaryRedirect;
-use Phapi\Exception\TooManyRequests;
-use Phapi\Exception\Unauthorized;
-use Phapi\Exception\UnprocessableEntity;
-use Phapi\Exception\UnsupportedMediaType;
+use Phapi\Exception\Redirect;
+use Phapi\Exception\Success;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
@@ -300,10 +278,10 @@ class Phapi {
         // response code. The first set of codes should not modify the response content.
         // The second set of codes are errors and should therefor change the response
         // content to the exceptions error information and a log entry should be created.
-        if ($this->isSuccessException($exception)) {
+        if ($exception instanceof Success) {
             // todo: set response status and leave the body as is
 
-        } elseif ($this->isRedirectException($exception)) {
+        } elseif ($exception instanceof Redirect) {
             // todo: set response status and redirect location
         } else {
             // Prepare log message
@@ -323,7 +301,7 @@ class Phapi {
             ));
 
             // Check if the Exception is a Phapi Exception
-            if ($this->isErrorException($exception) === false) {
+            if (!($exception instanceof Error)) {
                 // This is an uncaught exception that might not doesn't have the needed error information
                 // so we need to handle it a little different than predefined exceptions
                 // These exceptions will be handled as an Internal Server Error.
@@ -338,76 +316,5 @@ class Phapi {
         if ($prev = $exception->getPrevious()) {
             $this->exceptionHandler($prev);
         }
-    }
-
-    /**
-     * Check if exception is a redirect exception
-     *
-     * @param \Exception $exception
-     * @return bool
-     */
-    protected function isRedirectException(\Exception $exception)
-    {
-        if (
-            $exception instanceof MovedPermanently ||
-            $exception instanceof TemporaryRedirect
-        ) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Check if exception is a success exception
-     *
-     * @param \Exception $exception
-     * @return bool
-     */
-    protected function isSuccessException(\Exception $exception)
-    {
-        if (
-            $exception instanceof Ok ||
-            $exception instanceof Created ||
-            $exception instanceof Accepted ||
-            $exception instanceof NoContent ||
-            $exception instanceof NotModified
-        ) {
-            return true;
-        }
-        return false;
-    }
-
-
-    /**
-     * Check if exception is an Phapi Error Exception
-     *
-     * @param \Exception $exception
-     * @return bool
-     */
-    protected function isErrorException(\Exception $exception)
-    {
-        if (
-            $exception instanceof BadGateway ||
-            $exception instanceof BadRequest ||
-            $exception instanceof Conflict ||
-            $exception instanceof Forbidden ||
-            $exception instanceof Gone ||
-            $exception instanceof Locked ||
-            $exception instanceof MethodNotAllowed ||
-            $exception instanceof NotAcceptable ||
-            $exception instanceof NotFound ||
-            $exception instanceof NotImplemented ||
-            $exception instanceof PaymentRequired ||
-            $exception instanceof RequestEntityTooLarge ||
-            $exception instanceof RequestTimeout ||
-            $exception instanceof ServiceUnavailable ||
-            $exception instanceof TooManyRequests ||
-            $exception instanceof Unauthorized ||
-            $exception instanceof UnprocessableEntity ||
-            $exception instanceof UnsupportedMediaType
-        ) {
-            return true;
-        }
-        return false;
     }
 }

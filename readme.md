@@ -15,7 +15,7 @@ Phapi is a PHP based framework aiming at simplifying API development and a the s
 *TODO*
 
 ### Trigger response and error handling
-Phapi uses Exceptions to trigger responses to the client. This approach results in three different types of Exceptions: **Errors**, **Responses** and **Redirects**.
+Phapi uses Exceptions to trigger responses to the client. This approach results in three different types of Exceptions: **Error**, **Success** and **Redirect**.
 
 Phapi Exceptions accepts the following arguments:
 
@@ -27,12 +27,12 @@ Phapi Exceptions accepts the following arguments:
 * **$description** - An error message (shown to the user). All Phapi Exceptions have predefined error messages so you can pass ***null*** to use the predifined message.
 * **$location** - Location used for redirects
 
-#### Errors
+#### Error
 Lets use an Internal Server Error as example:
 
 ```
 <?php
-throw new \Phapi\Exception\InternalServerError(
+throw new \Phapi\Exception\Error\InternalServerError(
     'We where unable to change the username due to an unknown error.'
     53,
     null,
@@ -67,8 +67,8 @@ When an error occurs that doesn't match any of the other predefined Phapi\Except
 
 It's recommended to extend the InternalServerError Exception to get all of Phapi Exceptions functionality if new Exceptions are created.
 
-#### Responses
-A 200 Ok response are automatically triggered when the request results in a valid response. The Phapi\Exception\Ok Exception is thrown to trigger the registered response handler.
+#### Success
+A 200 Ok response are automatically triggered when the request results in a valid response. The Phapi\Exception\Success\Ok Exception is thrown to trigger the registered response handler.
 
 Valid responses are:
 * Ok (note: should not be thrown manually, it will automatically be thrown by the application)
@@ -83,7 +83,7 @@ An example usage in a resource might be that a POST has been made and a new user
 throw new \Phapi\Exception\Created();
 ```
 
-#### Redirects
+#### Redirect
 Redirects are used when a resource has moved, permanently or temporarily.
 
 Valid redirects are:
@@ -94,7 +94,7 @@ Take an example where the resource ***/user/peter*** has changed to ***/users/pe
 
 ```
 <?php
-throw new \Phapi\Exception\MovedPermanently('/users/peter');
+throw new \Phapi\Exception\Redirect\MovedPermanently('/users/peter');
 ```
 
 This will result in a 301 Moved Permanently response with the passed argument (***/users/peter***) assigned to the location header.

@@ -10,6 +10,12 @@ use Phapi\Phapi;
  */
 class PhapiTest extends \PHPUnit_Framework_TestCase {
 
+    // getLogWriter
+    // setLogWriter
+    // isSuccessException
+    // isRedirectException
+    // isErrorException
+
     /**
      * @covers ::has
      */

@@ -146,4 +146,5 @@ abstract class Exception extends \Exception {
     {
         return $this->statusMessage;
     }
+
 }
