@@ -280,7 +280,8 @@ class Phapi {
             $errline
         );
 
-        // todo: logging
+        // Log message
+        $this->getLogWriter()->error($message, $errcontext);
 
         throw new InternalServerError();
     }
@@ -323,12 +324,12 @@ class Phapi {
                 $exception->getMessage() ? sprintf(' with message "%s"', $exception->getMessage()) : ''
             );
 
-            // todo: log error (remember request UUID)
-            /* $this->getLogWriter()->error($message, array(
+            // Log error
+            $this->getLogWriter()->error($message, array(
                 'Exception file'  => $exception->getFile(),
                 'Exception line'  => $exception->getLine(),
                 'Exception trace' => $exception->getTraceAsString()
-            )); */
+            ));
 
             // Check if the Exception is a Phapi Exception
             if (
