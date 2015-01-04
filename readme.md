@@ -14,7 +14,7 @@ Phapi is a PHP based framework aiming at simplifying API development and a the s
 
 ### Configuration
 Configuration is easy with Phapi. Create an array and pass it to the Phapi constructor and you are done. As an example we will set up basic logging with [Monolog](https://github.com/Seldaek/monolog):
-```
+```php
 <?php
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
@@ -33,7 +33,7 @@ $api = new \Phapi\Phapi($configuration);
 
 ### Logging
 Registered logger can be accessed by using the Phapi->getLogWriter() function. In a resource the code might look like this:
-```
+```php
 <?php
 ...
   $this->app->getLogWriter()->debug('This code just logged this message');
@@ -56,7 +56,7 @@ Phapi Exceptions accepts the following arguments:
 #### Error
 Lets use an Internal Server Error as example:
 
-```
+```php
 <?php
 throw new \Phapi\Exception\Error\InternalServerError(
     'We where unable to change the username due to an unknown error.'
@@ -72,9 +72,7 @@ This will result in that the exception handler will be cllaed and it will:
 * Log the error to the configured logger (the **message**, **logInformation** will be included in the log as well as the file and line number, chained exceptions will also be included in the log).
 * Create a response based on the arguments passed to the exception. Example:
 
-  ```
-  json:
-
+  ```json
   {
     "errors":
       {
@@ -104,7 +102,7 @@ Valid responses are:
 * NotModified
 
 An example usage in a resource might be that a POST has been made and a new user should be created. When the user has been created the following code can be used to trigger a 201 Created response (no arguments are needed):
-```
+```php
 <?php
 throw new \Phapi\Exception\Created();
 ```
@@ -118,7 +116,7 @@ Valid redirects are:
 
 Take an example where the resource ***/user/peter*** has changed to ***/users/peter***. Then the following code should be included in the resource that previously handleded ***/user/peter***:
 
-```
+```php
 <?php
 throw new \Phapi\Exception\Redirect\MovedPermanently('/users/peter');
 ```
