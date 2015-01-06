@@ -334,44 +334,6 @@ class Request
     }
 
     /**
-     * Returns the user.
-     *
-     * @return string|null
-     */
-    public function getUser()
-    {
-        return $this->server->get('PHP_AUTH_USER');
-    }
-
-    /**
-     * Returns the password.
-     *
-     * @return string|null
-     */
-    public function getPassword()
-    {
-        return $this->server->get('PHP_AUTH_PW');
-    }
-
-    /**
-     * Gets the user info.
-     *
-     * @return string A user name and, optionally, scheme-specific
-     * information about how to gain authorization to access the server
-     */
-    public function getUserInfo()
-    {
-        $userinfo = $this->getUser();
-
-        $pass = $this->getPassword();
-        if ('' != $pass) {
-            $userinfo .= ":$pass";
-        }
-
-        return $userinfo;
-    }
-
-    /**
      * Gets the Etags.
      *
      * @return array The entity tags
