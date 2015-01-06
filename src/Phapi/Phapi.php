@@ -84,87 +84,12 @@ class Phapi {
             ini_set('opcache.enable', false);
         }
 
-        // Create a registry storage
-        $this->registry = new Bucket([]);
-
         // Set up loggers
         $this->setLogWriter($this->configuration->get('logWriter'));
 
         // Set up cache
         $this->setCache($this->configuration->get('cache'));
 
-    }
-
-    /**
-     * Check if configuration and/or registry has key
-     *
-     * @param $key
-     * @param int $storage
-     * @return bool
-     */
-    public function has($key, $storage = self::STORAGE_BOTH)
-    {
-        // Check were to look
-        if ($storage === self::STORAGE_CONFIGURATION) {
-            // Only check in configuration
-            return $this->configuration->has($key);
-        } elseif ($storage === self::STORAGE_REGISTRY) {
-            // Only check in registry
-            return $this->registry->has($key);
-        } else {
-            // Check in both
-            return ($this->registry->has($key) || $this->configuration->has($key)) ? true : false;
-        }
-    }
-
-    /**
-     * Get value from configuration and/or registry based on key
-     *
-     * @param $key
-     * @param null $default
-     * @param int $storage
-     * @return bool|mixed|null
-     */
-    public function get($key, $default = null, $storage = self::STORAGE_BOTH)
-    {
-        // Check were to look
-        if ($storage === self::STORAGE_CONFIGURATION) {
-            // Only check in configuration
-            return $this->configuration->get($key, $default);
-        } elseif ($storage === self::STORAGE_REGISTRY) {
-            // Only check in registry
-            return $this->registry->get($key, $default);
-        } else {
-            // Check in both
-            if ($this->registry->get($key, $default) !== $default) {
-                return $this->registry->get($key, $default);
-            } else {
-                return $this->configuration->get($key, $default);
-            }
-        }
-    }
-
-    /**
-     * Check if configuration and/or registry has the value based on key
-     *
-     * @param $key
-     * @param $value
-     * @param int $storage
-     * @return bool
-     */
-    public function equals($key, $value, $storage = self::STORAGE_BOTH)
-    {
-        // Check were to look
-        if ($storage === self::STORAGE_REGISTRY) {
-            // Only check in registry
-            return $this->registry->equals($key, $value);
-        } else if ($storage === self::STORAGE_CONFIGURATION) {
-            // Only check in configuration
-            return $this->configuration->equals($key, $value);
-        } else {
-            // Check in both
-            return ($this->registry->equals($key, $value) || $this->configuration->equals($key, $value)) ? true : false;
-        }
     }
 
     /**

@@ -14,7 +14,6 @@ class PhapiTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * @covers ::__construct
-     * @covers ::get
      * @covers ::getDefaultConfiguration
      * @covers ::setCache
      */
@@ -24,7 +23,7 @@ class PhapiTest extends \PHPUnit_Framework_TestCase {
             'httpVersion' => '1.1',
             'mode' => Phapi::MODE_DEVELOPMENT
         ]);
-        $this->assertEquals('1.1', $phapi->get('httpVersion', null));
+        $this->assertEquals('1.1', $phapi->configuration->get('httpVersion', null));
     }
 
     /**
@@ -66,56 +65,6 @@ class PhapiTest extends \PHPUnit_Framework_TestCase {
 
         $phapi->setLogWriter(new NullLogger());
         $this->assertInstanceOf('Psr\Log\NullLogger', $phapi->getLogWriter());
-    }
-
-    /**
-     * @covers ::has
-     */
-    public function testHas()
-    {
-        $phapi = new Phapi([
-            'mode' => Phapi::MODE_PRODUCTION
-        ]);
-
-        $this->assertTrue($phapi->has('mode'));
-        $this->assertTrue($phapi->has('mode', Phapi::STORAGE_CONFIGURATION));
-        $this->assertFalse($phapi->has('mode', Phapi::STORAGE_REGISTRY));
-    }
-
-    /**
-     * @covers ::get
-     */
-    public function testGet()
-    {
-        $phapi = new Phapi([
-            'mode' => Phapi::MODE_PRODUCTION
-        ]);
-
-        $this->assertEquals(Phapi::MODE_PRODUCTION, $phapi->get('mode', null, Phapi::STORAGE_CONFIGURATION));
-        $this->assertEquals(null, $phapi->get('mode', null, Phapi::STORAGE_REGISTRY));
-        $this->assertEquals(Phapi::MODE_PRODUCTION, $phapi->get('mode'));
-
-        $phapi->registry->add([
-            'mode' => Phapi::MODE_DEVELOPMENT
-        ]);
-
-        $this->assertEquals(Phapi::MODE_DEVELOPMENT, $phapi->get('mode', null, Phapi::STORAGE_REGISTRY));
-
-        $this->assertEquals(Phapi::MODE_DEVELOPMENT, $phapi->get('mode'));
-    }
-
-    /**
-     * @covers ::equals
-     */
-    public function testEquals()
-    {
-        $phapi = new Phapi([
-            'mode' => Phapi::MODE_PRODUCTION
-        ]);
-
-        $this->assertTrue($phapi->equals('mode', Phapi::MODE_PRODUCTION));
-        $this->assertTrue($phapi->equals('mode', Phapi::MODE_PRODUCTION, Phapi::STORAGE_CONFIGURATION));
-        $this->assertFalse($phapi->equals('mode', Phapi::MODE_PRODUCTION, Phapi::STORAGE_REGISTRY));
     }
 
     /**
