@@ -10,6 +10,7 @@ Phapi is a PHP based framework aiming at simplifying API development and a the s
 ## Documentation
 1. [Configuration](#configuration)
 2. [Logging](#logging)
+3. [Cache](#cache)
 3. [Trigger response and error handling](#trigger-response-and-error-handling)
 
 ### Configuration
@@ -41,6 +42,58 @@ Registered logger can be accessed by using the Phapi->getLogWriter() function. I
   $this->app->getLogWriter()->debug('This code just logged this message');
 ...
 ```
+
+### Cache
+Phapi uses a cache if one can be found. It's used in different places, for example in the router when trying to find matching routes. Instead of having to look up the same route over and over again a cache is used to save time. This is especially good when more complex routes (with regex) is used frequently.
+
+#### Example usage
+Create a cache and add it to the configuration:
+
+```php
+<?php
+// Configuration
+$configuration = [
+    'cache' = new \Phapi\Cache\Memcache('localhost', 11211);
+];
+```
+
+Retrieve and use the cache in a Resource:
+
+```php
+<?php
+// Get cache from app
+$cache = $this->app->getCache();
+
+// Set key and value
+$cache->set('key1', 'some value');
+
+// Returns true
+$cache->has('key1');
+
+// Get value
+$cache->get('key1');
+
+// Remove key and value
+$cache->clear('key1');
+
+```
+
+#### Cache Interface
+There is an interface that can be implemented if a storage type is missing. Only four functions is needed:
+
+- **connect()** - connect to the cache server and return a boolean
+- **set($key, $value)** - set a key and value
+- **get($key)** - get the value based on key
+- **clear($key)** - remove/clear cache based on key
+- **has($key)** - check if cache has the key stored
+- **flush()** - clears the cache
+
+#### Storage types
+The following storage types are included in Phapi:
+
+- **Memache**
+- **NullCache**, an empty class simulating a cache. It's used in those cases where no cache is configured. This simplifies using the cache functions since we don't need to check if a cache actually exists.
+
 
 ### Trigger response and error handling
 Phapi uses Exceptions to trigger responses to the client. This approach results in three different types of Exceptions: **Error**, **Success** and **Redirect**.

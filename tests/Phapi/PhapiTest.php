@@ -2,6 +2,7 @@
 
 namespace Phapi\Tests;
 
+use Phapi\Cache\Memcache;
 use Phapi\Phapi;
 use Psr\Log\NullLogger;
 
@@ -15,6 +16,7 @@ class PhapiTest extends \PHPUnit_Framework_TestCase {
      * @covers ::__construct
      * @covers ::get
      * @covers ::getDefaultConfiguration
+     * @covers ::setCache
      */
     public function testConstruct()
     {
@@ -23,6 +25,30 @@ class PhapiTest extends \PHPUnit_Framework_TestCase {
             'mode' => Phapi::MODE_DEVELOPMENT
         ]);
         $this->assertEquals('1.1', $phapi->get('httpVersion', null));
+    }
+
+    /**
+     * @covers ::setCache
+     * @covers ::getCache
+     */
+    public function testSetGetCache()
+    {
+        $phapi = new Phapi([
+            'cache' => new Memcache([['host' => 'localhost', 'port' => 11211]]),
+        ]);
+        $this->assertInstanceOf('Phapi\Cache\Memcache', $phapi->getCache());
+    }
+
+    /**
+     * @covers ::setCache
+     * @covers ::getCache
+     */
+    public function testSetGetCache2()
+    {
+        $phapi = new Phapi([
+            'cache' => new Memcache([['host' => 'localhost', 'port' => 11111]]),
+        ]);
+        $this->assertInstanceOf('Phapi\Cache\NullCache', $phapi->getCache());
     }
 
     /**

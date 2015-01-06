@@ -2,6 +2,7 @@
 
 namespace Phapi;
 
+use Phapi\Cache\NullCache;
 use Phapi\Exception\Error;
 use Phapi\Exception\Error\InternalServerError;
 use Phapi\Exception\Redirect;
@@ -45,6 +46,13 @@ class Phapi {
     protected $logWriter = null;
 
     /**
+     * Cache
+     *
+     * @var null
+     */
+    protected $cache = null;
+
+    /**
      * Storage of variables that middlewares
      * and the application might need.
      *
@@ -66,19 +74,25 @@ class Phapi {
         // create a new Bucket to save the configuration in.
         $this->configuration = new Bucket(array_merge($this->getDefaultConfiguration(), $configuration));
 
-        // Create a registry storage
-        $this->registry = new Bucket([]);
-
-        // Set up loggers
-        $this->setLogWriter($this->configuration->get('logWriter'));
-
         // Check if we are in development mode
         if ($this->configuration->get('mode') === self::MODE_DEVELOPMENT) {
             // Show all errors
             error_reporting(E_ALL);
             // Display errors for easier development
             ini_set('display_errors', true);
+            // Turn opcache off if mode is development
+            ini_set('opcache.enable', false);
         }
+
+        // Create a registry storage
+        $this->registry = new Bucket([]);
+
+        // Set up loggers
+        $this->setLogWriter($this->configuration->get('logWriter'));
+
+        // Set up cache
+        $this->setCache($this->configuration->get('cache'));
+
     }
 
     /**
@@ -163,6 +177,45 @@ class Phapi {
         return [
             'mode' => self::MODE_DEVELOPMENT
         ];
+    }
+
+    /**
+     * Set cache
+     *
+     * If supplied cache isn't a valid cache NullCache will be created.
+     * The NullCache simulates a cache but isn't caching anything. This
+     * simplifies the development since we don't have to check if there
+     * actually are a valid cache to use. We can just ask the Cache (even
+     * if its a NullCache) and we will get a response.
+     *
+     * @param $cache
+     */
+    public function setCache($cache)
+    {
+        // Check if its an actual cache
+        if ($cache instanceof Cache) {
+            $this->cache = $cache;
+            if ($this->cache->connect()) {
+                // We have a working cache so we are done here.
+                return;
+            } else {
+                // Could not connect to the configured cache. Log a warning about it
+                $this->getLogWriter()->warning('Could not connect to the configured cache.');
+            }
+        }
+
+        // As a fallback we create a NullCache
+        $this->cache = new NullCache();
+    }
+
+    /**
+     * Get Cache
+     *
+     * @return null
+     */
+    public function getCache()
+    {
+        return $this->cache;
     }
 
     /**
