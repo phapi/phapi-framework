@@ -6,7 +6,7 @@ use Phapi\Bucket;
 /**
  * Request class
  *
- * Class/Object representing the request made by the client.
+ * Class representing the request made by the client.
  *
  * @category Http
  * @package  Phapi
