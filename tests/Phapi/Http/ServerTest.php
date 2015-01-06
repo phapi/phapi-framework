@@ -1,5 +1,5 @@
 <?php
-namespace Phapi\Tests;
+namespace Phapi\Tests\Http;
 
 use Phapi\Http\Server;
 
