@@ -135,6 +135,16 @@ class Request
     }
 
     /**
+     * Get raw content
+     *
+     * @return mixed
+     */
+    public function getRawContent()
+    {
+        return $this->rawContent;
+    }
+
+    /**
      * Get content type header or null
      *
      * @return array|string
