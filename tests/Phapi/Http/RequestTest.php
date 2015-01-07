@@ -20,7 +20,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
             'SCRIPT_FILENAME' => '/www/app/public_html/index.php',
             'QUERY_STRING' => 'test=test',
             'REQUEST_METHOD' => 'GET',
-            'CONTENT_TYPE' => '',
+            'CONTENT_TYPE' => 'application/json',
             'CONTENT_LENGTH' => '',
             'SCRIPT_NAME' => '/index.php',
             'PATH_INFO' => '',
@@ -54,6 +54,16 @@ class RequestTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers ::__construct
+     * @covers ::getRawContent
+     */
+    public function testConstructor()
+    {
+        $request = new Request([], [], [], 'this is the raw content');
+        $this->assertEquals('this is the raw content', $request->getRawContent());
+    }
+
+    /**
      * @covers ::setUuid
      * @covers ::getUuid
      */
@@ -69,6 +79,37 @@ class RequestTest extends \PHPUnit_Framework_TestCase
     public function testGetMethod()
     {
         $this->assertEquals('GET', $this->request->getMethod());
+    }
+
+    /**
+     * @covers ::getMethod
+     */
+    public function testGetMethod2()
+    {
+        $server = [
+            'REQUEST_METHOD' => 'POST',
+        ];
+        $post = [
+            '_method' => 'DELETE'
+        ];
+
+        $request = new Request($post, [], $server, '');
+        $this->assertEquals('DELETE', $request->getMethod());
+    }
+
+    /**
+     * @covers ::getMethod
+     */
+    public function testGetMethod3()
+    {
+        $server = [
+            'REQUEST_METHOD' => 'POST',
+            'HTTP_X_HTTP_METHOD_OVERRIDE' => 'DELETE'
+        ];
+
+        $request = new Request([], [], $server, '');
+
+        $this->assertEquals('DELETE', $request->getMethod());
     }
 
     /**
@@ -115,6 +156,20 @@ class RequestTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers ::getClientIp
+     */
+    public function testGetClientIp2()
+    {
+        $server = [
+            'HTTP_X_FORWARDED_FOR' => '192.168.1.1',
+            'REMOTE_ADDR' => '192.168.1.99'
+        ];
+
+        $request = new Request([], [], $server, '');
+        $this->assertEquals('192.168.1.1', $request->getClientIp());
+    }
+
+    /**
      * @covers ::getUri
      */
     public function testGetUri()
@@ -128,5 +183,66 @@ class RequestTest extends \PHPUnit_Framework_TestCase
     public function testGetEncodings()
     {
         $this->assertEquals('gzip, deflate, sdch', $this->request->getEncodings());
+    }
+
+    /**
+     * @covers ::getAccept
+     */
+    public function testGetAccept()
+    {
+        $this->assertEquals('text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', $this->request->getAccept());
+    }
+
+    /**
+     * @covers ::getContentType
+     */
+    public function testGetContentType()
+    {
+        $this->assertEquals('application/json', $this->request->getContentType());
+    }
+
+    /**
+     * @covers ::isNoCache
+     */
+    public function testIsNoCache()
+    {
+        $this->assertEquals(false, $this->request->isNoCache());
+    }
+
+    /**
+     * @covers ::isNoCache
+     */
+    public function testIsNoCache2()
+    {
+        $server= [
+            'HTTP_PRAGMA' => 'no-cache'
+        ];
+        $request = new Request([], [], $server, '');
+        $this->assertTrue($request->isNoCache());
+    }
+
+    /**
+     * @covers ::isNoCache
+     */
+    public function testIsNoCache3()
+    {
+        $server= [
+            'HTTP_CACHE_CONTROL' => 'no-cache, no-store, must-revalidate'
+        ];
+        $request = new Request([], [], $server, '');
+        $this->assertTrue($request->isNoCache());
+    }
+
+    /**
+     * @covers ::getEtags
+     */
+    public function testGetEtags()
+    {
+        $server = [
+            'HTTP_IF_NONE_MATCH' => '"cc14a5-3ab-48e527e3975c0"'
+        ];
+
+        $request = new Request([], [], $server, '');
+        $this->assertEquals(['"cc14a5-3ab-48e527e3975c0"'], $request->getEtags());
     }
 }
