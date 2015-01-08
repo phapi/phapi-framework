@@ -11,12 +11,12 @@ Phapi is a PHP based framework aiming at simplifying API development and a the s
 1. [Configuration](#configuration)
 2. [Logging](#logging)
 3. [Cache](#cache)
-3. [Trigger response and error handling](#trigger-response-and-error-handling)
+4. [Request](#request)
+5. [Trigger response and error handling](#trigger-response-and-error-handling)
 
 ### Configuration
 Configuration is easy with Phapi. Create an array and pass it to the Phapi constructor and you are done. As an example we will set up basic logging with [Monolog](https://github.com/Seldaek/monolog):
 ```php
-<?php
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 
@@ -37,10 +37,7 @@ $api = new \Phapi\Phapi($configuration);
 
 Registered logger can be accessed by using the Phapi->getLogWriter() function. In a resource the code might look like this:
 ```php
-<?php
-...
-  $this->app->getLogWriter()->debug('This code just logged this message');
-...
+$this->app->getLogWriter()->debug('This code just logged this message');
 ```
 
 ### Cache
@@ -50,7 +47,6 @@ Phapi uses a cache if one can be found. It's used in different places, for examp
 Create a cache and add it to the configuration:
 
 ```php
-<?php
 // Configuration
 $configuration = [
     'cache' = new \Phapi\Cache\Memcache('localhost', 11211);
@@ -60,7 +56,6 @@ $configuration = [
 Retrieve and use the cache in a Resource:
 
 ```php
-<?php
 // Get cache from app
 $cache = $this->app->getCache();
 
@@ -94,6 +89,15 @@ The following storage types are included in Phapi:
 - **Memache**
 - **NullCache**, an empty class simulating a cache. It's used in those cases where no cache is configured. This simplifies using the cache functions since we don't need to check if a cache actually exists.
 
+### Request
+Retrieve and use the Request object in a Resource:
+
+```php
+// Get request
+$request = $this->app->getRequest();
+// Get headers
+$headers = $request->getHeaders();
+```
 
 ### Trigger response and error handling
 Phapi uses Exceptions to trigger responses to the client. This approach results in three different types of Exceptions: **Error**, **Success** and **Redirect**.
@@ -112,7 +116,6 @@ Phapi Exceptions accepts the following arguments:
 Lets use an Internal Server Error as example:
 
 ```php
-<?php
 throw new \Phapi\Exception\Error\InternalServerError(
     'We where unable to change the username due to an unknown error.'
     53,
@@ -158,7 +161,6 @@ Valid responses are:
 
 An example usage in a resource might be that a POST has been made and a new user should be created. When the user has been created the following code can be used to trigger a 201 Created response (no arguments are needed):
 ```php
-<?php
 throw new \Phapi\Exception\Created();
 ```
 
@@ -172,7 +174,6 @@ Valid redirects are:
 Take an example where the resource ***/user/peter*** has changed to ***/users/peter***. Then the following code should be included in the resource that previously handleded ***/user/peter***:
 
 ```php
-<?php
 throw new \Phapi\Exception\Redirect\MovedPermanently('/users/peter');
 ```
 
