@@ -7,6 +7,8 @@ use Phapi\Exception\Error;
 use Phapi\Exception\Error\InternalServerError;
 use Phapi\Exception\Redirect;
 use Phapi\Exception\Success;
+use Phapi\Http\Request;
+use Phapi\Tool\UUID;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
@@ -53,18 +55,21 @@ class Phapi {
     protected $cache = null;
 
     /**
-     * Storage of variables that middlewares
-     * and the application might need.
+     * The request
      *
-     * @var null|Bucket
+     * @var Request
      */
-    public $registry = null;
+    protected $request;
 
+    /**
+     * Create application
+     *
+     * @param $configuration
+     */
     public function __construct($configuration)
     {
         // As a default we don't want to display error messages, unless we are in development mode (see bellow).
         ini_set('display_errors', false);
-
         // Register exception handler
         set_exception_handler([$this, 'exceptionHandler']);
         // Register error handler
@@ -86,6 +91,10 @@ class Phapi {
 
         // Set up loggers
         $this->setLogWriter($this->configuration->get('logWriter'));
+
+        // Create the request object
+        $this->request = new Request($_POST, $_GET, $_SERVER, file_get_contents("php://input"));
+        $this->request->setUuid((new UUID())->v4());
 
         // Set up cache
         $this->setCache($this->configuration->get('cache'));
