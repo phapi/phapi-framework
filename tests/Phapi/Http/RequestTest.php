@@ -64,6 +64,14 @@ class RequestTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers ::getHeaders
+     */
+    public function testGetHeaders()
+    {
+        $this->assertInstanceOf('Phapi\Http\Header', $this->request->getHeaders());
+    }
+
+    /**
      * @covers ::setUuid
      * @covers ::getUuid
      */

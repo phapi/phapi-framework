@@ -75,7 +75,7 @@ class Request
      *
      * @var Server
      */
-    protected $server;
+    public $server;
 
     /**
      * Raw content
@@ -112,6 +112,16 @@ class Request
         $this->server = new Server($server);
         $this->rawContent = $rawContent;
         $this->headers = new Header($this->server->getHeaders());
+    }
+
+    /**
+     * Get headers
+     *
+     * @return Header
+     */
+    public function getHeaders()
+    {
+        return $this->headers;
     }
 
     /**
