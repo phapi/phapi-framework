@@ -5,8 +5,9 @@ php:
   - 5.6
 services:
   - memcached
-install: composer install --dev
 before_script:
+  - travis_retry composer self-update
+  - composer --prefer-source --dev install
   - echo "extension = memcache.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
 after_script:
   - vendor/bin/test-reporter --stdout > codeclimate.json
