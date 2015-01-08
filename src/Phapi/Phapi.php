@@ -190,6 +190,16 @@ class Phapi {
     }
 
     /**
+     * Get the request
+     *
+     * @return Request
+     */
+    public function getRequest()
+    {
+        return $this->request;
+    }
+
+    /**
      * Set a custom error handler to make sure that errors are logged.
      * Allows any non-fatal errors to be logged.
      *

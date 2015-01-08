@@ -39,6 +39,15 @@ class PhapiTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
+     * @covers ::getRequest
+     */
+    public function testGetRequest()
+    {
+        $phapi = new Phapi([]);
+        $this->assertInstanceOf('Phapi\Http\Request', $phapi->getRequest());
+    }
+
+    /**
      * @covers ::setCache
      * @covers ::getCache
      */
