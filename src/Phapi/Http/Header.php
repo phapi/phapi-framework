@@ -33,8 +33,6 @@ class Header
      * Constructor.
      *
      * @param array $headers An array of HTTP headers
-     *
-     * @api
      */
     public function __construct(array $headers = [])
     {
@@ -71,8 +69,6 @@ class Header
      * Returns the headers.
      *
      * @return array An array of headers
-     *
-     * @api
      */
     public function all()
     {
@@ -83,8 +79,6 @@ class Header
      * Returns the parameter keys.
      *
      * @return array An array of parameter keys
-     *
-     * @api
      */
     public function keys()
     {
@@ -95,8 +89,6 @@ class Header
      * Replaces the current HTTP headers by a new set.
      *
      * @param array $headers An array of HTTP headers
-     *
-     * @api
      */
     public function replace(array $headers = [])
     {
@@ -108,8 +100,6 @@ class Header
      * Adds new headers the current HTTP headers set.
      *
      * @param array $headers An array of HTTP headers
-     *
-     * @api
      */
     public function add(array $headers)
     {
@@ -126,8 +116,6 @@ class Header
      * @param bool    $first   Whether to return the first value or all header values
      *
      * @return string|array The first header value if $first is true, an array of values otherwise
-     *
-     * @api
      */
     public function get($key, $default = null, $first = true)
     {
@@ -154,8 +142,6 @@ class Header
      * @param string       $key     The key
      * @param string|array $values  The value or an array of values
      * @param bool         $replace Whether to replace the actual value or not (true by default)
-     *
-     * @api
      */
     public function set($key, $values, $replace = true)
     {
@@ -180,8 +166,6 @@ class Header
      * @param string $key The HTTP header
      *
      * @return bool    true if the parameter exists, false otherwise
-     *
-     * @api
      */
     public function has($key)
     {
@@ -195,8 +179,6 @@ class Header
      * @param string $value The HTTP value
      *
      * @return bool    true if the value is contained in the header, false otherwise
-     *
-     * @api
      */
     public function contains($key, $value)
     {
@@ -207,8 +189,6 @@ class Header
      * Removes a header.
      *
      * @param string $key The HTTP header name
-     *
-     * @api
      */
     public function remove($key)
     {
@@ -230,8 +210,6 @@ class Header
      * @return null|\DateTime The parsed DateTime or the default value if the header does not exist
      *
      * @throws \RuntimeException When the HTTP header is not parseable
-     *
-     * @api
      */
     public function getDate($key, \DateTime $default = null)
     {
