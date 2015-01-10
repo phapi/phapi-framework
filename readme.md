@@ -108,7 +108,7 @@ There are four types of parameters that can be retrieved from the Request object
 - **get**, usually populated by the global $_GET variable.
 - **post**, usually populated by the global $_POST variable.
 - **server**, usually populated by the global $_SERVER variable.
-- **attributes**, attributes are discovered via decomposing the URI path. Example: www.somehost.com/users/phapi where phapi are the username of a user.
+- **attributes**, attributes are discovered via decomposing the URI path. Example: http://localhost/users/phapi where phapi are the username of a user.
 
 These four types are all stored in a Phapi\Bucket object and can there for be accessed and used in the same way:
 
