@@ -3,6 +3,7 @@
 namespace Phapi\Exception\Success;
 
 use Phapi\Exception\Success;
+use Phapi\Http\Response;
 
 /**
  * Class No Content
@@ -24,7 +25,7 @@ class NoContent extends Success {
      *
      * @var int
      */
-    protected $statusCode = 204;
+    protected $statusCode = Response::STATUS_NO_CONTENT;
 
     /**
      * Response status message

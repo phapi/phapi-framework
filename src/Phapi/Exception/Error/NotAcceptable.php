@@ -3,6 +3,7 @@
 namespace Phapi\Exception\Error;
 
 use Phapi\Exception\Error;
+use Phapi\Http\Response;
 
 /**
  * Class Not Acceptable
@@ -24,7 +25,7 @@ class NotAcceptable extends Error {
      *
      * @var int
      */
-    protected $statusCode = 406;
+    protected $statusCode = Response::STATUS_NOT_ACCEPTABLE;
 
     /**
      * Response status message

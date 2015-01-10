@@ -3,6 +3,7 @@
 namespace Phapi\Exception\Error;
 
 use Phapi\Exception\Error;
+use Phapi\Http\Response;
 
 /**
  * Class Method Not Allowed
@@ -24,7 +25,7 @@ class MethodNotAllowed extends Error {
      *
      * @var int
      */
-    protected $statusCode = 405;
+    protected $statusCode = Response::STATUS_METHOD_NOT_ALLOWED;
 
     /**
      * Response status message

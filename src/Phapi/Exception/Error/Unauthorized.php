@@ -3,6 +3,7 @@
 namespace Phapi\Exception\Error;
 
 use Phapi\Exception\Error;
+use Phapi\Http\Response;
 
 /**
  * Class Unauthorized
@@ -24,7 +25,7 @@ class Unauthorized extends Error {
      *
      * @var int
      */
-    protected $statusCode = 401;
+    protected $statusCode = Response::STATUS_UNAUTHORIZED;
 
     /**
      * Response status message

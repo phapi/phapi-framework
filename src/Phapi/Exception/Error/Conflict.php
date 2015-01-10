@@ -3,6 +3,7 @@
 namespace Phapi\Exception\Error;
 
 use Phapi\Exception\Error;
+use Phapi\Http\Response;
 
 /**
  * Class Bad Gateway
@@ -25,7 +26,7 @@ class Conflict extends Error {
      *
      * @var int
      */
-    protected $statusCode = 409;
+    protected $statusCode = Response::STATUS_CONFLICT;
 
     /**
      * Response status message

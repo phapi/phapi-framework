@@ -3,6 +3,7 @@
 namespace Phapi\Exception\Error;
 
 use Phapi\Exception\Error;
+use Phapi\Http\Response;
 
 /**
  * Class Payment Required
@@ -24,7 +25,7 @@ class PaymentRequired extends Error {
      *
      * @var int
      */
-    protected $statusCode = 402;
+    protected $statusCode = Response::STATUS_PAYMENT_REQUIRED;
 
     /**
      * Response status message

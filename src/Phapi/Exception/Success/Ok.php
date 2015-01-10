@@ -3,6 +3,7 @@
 namespace Phapi\Exception\Success;
 
 use Phapi\Exception\Success;
+use Phapi\Http\Response;
 
 /**
  * Class Ok
@@ -24,7 +25,7 @@ class Ok extends Success {
      *
      * @var int
      */
-    protected $statusCode = 200;
+    protected $statusCode = Response::STATUS_OK;
 
     /**
      * Response status message

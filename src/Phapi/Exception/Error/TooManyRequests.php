@@ -3,6 +3,7 @@
 namespace Phapi\Exception\Error;
 
 use Phapi\Exception\Error;
+use Phapi\Http\Response;
 
 /**
  * Class Too Many Requests
@@ -25,7 +26,7 @@ class TooManyRequests extends Error {
      *
      * @var int
      */
-    protected $statusCode = 429;
+    protected $statusCode = Response::STATUS_TOO_MANY_REQUESTS;
 
     /**
      * Response status message

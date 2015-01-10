@@ -3,6 +3,7 @@
 namespace Phapi\Exception\Error;
 
 use Phapi\Exception\Error;
+use Phapi\Http\Response;
 
 /**
  * Class Not Implemented
@@ -24,7 +25,7 @@ class NotImplemented extends Error {
      *
      * @var int
      */
-    protected $statusCode = 501;
+    protected $statusCode = Response::STATUS_NOT_IMPLEMENTED;
 
     /**
      * Response status message

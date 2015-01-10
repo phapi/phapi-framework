@@ -3,6 +3,7 @@
 namespace Phapi\Exception\Error;
 
 use Phapi\Exception\Error;
+use Phapi\Http\Response;
 
 /**
  * Class Bad Request
@@ -24,7 +25,7 @@ class BadRequest extends Error {
      *
      * @var int
      */
-    protected $statusCode = 400;
+    protected $statusCode = Response::STATUS_BAD_REQUEST;
 
     /**
      * Response status message

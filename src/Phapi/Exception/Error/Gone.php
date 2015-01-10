@@ -3,6 +3,7 @@
 namespace Phapi\Exception\Error;
 
 use Phapi\Exception\Error;
+use Phapi\Http\Response;
 
 /**
  * Class Gone
@@ -25,7 +26,7 @@ class Gone extends Error {
      *
      * @var int
      */
-    protected $statusCode = 410;
+    protected $statusCode = Response::STATUS_GONE;
 
     /**
      * Response status message

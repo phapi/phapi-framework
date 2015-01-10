@@ -3,6 +3,7 @@
 namespace Phapi\Exception\Error;
 
 use Phapi\Exception\Error;
+use Phapi\Http\Response;
 
 /**
  * Class Not Found
@@ -25,7 +26,7 @@ class NotFound extends Error {
      *
      * @var int
      */
-    protected $statusCode = 404;
+    protected $statusCode = Response::STATUS_NOT_FOUND;
 
     /**
      * Response status message

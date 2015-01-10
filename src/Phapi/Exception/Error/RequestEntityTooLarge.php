@@ -3,6 +3,7 @@
 namespace Phapi\Exception\Error;
 
 use Phapi\Exception\Error;
+use Phapi\Http\Response;
 
 /**
  * Class Request Entity Too Large
@@ -24,7 +25,7 @@ class RequestEntityTooLarge extends Error {
      *
      * @var int
      */
-    protected $statusCode = 413;
+    protected $statusCode = Response::STATUS_REQUEST_ENTITY_TOO_LARGE;
 
     /**
      * Response status message

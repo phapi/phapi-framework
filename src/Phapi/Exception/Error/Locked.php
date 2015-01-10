@@ -3,6 +3,7 @@
 namespace Phapi\Exception\Error;
 
 use Phapi\Exception\Error;
+use Phapi\Http\Response;
 
 /**
  * Class Locked
@@ -24,7 +25,7 @@ class Locked extends Error {
      *
      * @var int
      */
-    protected $statusCode = 423;
+    protected $statusCode = Response::STATUS_LOCKED;
 
     /**
      * Response status message

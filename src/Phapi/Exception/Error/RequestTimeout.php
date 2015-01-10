@@ -3,6 +3,7 @@
 namespace Phapi\Exception\Error;
 
 use Phapi\Exception\Error;
+use Phapi\Http\Response;
 
 /**
  * Class Request Timeout
@@ -24,7 +25,7 @@ class RequestTimeout extends Error {
      *
      * @var int
      */
-    protected $statusCode = 408;
+    protected $statusCode = Response::STATUS_REQUEST_TIMEOUT;
 
     /**
      * Response status message

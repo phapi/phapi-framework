@@ -3,6 +3,7 @@
 namespace Phapi\Exception\Redirect;
 
 use Phapi\Exception\Redirect;
+use Phapi\Http\Response;
 
 /**
  * Class Temporary Redirect
@@ -25,7 +26,7 @@ class TemporaryRedirect extends Redirect
      *
      * @var int
      */
-    protected $statusCode = 307;
+    protected $statusCode = Response::STATUS_TEMPORARY_REDIRECT;
 
     /**
      * Response status message
