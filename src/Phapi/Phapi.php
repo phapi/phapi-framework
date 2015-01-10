@@ -7,7 +7,9 @@ use Phapi\Exception\Error;
 use Phapi\Exception\Error\InternalServerError;
 use Phapi\Exception\Redirect;
 use Phapi\Exception\Success;
+use Phapi\Http\Header;
 use Phapi\Http\Request;
+use Phapi\Http\Response;
 use Phapi\Tool\UUID;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
@@ -96,6 +98,11 @@ class Phapi {
         $this->request = new Request();
         $this->request->setUuid((new UUID())->v4());
 
+        // Create the response object
+        $this->response = new Response(new Header());
+        $this->response->setHttpVersion($this->configuration->get('httpVersion'));
+        $this->response->addHeaders(['Request-ID' => $this->request->getUuid()]);
+
         // Set up cache
         $this->setCache($this->configuration->get('cache'));
 
@@ -109,7 +116,8 @@ class Phapi {
     protected function getDefaultConfiguration()
     {
         return [
-            'mode' => self::MODE_DEVELOPMENT
+            'mode' => self::MODE_DEVELOPMENT,
+            'httpVersion' => '1.1'
         ];
     }
 

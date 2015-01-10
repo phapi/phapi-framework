@@ -3,6 +3,7 @@
 namespace Phapi\Exception\Error;
 
 use Phapi\Exception\Error;
+use Phapi\Http\Response;
 
 /**
  * Class Service Unavailable
@@ -24,7 +25,7 @@ class ServiceUnavailable extends Error {
      *
      * @var int
      */
-    protected $statusCode = 504;
+    protected $statusCode = Response::STATUS_SERVICE_UNAVAILABLE;
 
     /**
      * Response status message

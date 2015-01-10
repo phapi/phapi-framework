@@ -13,7 +13,7 @@ require_once __DIR__ . '/../ExceptionTraits.php';
 class AcceptedTest extends \PHPUnit_Framework_TestCase
 {
 
-    public $statusCode = 203;
+    public $statusCode = 202;
     public $statusMessage = 'Accepted';
     public $link = null;
     public $code = null;

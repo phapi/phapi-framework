@@ -3,6 +3,7 @@
 namespace Phapi\Exception\Error;
 
 use Phapi\Exception\Error;
+use Phapi\Http\Response;
 
 /**
  * Class Bad Gateway
@@ -24,7 +25,7 @@ class BadGateway extends Error {
      *
      * @var int
      */
-    protected $statusCode = 502;
+    protected $statusCode = Response::STATUS_BAD_GATEWAY;
 
     /**
      * Response status message

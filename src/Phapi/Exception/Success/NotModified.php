@@ -3,6 +3,7 @@
 namespace Phapi\Exception\Success;
 
 use Phapi\Exception\Success;
+use Phapi\Http\Response;
 
 /**
  * Class Not Modified
@@ -25,7 +26,7 @@ class NotModified extends Success
      *
      * @var int
      */
-    protected $statusCode = 304;
+    protected $statusCode = Response::STATUS_NOT_MODIFIED;
 
     /**
      * Response status message

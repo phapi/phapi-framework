@@ -3,6 +3,7 @@
 namespace Phapi\Exception\Error;
 
 use Phapi\Exception\Error;
+use Phapi\Http\Response;
 
 /**
  * Class Forbidden
@@ -24,7 +25,7 @@ class Forbidden extends Error {
      *
      * @var int
      */
-    protected $statusCode = 403;
+    protected $statusCode = Response::STATUS_FORBIDDEN;
 
     /**
      * Response status message

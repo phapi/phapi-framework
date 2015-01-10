@@ -3,6 +3,7 @@
 namespace Phapi\Exception\Redirect;
 
 use Phapi\Exception\Redirect;
+use Phapi\Http\Response;
 
 /**
  * Class Moved Permanently
@@ -25,7 +26,7 @@ class MovedPermanently extends Redirect
      *
      * @var int
      */
-    protected $statusCode = 301;
+    protected $statusCode = Response::STATUS_MOVED_PERMANENTLY;
 
     /**
      * Response status message

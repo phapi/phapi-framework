@@ -3,6 +3,7 @@
 namespace Phapi\Exception\Error;
 
 use Phapi\Exception\Error;
+use Phapi\Http\Response;
 
 /**
  * Class Internal Server Error
@@ -25,7 +26,7 @@ class InternalServerError extends Error
      *
      * @var int
      */
-    protected $statusCode = 500;
+    protected $statusCode = Response::STATUS_INTERNAL_SERVER_ERROR;
 
     /**
      * Response status message

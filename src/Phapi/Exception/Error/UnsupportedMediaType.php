@@ -3,6 +3,7 @@
 namespace Phapi\Exception\Error;
 
 use Phapi\Exception\Error;
+use Phapi\Http\Response;
 
 /**
  * Class Unsupported Media Type
@@ -24,7 +25,7 @@ class UnsupportedMediaType extends Error {
      *
      * @var int
      */
-    protected $statusCode = 415;
+    protected $statusCode = Response::STATUS_UNSUPPORTED_MEDIA_TYPE;
 
     /**
      * Response status message
