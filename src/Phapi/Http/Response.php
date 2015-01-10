@@ -318,7 +318,17 @@ class Response
      *
      * @param array $body
      */
-    public function setBody($body)
+    public function setBody(array $body)
+    {
+        $this->body = $body;
+    }
+
+    /**
+     * Add content to the body. Added body
+     *
+     * @param array $body
+     */
+    public function addBody(array $body)
     {
         $this->body = array_merge($this->body, $body);
     }
