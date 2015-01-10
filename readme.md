@@ -33,7 +33,7 @@ $api = new \Phapi\Phapi($configuration);
 ```
 
 ### Logging
-***Any logger used must implement the PSR-3 LoggerInterface***
+***Loggers must implement the PSR-3 LoggerInterface***
 
 Registered logger can be accessed by using the Phapi->getLogWriter() function. In a resource the code might look like this:
 ```php
@@ -95,8 +95,32 @@ Retrieve and use the Request object in a Resource:
 ```php
 // Get request
 $request = $this->app->getRequest();
+
 // Get headers
 $headers = $request->getHeaders();
+
+// Get the Origin header
+$origin = $request->getHeaders()->get('origin');
+```
+
+There are four types of parameters that can be retrieved from the Request object:
+
+- **get**, usually populated by the global $_GET variable.
+- **post**, usually populated by the global $_POST variable.
+- **server**, usually populated by the global $_SERVER variable.
+- **attributes**, attributes are discovered via decomposing the URI path. Example: www.somehost.com/users/phapi where phapi are the username of a user.
+
+These four types are all stored in a Phapi\Bucket object and can there for be accessed and used in the same way:
+
+```php
+// Get query (GET) parameters
+$query = $request->getQuery(); // Returns a Phapi\Bucket object
+
+// Check if a specific query parameter exists
+$bool = $request->getQuery()->has('username'); // Returns boolean
+
+// Get a specific query parameter
+$username = $request->getQuery()->get('username');
 ```
 
 ### Trigger response and error handling
