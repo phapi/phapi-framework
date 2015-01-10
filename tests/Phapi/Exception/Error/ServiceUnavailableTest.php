@@ -13,7 +13,7 @@ require_once __DIR__ . '/../ExceptionTraits.php';
 class ServiceUnavailableTest extends \PHPUnit_Framework_TestCase
 {
 
-    public $statusCode = 504;
+    public $statusCode = 503;
     public $statusMessage = 'Service Unavailable';
     public $link = null;
     public $code = null;
