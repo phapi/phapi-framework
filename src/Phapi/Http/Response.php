@@ -190,7 +190,7 @@ class Response
      *
      * @var string
      */
-    protected $httpVersion;
+    protected $httpVersion = '1.1';
 
     public function __construct(Header $headers)
     {
