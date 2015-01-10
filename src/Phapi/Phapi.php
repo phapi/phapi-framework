@@ -93,7 +93,7 @@ class Phapi {
         $this->setLogWriter($this->configuration->get('logWriter'));
 
         // Create the request object
-        $this->request = new Request($_POST, $_GET, $_SERVER, file_get_contents("php://input"));
+        $this->request = new Request();
         $this->request->setUuid((new UUID())->v4());
 
         // Set up cache

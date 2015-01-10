@@ -61,21 +61,21 @@ class Request
      *
      * @var Bucket
      */
-    protected $post;
+    protected $body;
 
     /**
      * Get parameters
      *
      * @var Bucket
      */
-    protected $get;
+    protected $query;
 
     /**
      * Server parameters
      *
      * @var Server
      */
-    public $server;
+    protected $server;
 
     /**
      * Raw content
@@ -85,11 +85,11 @@ class Request
     protected $rawContent;
 
     /**
-     * All parameters (get, post, content, url)
+     * Attributes are discovered via decomposing the URI path
      *
      * @var Bucket
      */
-    protected $parameters;
+    protected $attributes;
 
     /**
      * Client preferred encodings
@@ -105,13 +105,15 @@ class Request
      */
     protected $clientIp;
 
-    public function __construct($post, $get, $server, $rawContent)
+    public function __construct($post = null, $get = null, $server = null, $rawContent = null)
     {
-        $this->post = new Bucket($post);
-        $this->get = new Bucket($get);
-        $this->server = new Server($server);
-        $this->rawContent = $rawContent;
+        $this->body = new Bucket((is_null($post)) ? $_POST: $post);
+        $this->query = new Bucket((is_null($get)) ? $_GET: $get);
+        $this->server = new Server((is_null($server)) ? $_SERVER: $server);
+        $this->rawContent = (is_null($rawContent)) ? file_get_contents("php://input"): $rawContent;
         $this->headers = new Header($this->server->getHeaders());
+
+        $this->attributes = new Bucket();
     }
 
     /**
@@ -189,7 +191,7 @@ class Request
                 if ($method = $this->headers->get('X-HTTP-METHOD-OVERRIDE')) {
                     $this->method = strtoupper($method);
                 } else {
-                    $this->method = strtoupper($this->post->get('_method', $this->get->get('_method', 'POST')));
+                    $this->method = strtoupper($this->body->get('_method', $this->query->get('_method', 'POST')));
                 }
             }
         }
