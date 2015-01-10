@@ -186,27 +186,27 @@ class RequestTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::getEncodings
+     * @covers ::getEncodingHeader
      */
     public function testGetEncodings()
     {
-        $this->assertEquals('gzip, deflate, sdch', $this->request->getEncodings());
+        $this->assertEquals('gzip, deflate, sdch', $this->request->getEncodingHeader());
     }
 
     /**
-     * @covers ::getAccept
+     * @covers ::getAcceptHeader
      */
     public function testGetAccept()
     {
-        $this->assertEquals('text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', $this->request->getAccept());
+        $this->assertEquals('text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', $this->request->getAcceptHeader());
     }
 
     /**
-     * @covers ::getContentType
+     * @covers ::getContentTypeHeader
      */
     public function testGetContentType()
     {
-        $this->assertEquals('application/json', $this->request->getContentType());
+        $this->assertEquals('application/json', $this->request->getContentTypeHeader());
     }
 
     /**

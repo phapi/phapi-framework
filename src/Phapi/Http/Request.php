@@ -161,7 +161,7 @@ class Request
      *
      * @return array|string
      */
-    public function getContentType()
+    public function getContentTypeHeader()
     {
         return $this->headers->get('content-type', null);
     }
@@ -171,7 +171,7 @@ class Request
      *
      * @return array|string
      */
-    public function getAccept()
+    public function getAcceptHeader()
     {
         return $this->headers->get('accept', null);
     }
@@ -347,7 +347,7 @@ class Request
      *
      * @return array|string
      */
-    public function getEncodings()
+    public function getEncodingHeader()
     {
         if (is_null($this->encodings)) {
             $this->encodings = $this->headers->get('accept-encoding');
