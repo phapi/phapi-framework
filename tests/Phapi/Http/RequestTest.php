@@ -50,7 +50,13 @@ class RequestTest extends \PHPUnit_Framework_TestCase
             'REQUEST_TIME_FLOAT' => '1420561694.801',
             'REQUEST_TIME' => '1420561694'
         ];
-        $this->request = new Request([], [], $server, '');
+        $post = [
+            'postKey' => 'postValue'
+        ];
+        $get = [
+            'getKey' => 'getValue'
+        ];
+        $this->request = new Request($post, $get, $server, '');
     }
 
     /**
@@ -153,6 +159,43 @@ class RequestTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($this->request->isOptions());
         $this->assertFalse($this->request->isPatch());
         $this->assertFalse($this->request->isUnlock());
+    }
+
+    /**
+     * @covers ::addAttributes
+     * @covers ::getAttributes
+     */
+    public function testAttributes()
+    {
+        $this->request->addAttributes(['urlKey' => 'urlValue']);
+        $this->assertInstanceOf('Phapi\Bucket', $this->request->getAttributes());
+        $this->assertEquals('urlValue', $this->request->getAttributes()->get('urlKey'));
+    }
+
+    /**
+     * @covers ::getQuery
+     */
+    public function testGetQuery()
+    {
+        $this->assertInstanceOf('Phapi\Bucket', $this->request->getQuery());
+        $this->assertEquals('getValue', $this->request->getQuery()->get('getKey'));
+    }
+
+    /**
+     * @covers ::getServer
+     */
+    public function testGetServer()
+    {
+        $this->assertInstanceOf('Phapi\Http\Server', $this->request->getServer());
+    }
+
+    /**
+     * @covers ::getBody
+     */
+    public function testGetBody()
+    {
+        $this->assertInstanceOf('Phapi\Bucket', $this->request->getBody());
+        $this->assertEquals('postValue', $this->request->getBody()->get('postKey'));
     }
 
     /**

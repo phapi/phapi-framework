@@ -177,6 +177,59 @@ class Request
     }
 
     /**
+     * Add attributes/params
+     *
+     * @param array $attributes
+     */
+    public function addAttributes(array $attributes = [])
+    {
+        foreach ($attributes as $key => $value) {
+            $this->attributes->set($key, $value);
+        }
+    }
+
+    /**
+     * Get body (POST) params
+     *
+     * @return Bucket
+     */
+    public function getBody()
+    {
+        return $this->body;
+    }
+
+    /**
+     * Get query (GET) params
+     *
+     * @return Bucket
+     */
+    public function getQuery()
+    {
+        return $this->query;
+    }
+
+    /**
+     * Get server params
+     *
+     * @return Server
+     */
+    public function getServer()
+    {
+        return $this->server;
+    }
+
+    /**
+     * Get attributes that are discovered via
+     * decomposing the URI path
+     *
+     * @return Bucket
+     */
+    public function getAttributes()
+    {
+        return $this->attributes;
+    }
+
+    /**
      * Get the current request method
      *
      * @return string
