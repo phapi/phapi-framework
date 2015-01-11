@@ -12,7 +12,7 @@ class UUIDTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers ::isValid
      */
-    public function testGetHeaders()
+    public function testIsValid()
     {
         $uuid = new UUID();
         $this->assertTrue($uuid->isValid('65b2da62-1640-4a11-a1a3-2c8e87afafe9')); //v4
