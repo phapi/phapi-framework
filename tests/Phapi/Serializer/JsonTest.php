@@ -2,8 +2,6 @@
 
 namespace Phapi\Tests\Serializer;
 
-use Phapi\Bucket;
-use Phapi\Phapi;
 use Phapi\Serializer\Json;
 
 /**
