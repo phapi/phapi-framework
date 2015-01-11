@@ -267,6 +267,16 @@ class Response
     }
 
     /**
+     * Get headers
+     *
+     * @return Header
+     */
+    public function getHeaders()
+    {
+        return $this->headers;
+    }
+
+    /**
      * Get message for HTTP status code
      *
      * @param  int         $status
@@ -289,6 +299,16 @@ class Response
     public function setStatus($status = self::STATUS_OK)
     {
         $this->status = (int) $status;
+    }
+
+    /**
+     * Get response status code
+     *
+     * @return int
+     */
+    public function getStatus()
+    {
+        return $this->status;
     }
 
     /**
@@ -363,12 +383,22 @@ class Response
     }
 
     /**
-     * Set http version
+     * Set HTTP version
      *
      * @param $httpVersion
      */
     public function setHttpVersion($httpVersion)
     {
         $this->httpVersion = $httpVersion;
+    }
+
+    /**
+     * Get HTTP version
+     *
+     * @return string
+     */
+    public function getHttpVersion()
+    {
+        return $this->httpVersion;
     }
 }
