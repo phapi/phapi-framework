@@ -208,6 +208,16 @@ class Phapi {
     }
 
     /**
+     * Get the response
+     *
+     * @return Response
+     */
+    public function getResponse()
+    {
+        return $this->response;
+    }
+
+    /**
      * Set a custom error handler to make sure that errors are logged.
      * Allows any non-fatal errors to be logged.
      *
