@@ -33,9 +33,7 @@ class Json extends Serializer
      *
      * @var array
      */
-    protected $acceptOnlyTypes = [
-        'text/html'
-    ];
+    protected $acceptOnlyTypes = [];
 
     /**
      * Converts a JSON document to an php array

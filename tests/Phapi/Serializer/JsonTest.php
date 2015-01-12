@@ -17,7 +17,7 @@ class JsonTest extends \PHPUnit_Framework_TestCase {
      */
     public function testConstruct()
     {
-        $serializer = new Json();
+        $serializer = new Json([], ['text/html']);
         $serializer->setAccept('application/json');
         $serializer->setContentType('application/json');
         return $serializer;
