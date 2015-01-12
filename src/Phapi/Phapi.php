@@ -305,7 +305,7 @@ class Phapi {
         } elseif ($exception instanceof Redirect) {
             // Set response status and redirect location
             $this->response->setStatus($exception->getStatusCode());
-            $this->response->setRedirect($exception->getLocation());
+            $this->response->setLocation($exception->getLocation());
 
         } else {
             // Prepare log message

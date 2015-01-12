@@ -344,10 +344,20 @@ class Response
      *
      * @param $location
      */
-    public function setRedirect($location)
+    public function setLocation($location)
     {
         $this->location = $location;
         $this->clearBody();
+    }
+
+    /**
+     * Get redirect location
+     *
+     * @return string
+     */
+    public function getLocation()
+    {
+        return $this->location;
     }
 
     /**

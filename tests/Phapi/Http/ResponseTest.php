@@ -99,6 +99,21 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers ::setBody
+     * @covers ::getBody
+     * @covers ::getLocation
+     * @covers ::setLocation
+     */
+    public function testLocation()
+    {
+        $response = new Response(new Header());
+        $response->setBody(['test' => 'value']);
+        $response->setLocation('http://www.github.com');
+        $this->assertEquals('http://www.github.com', $response->getLocation());
+        $this->assertEquals([], $response->getBody());
+    }
+
+    /**
      * @covers ::setHttpVersion
      * @covers ::getHttpVersion
      */
