@@ -67,6 +67,13 @@ class Phapi {
     protected $request;
 
     /**
+     * The response
+     *
+     * @var Response
+     */
+    protected $response;
+
+    /**
      * Create application
      *
      * @param $configuration
