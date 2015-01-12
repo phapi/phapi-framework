@@ -229,6 +229,13 @@ class Response
     protected $contentType;
 
     /**
+     * Redirect location
+     *
+     * @var string
+     */
+    protected $location;
+
+    /**
      * The body
      *
      * @var array
@@ -330,6 +337,17 @@ class Response
     public function getContentType()
     {
         return $this->contentType;
+    }
+
+    /**
+     * Set redirect location
+     *
+     * @param $location
+     */
+    public function setRedirect($location)
+    {
+        $this->location = $location;
+        $this->clearBody();
     }
 
     /**
