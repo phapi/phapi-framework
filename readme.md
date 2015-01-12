@@ -11,6 +11,7 @@ Phapi is a PHP based framework aiming at simplifying API development and a the s
 1. [Configuration](#configuration)
 2. [Logging](#logging)
 3. [Cache](#cache)
+4. [Serializers](#serializers)
 4. [Request](#request)
 5. [Trigger response and error handling](#trigger-response-and-error-handling)
 
@@ -88,6 +89,26 @@ The following storage types are included in Phapi:
 
 - **Memache**
 - **NullCache**, an empty class simulating a cache. It's used in those cases where no cache is configured. This simplifies using the cache functions since we don't need to check if a cache actually exists.
+
+### Serializers
+Serializers have two tasks: unserialize response body and serialize response body. The default configuration sets everything up for the serializers that's included in Phapi. This can of course be changed by doing some configuration:
+
+```php
+$configuration = [
+  'serializers' => [
+    new Json(['application/vnd.phapi+json'], ['text/html']),
+    new Jsonp(['application/vnd.phapi+javascript']),
+    new FormUrlEncoded(),
+  ]
+];
+
+$api = new \Phapi\Phapi($configuration);
+```
+
+It is possible to add more supported content types as you can see in the example above. The Json serializer accepts **application/vn.phapi+json** for both serialization and unserialization. The second parameter, **text/html** indicates that the Json serializer should be used if the client has sent an **Accept** header with the content text/html. However, the Json serializer will NOT unserialize request bodies with the **Content-Type** header set to text/html.
+
+#### Implementing serializers
+Serializers must extend the abstract **Phapi\Serializer** class and implement the **serialize()** and **unserialize()** functions.
 
 ### Request
 Retrieve and use the Request object in a Resource:
