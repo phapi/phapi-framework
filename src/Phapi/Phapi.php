@@ -333,27 +333,7 @@ class Phapi {
             }
             // Set response status, and body (message, code, description, link)
             $this->response->setStatus($exception->getStatusCode());
-
-            // Prepare body
-            $body = [ 'errors' => [] ];
-            // Check if a message has been defined
-            if (!empty($exception->getMessage())) {
-                $body['errors']['message'] = $exception->getMessage();
-            }
-            // Check if an error code has been defined
-            if (!empty($exception->getCode())) {
-                $body['errors']['code'] = $exception->getCode();
-            }
-            // Check if a description exists
-            if (!empty($exception->getDescription())) {
-                $body['errors']['description'] = $exception->getDescription();
-            }
-            // Check if a link has been specified
-            if (!empty($exception->getLink())) {
-                $body['errors']['link'] = $exception->getLink();
-            }
-
-            $this->response->setBody($body);
+            $this->response->setBody($this->prepareErrorBody($exception));
         }
 
         // todo: trigger response
@@ -362,5 +342,36 @@ class Phapi {
         if ($prev = $exception->getPrevious()) {
             $this->exceptionHandler($prev);
         }
+    }
+
+    /**
+     * Takes an Error Exception and gets the available error information
+     * and creates a body of it and returns the body.
+     *
+     * @param $exception
+     * @return array
+     */
+    protected function prepareErrorBody(Error $exception)
+    {
+        // Prepare body
+        $body = [ 'errors' => [] ];
+        // Check if a message has been defined
+        if (!empty($message = $exception->getMessage())) {
+            $body['errors']['message'] = $message;
+        }
+        // Check if an error code has been defined
+        if (!empty($code = $exception->getCode())) {
+            $body['errors']['code'] = $code;
+        }
+        // Check if a description exists
+        if (!empty($description = $exception->getDescription())) {
+            $body['errors']['description'] = $description;
+        }
+        // Check if a link has been specified
+        if (!empty($link = $exception->getLink())) {
+            $body['errors']['link'] = $link;
+        }
+
+        return $body;
     }
 }
