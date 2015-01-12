@@ -299,10 +299,14 @@ class Phapi {
         // The second set of codes are errors and should therefor change the response
         // content to the exceptions error information and a log entry should be created.
         if ($exception instanceof Success) {
-            // todo: set response status and leave the body as is
+            // Set response status and leave the body as is
+            $this->response->setStatus($exception->getStatusCode());
 
         } elseif ($exception instanceof Redirect) {
-            // todo: set response status and redirect location
+            // Set response status and redirect location
+            $this->response->setStatus($exception->getStatusCode());
+            $this->response->setRedirect($exception->getLocation());
+
         } else {
             // Prepare log message
             $message = sprintf(
@@ -327,10 +331,32 @@ class Phapi {
                 // These exceptions will be handled as an Internal Server Error.
                 $exception = new InternalServerError($exception->getMessage(), $exception->getCode(), $exception->getPrevious());
             }
-            // todo: set response status, and body (status code, status message, error code, information, link)
+            // Set response status, and body (message, code, description, link)
+            $this->response->setStatus($exception->getStatusCode());
+
+            // Prepare body
+            $body = [ 'errors' => [] ];
+            // Check if a message has been defined
+            if (!empty($exception->getMessage())) {
+                $body['errors']['message'] = $exception->getMessage();
+            }
+            // Check if an error code has been defined
+            if (!empty($exception->getCode())) {
+                $body['errors']['code'] = $exception->getCode();
+            }
+            // Check if a description exists
+            if (!empty($exception->getDescription())) {
+                $body['errors']['description'] = $exception->getDescription();
+            }
+            // Check if a link has been specified
+            if (!empty($exception->getLink())) {
+                $body['errors']['link'] = $exception->getLink();
+            }
+
+            $this->response->setBody($body);
         }
 
-        // todo: trigger response middleware(s)
+        // todo: trigger response
 
         // If there was a previous nested exception call this function recursively to log that too.
         if ($prev = $exception->getPrevious()) {
