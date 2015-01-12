@@ -1,19 +1,28 @@
 # Phapi
+
 Phapi is a PHP based framework aiming at simplifying API development and a the same time being fast and small and not include functionality that others to better.
 
 [![Build Status](https://travis-ci.org/ahinko/phapi.svg?branch=develop)](https://travis-ci.org/ahinko/phapi)
 [![Code Climate](https://codeclimate.com/github/ahinko/phapi/badges/gpa.svg)](https://codeclimate.com/github/ahinko/phapi)
 [![Test Coverage](https://codeclimate.com/github/ahinko/phapi/badges/coverage.svg)](https://codeclimate.com/github/ahinko/phapi)
 
-**Please note that this project is far from finished and many of the core features are still missing.**
-
 ## Documentation
-1. [Configuration](#configuration)
-2. [Logging](#logging)
-3. [Cache](#cache)
-4. [Serializers](#serializers)
-4. [Request](#request)
-5. [Trigger response and error handling](#trigger-response-and-error-handling)
+1. [Requirements](#requirements)
+2. [Installation](#installation)
+3. [Configuration](#configuration)
+4. [Logging](#logging)
+5. [Cache](#cache)
+6. [Serializers](#serializers)
+7. [Request](#request)
+8. [Trigger response and error handling](#trigger-response-and-error-handling)
+
+### Requirements
+Phapi requires PHP 5.5 or above.
+
+### Installation
+*TODO.*
+
+**Phapi is under development and it's not ready to use yet.**
 
 ### Configuration
 Configuration is easy with Phapi. Create an array and pass it to the Phapi constructor and you are done. As an example we will set up basic logging with [Monolog](https://github.com/Seldaek/monolog):
