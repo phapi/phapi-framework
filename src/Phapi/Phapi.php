@@ -182,9 +182,8 @@ class Phapi {
      * Set log writer
      *
      * @param null $logWriter
-     * @throws \Exception
      */
-    public function setLogWriter($logWriter = null)
+    protected function setLogWriter($logWriter = null)
     {
         // check if log writer is provided
         if (is_null($logWriter)) {

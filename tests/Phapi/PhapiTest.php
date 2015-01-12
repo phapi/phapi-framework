@@ -75,13 +75,26 @@ class PhapiTest extends \PHPUnit_Framework_TestCase {
     public function testSetLogWriter()
     {
         $phapi = new Phapi([]);
-        $phapi->setLogWriter(null);
         $this->assertInstanceOf('Psr\Log\NullLogger', $phapi->getLogWriter());
+    }
 
-        $phapi->setLogWriter(new \stdClass());
+    /**
+     * @covers ::setLogWriter
+     * @covers ::getLogWriter
+     */
+    public function testSetLogWriter2()
+    {
+        $phapi = new Phapi([ 'logger' => new \stdClass() ]);
         $this->assertInstanceOf('Psr\Log\NullLogger', $phapi->getLogWriter());
+    }
 
-        $phapi->setLogWriter(new NullLogger());
+    /**
+     * @covers ::setLogWriter
+     * @covers ::getLogWriter
+     */
+    public function testSetLogWriter3()
+    {
+        $phapi = new Phapi([ 'logger' => new NullLogger() ]);
         $this->assertInstanceOf('Psr\Log\NullLogger', $phapi->getLogWriter());
     }
 
