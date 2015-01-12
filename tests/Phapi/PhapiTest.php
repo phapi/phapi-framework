@@ -3,6 +3,9 @@
 namespace Phapi\Tests;
 
 use Phapi\Cache\Memcache;
+use Phapi\Exception\Error\InternalServerError;
+use Phapi\Exception\Redirect\MovedPermanently;
+use Phapi\Exception\Success\Ok;
 use Phapi\Phapi;
 use Psr\Log\NullLogger;
 
@@ -217,4 +220,56 @@ class PhapiTest extends \PHPUnit_Framework_TestCase {
         $this->setExpectedException('Phapi\Exception\Error\InternalServerError');
         $phapi->errorHandler(E_COMPILE_ERROR, 'message', 'index.php', 23, []);
     }
+
+    /**
+     * @covers ::exceptionHandler
+     */
+    public function testExceptionHandlerSuccess()
+    {
+        $phapi = new Phapi([]);
+        $phapi->getResponse()->setBody(['content' => 'array']);
+        $phapi->exceptionHandler(new Ok());
+        // Use response object to check status code
+        $this->assertEquals(200, $phapi->getResponse()->getStatus());
+        $this->assertEquals(['content' => 'array'], $phapi->getResponse()->getBody());
+    }
+
+    /**
+     * @covers ::exceptionHandler
+     */
+    public function testExceptionHandlerRedirect()
+    {
+        $phapi = new Phapi([]);
+        $phapi->getResponse()->setBody(['content' => 'array']);
+        $phapi->exceptionHandler(new MovedPermanently('http://www.github.com'));
+        // Use response object to check status code
+        $this->assertEquals(301, $phapi->getResponse()->getStatus());
+        $this->assertEquals([], $phapi->getResponse()->getBody());
+        $this->assertEquals('http://www.github.com', $phapi->getResponse()->getLocation());
+    }
+
+    /*
+     * @covers ::exceptionHandler
+     * @covers ::prepareErrorBody
+     */
+    public function testExceptionHandlerError()
+    {
+        $phapi = new Phapi([]);
+        $phapi->getResponse()->setBody(['content' => 'array']);
+        $phapi->exceptionHandler(new InternalServerError('Could not connect to database', 23, null, 'http://docs.localhost'));
+        // Use response object to check status code
+        $this->assertEquals(500, $phapi->getResponse()->getStatus());
+
+        $expectedArray = [
+            'errors' => [
+                'message' => 'Could not connect to database',
+                'code' => 23,
+                'description' => 'An internal server error occurred. Please try again within a few minutes. The error has been logged and we have been notified about the problem and we will fix it as soon as possible.',
+                'link' => 'http://docs.localhost'
+            ]
+        ];
+
+        $this->assertEquals($expectedArray, $phapi->getResponse()->getBody());
+    }
+
 }
