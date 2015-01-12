@@ -10,6 +10,9 @@ use Phapi\Exception\Success;
 use Phapi\Http\Header;
 use Phapi\Http\Request;
 use Phapi\Http\Response;
+use Phapi\Serializer\FormUrlEncoded;
+use Phapi\Serializer\Json;
+use Phapi\Serializer\Jsonp;
 use Phapi\Tool\UUID;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
@@ -117,7 +120,12 @@ class Phapi {
     {
         return [
             'mode' => self::MODE_DEVELOPMENT,
-            'httpVersion' => '1.1'
+            'httpVersion' => '1.1',
+            'serializers' => [
+                new Json(),
+                new Jsonp(),
+                new FormUrlEncoded(),
+            ]
         ];
     }
 
