@@ -237,22 +237,6 @@ class RequestTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ::getAcceptHeader
-     */
-    public function testGetAccept()
-    {
-        $this->assertEquals('text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', $this->request->getAcceptHeader());
-    }
-
-    /**
-     * @covers ::getContentTypeHeader
-     */
-    public function testGetContentType()
-    {
-        $this->assertEquals('application/json', $this->request->getContentTypeHeader());
-    }
-
-    /**
      * @covers ::isNoCache
      */
     public function testIsNoCache()

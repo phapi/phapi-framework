@@ -105,6 +105,20 @@ class Request
      */
     protected $clientIp;
 
+    /**
+     * Selected content type done by the Negotiator
+     *
+     * @var string
+     */
+    protected $contentType;
+
+    /**
+     * Selected accept type done by the Negotiator
+     *
+     * @var string
+     */
+    protected $accept;
+
     public function __construct($post = null, $get = null, $server = null, $rawContent = null)
     {
         $this->body = new Bucket((is_null($post)) ? $_POST: $post);
@@ -157,23 +171,55 @@ class Request
     }
 
     /**
-     * Get content type header or null
+     * Check if the request included raw content
      *
-     * @return array|string
+     * @return bool
      */
-    public function getContentTypeHeader()
+    public function hasRawContent()
     {
-        return $this->headers->get('content-type', null);
+        return (isset($this->rawContent) && !empty($this->rawContent)) ? true : false;
     }
 
     /**
-     * Get accept header or default accept content type
+     * Get the negotiated content type of the content in the request
      *
-     * @return array|string
+     * @return string
      */
-    public function getAcceptHeader()
+    public function getContentType()
     {
-        return $this->headers->get('accept', null);
+        return $this->contentType;
+    }
+
+    /**
+     * Set the negotiated content type of the content in the request
+     *
+     * @param $contentType
+     */
+    public function setContentType($contentType)
+    {
+        $this->contentType = $contentType;
+    }
+
+    /**
+     * Get the negotiated Accept type that should be used
+     * in the response.
+     *
+     * @return string
+     */
+    public function getAccept()
+    {
+        return $this->accept;
+    }
+
+    /**
+     * Set the negotiated Accept type that should be used
+     * in the response.
+     *
+     * @param $accept
+     */
+    public function setAccept($accept)
+    {
+        $this->accept = $accept;
     }
 
     /**

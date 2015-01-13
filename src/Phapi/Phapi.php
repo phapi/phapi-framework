@@ -2,9 +2,11 @@
 
 namespace Phapi;
 
+use Negotiation\FormatNegotiator;
 use Phapi\Cache\NullCache;
 use Phapi\Exception\Error;
 use Phapi\Exception\Error\InternalServerError;
+use Phapi\Exception\Error\NotAcceptable;
 use Phapi\Exception\Redirect;
 use Phapi\Exception\Success;
 use Phapi\Http\Header;
@@ -104,18 +106,84 @@ class Phapi {
         // Set up loggers
         $this->setLogWriter($this->configuration->get('logWriter'));
 
-        // Create the request object
-        $this->request = new Request();
-        $this->request->setUuid((new UUID())->v4());
+        // Generate an UUID to use for both the request and response
+        $uuid = (new UUID())->v4();
 
         // Create the response object
         $this->response = new Response(new Header());
         $this->response->setHttpVersion($this->configuration->get('httpVersion'));
-        $this->response->addHeaders(['Request-ID' => $this->request->getUuid()]);
+        $this->response->addHeaders(['Request-ID' => $uuid]);
+
+        // Create the request object
+        $this->request = new Request();
+        $this->request->setUuid($uuid);
+
+        // Handle format negotiation
+        $this->handleNegotiation();
+
 
         // Set up cache
         $this->setCache($this->configuration->get('cache'));
 
+    }
+
+    /**
+     * Handle the format negotiation of both the
+     * accept and content type headers.
+     *
+     * @throws NotAcceptable
+     */
+    protected function handleNegotiation()
+    {
+        $negotiation = new Negotiation(
+            new FormatNegotiator(),
+            $this->configuration->get('serializers'),
+            $this->request->getHeaders()->get('accept', ''),
+            $this->request->getHeaders()->get('content-type', '')
+        );
+
+        // Check if the application can deliver the response in a format
+        // that the client has asked for
+        if (null === $accept = $negotiation->getAccept()) {
+            // If not, use the first type from the first configured serializer
+            $accept = $this->configuration->get('defaultAccept');
+        }
+
+        // Save negotiated accept to the request
+        $this->request->setAccept($accept);
+        // Set the content type of the response
+        $this->response->setContentType($accept);
+
+        // Check if we have a body in the request
+        if ($this->request->hasRawContent()) {
+            // Check if the application can handle the format that the request body is in.
+            if (null !== $contentType = $negotiation->getContentType()) {
+                $this->request->setContentType($contentType);
+            } else {
+                // The application can't handle this content type. Respond with a Not Acceptable response
+                throw new NotAcceptable(
+                    $this->request->getHeaders()->get('content-type') .
+                    ' is not an acceptable Content-Type header. Supported types are: ' .
+                    implode(', ', $negotiation->getContentTypes())
+                );
+            }
+        }
+    }
+
+    /**
+     * Get serializer based on content type
+     *
+     * @param $contentType
+     * @return null|Serializer
+     */
+    protected function getSerializer($contentType)
+    {
+        foreach ($this->configuration->get('serializers') as $serializer) {
+            if ($serializer->supports($contentType)) {
+                return $serializer;
+            }
+        }
+        return null;
     }
 
     /**
@@ -128,6 +196,7 @@ class Phapi {
         return [
             'mode' => self::MODE_DEVELOPMENT,
             'httpVersion' => '1.1',
+            'defaultAccept' => 'application/json',
             'serializers' => [
                 new Json(),
                 new Jsonp(),
