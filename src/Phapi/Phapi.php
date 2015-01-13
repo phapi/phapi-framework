@@ -404,7 +404,11 @@ class Phapi {
                 // This is an uncaught exception that might not doesn't have the needed error information
                 // so we need to handle it a little different than predefined exceptions
                 // These exceptions will be handled as an Internal Server Error.
-                $exception = new InternalServerError($exception->getMessage(), $exception->getCode(), $exception->getPrevious());
+                $exception = new InternalServerError(
+                    $exception->getMessage(),
+                    $exception->getCode(),
+                    $exception->getPrevious()
+                );
             }
             // Set response status, and body (message, code, description, link)
             $this->response->setStatus($exception->getStatusCode());
