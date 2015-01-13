@@ -243,6 +243,13 @@ class Response
     protected $body = [];
 
     /**
+     * The serialized body
+     *
+     * @var mixed
+     */
+    protected $serializedBody;
+
+    /**
      * Length of the body
      *
      * @var int
@@ -259,6 +266,17 @@ class Response
     public function __construct(Header $headers)
     {
         $this->headers = $headers;
+    }
+
+    /**
+     * Set the serialized body
+     *
+     * @param $body
+     */
+    public function setSerializedBody($body)
+    {
+        $this->serializedBody = $body;
+        $this->setLength(strlen($this->serializedBody));
     }
 
     /**
