@@ -43,7 +43,7 @@ $api = new \Phapi\Phapi($configuration);
 ```
 
 ### Logging
-***Loggers must implement the PSR-3 LoggerInterface***
+See the [Configuration](#configuration) section for an example of how to configure a logger. Loggers must implement the PSR-3 LoggerInterface.
 
 Registered logger can be accessed by using the Phapi->getLogWriter() function. In a resource the code might look like this:
 ```php
@@ -104,6 +104,7 @@ Serializers have two tasks: unserialize response body and serialize response bod
 
 ```php
 $configuration = [
+  'defaultAccept' => 'application/json',
   'serializers' => [
     new Json(['application/vnd.phapi+json'], ['text/html']),
     new Jsonp(['application/vnd.phapi+javascript']),
@@ -113,6 +114,8 @@ $configuration = [
 
 $api = new \Phapi\Phapi($configuration);
 ```
+
+Use the **defaultAccept** configuration to specify the type used if the client asks for a type that aren't supported.
 
 It is possible to add more supported content types as you can see in the example above. The Json serializer accepts **application/vn.phapi+json** for both serialization and unserialization. The second parameter, **text/html** indicates that the Json serializer should be used if the client has sent an **Accept** header with the content text/html. However, the Json serializer will NOT unserialize request bodies with the **Content-Type** header set to text/html.
 
