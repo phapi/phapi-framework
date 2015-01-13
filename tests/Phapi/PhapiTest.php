@@ -248,7 +248,7 @@ class PhapiTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals('http://www.github.com', $phapi->getResponse()->getLocation());
     }
 
-    /*
+    /**
      * @covers ::exceptionHandler
      * @covers ::prepareErrorBody
      */
@@ -272,4 +272,26 @@ class PhapiTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($expectedArray, $phapi->getResponse()->getBody());
     }
 
+    /**
+     * @covers ::exceptionHandler
+     * @covers ::prepareErrorBody
+     */
+    public function testExceptionHandlerUnknownException()
+    {
+        $phapi = new Phapi([]);
+        $phapi->getResponse()->setBody(['content' => 'array']);
+        $phapi->exceptionHandler(new \Exception('Could not connect to database', 23));
+        // Use response object to check status code
+        $this->assertEquals(500, $phapi->getResponse()->getStatus());
+
+        $expectedArray = [
+            'errors' => [
+                'message' => 'Could not connect to database',
+                'code' => 23,
+                'description' => 'An internal server error occurred. Please try again within a few minutes. The error has been logged and we have been notified about the problem and we will fix it as soon as possible.',
+            ]
+        ];
+
+        $this->assertEquals($expectedArray, $phapi->getResponse()->getBody());
+    }
 }
