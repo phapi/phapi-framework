@@ -14,8 +14,9 @@
     }
   ],
   "require": {
-    "php": ">=5.4.0",
-    "psr/log": "~1.0",
+    "php": ">=5.5.0",
+    "psr/log": "1.*",
+    "willdurand/negotiation": "1.*",
     "monolog/monolog": "1.*"
   },
   "require-dev": {
