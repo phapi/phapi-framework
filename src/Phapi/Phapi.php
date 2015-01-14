@@ -179,7 +179,7 @@ class Phapi {
     protected function getSerializer($contentType)
     {
         foreach ($this->configuration->get('serializers') as $serializer) {
-            if ($serializer->supports($contentType)) {
+            if ($serializer->supports($contentType, true)) {
                 return $serializer;
             }
         }
