@@ -317,7 +317,7 @@ class Response
         }
 
         // Send body, but only if it isn't a HEAD request
-        if (!$this->requestMethod != 'HEAD') {
+        if ($this->requestMethod !== 'HEAD') {
             echo $this->serializedBody;
         }
     }
