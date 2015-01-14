@@ -106,17 +106,16 @@ class Phapi {
         // Set up loggers
         $this->setLogWriter($this->configuration->get('logWriter'));
 
+        // Create the request object
+        $this->request = new Request();
         // Generate an UUID to use for both the request and response
-        $uuid = (new UUID())->v4();
+        $this->request->setUuid((new UUID())->v4());
 
         // Create the response object
         $this->response = new Response(new Header());
         $this->response->setHttpVersion($this->configuration->get('httpVersion'));
-        $this->response->addHeaders(['Request-ID' => $uuid]);
-
-        // Create the request object
-        $this->request = new Request();
-        $this->request->setUuid($uuid);
+        $this->response->addHeaders(['Request-ID' => $this->request->getUuid()]);
+        $this->response->setRequestMethod($this->request->getMethod());
 
         // Handle format negotiation
         $this->handleNegotiation();
@@ -415,7 +414,14 @@ class Phapi {
             $this->response->setBody($this->prepareErrorBody($exception));
         }
 
-        // todo: trigger response
+        // Get the serializer for the content type
+        $serializer = $this->getSerializer($this->response->getContentType());
+        // Give the serializer information about the content type we are using
+        $serializer->setContentType($this->response->getContentType());
+        // Get the body from the response, serialize it, give it back to the response
+        $this->response->setSerializedBody($serializer->serialize($this->response->getBody()));
+        // Tell response to respond
+        $this->response->respond();
 
         // If there was a previous nested exception call this function recursively to log that too.
         if ($prev = $exception->getPrevious()) {

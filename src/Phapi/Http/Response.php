@@ -263,9 +263,63 @@ class Response
      */
     protected $httpVersion = '1.1';
 
+    /**
+     * Request method
+     *
+     * @var string
+     */
+    protected $requestMethod;
+
     public function __construct(Header $headers)
     {
         $this->headers = $headers;
+    }
+
+    /**
+     * Send the response to the client
+     */
+    public function respond()
+    {
+        // Check if status indicates that an eventual body should be removed
+        if (in_array($this->status, [
+            self::STATUS_NO_CONTENT,
+            self::STATUS_NOT_MODIFIED,
+            self::STATUS_MOVED_PERMANENTLY,
+            self::STATUS_TEMPORARY_REDIRECT
+        ])) {
+            // Remove content-* headers
+            $this->headers->remove('Content-Type');
+            $this->headers->remove('Content-Length');
+            // Remove body
+            $this->serializedBody = '';
+        }
+
+        // Send headers
+        if (headers_sent() === false) {
+            // Send status
+            if (strpos(PHP_SAPI, 'cgi') === 0) {
+                header(sprintf('Status: %s', Response::getMessageForCode($this->status)));
+            } else {
+                header(sprintf('HTTP/%s %s', $this->httpVersion, Response::getMessageForCode($this->status)));
+            }
+
+            // Send headers
+            foreach ($this->headers->all() as $name => $value) {
+                foreach ($value as $hVal) {
+                    // formatting headers
+                    $parts = explode('-', $name);
+                    $parts = array_map('ucfirst', $parts);
+                    $name = ucfirst(lcfirst(implode('-', $parts)));
+
+                    header("$name: $hVal", false);
+                }
+            }
+        }
+
+        // Send body, but only if it isn't a HEAD request
+        if (!$this->requestMethod != 'HEAD') {
+            echo $this->serializedBody;
+        }
     }
 
     /**
@@ -277,6 +331,16 @@ class Response
     {
         $this->serializedBody = $body;
         $this->setLength(strlen($this->serializedBody));
+    }
+
+    /**
+     * Set the request method
+     *
+     * @param $method
+     */
+    public function setRequestMethod($method)
+    {
+        $this->requestMethod = $method;
     }
 
     /**
