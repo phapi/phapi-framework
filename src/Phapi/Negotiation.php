@@ -134,8 +134,6 @@ class Negotiation {
                 foreach ($serializer->getContentTypes() as $contentType) {
                     // Add to the list of unserializable content types
                     $this->contentTypes[] = $contentType;
-                    // Add to the list of serializable content types
-                    $this->accepts[] = $contentType;
                 }
                 // Get all content types that the serializer can only serialize
                 foreach ($serializer->getContentTypes(true) as $acceptType) {
@@ -147,6 +145,8 @@ class Negotiation {
     }
 
     /**
+     * Get negotiated accept type (the result)
+     *
      * @return mixed
      */
     public function getAccept()
@@ -155,6 +155,8 @@ class Negotiation {
     }
 
     /**
+     * Get negotiated content type (the result)
+     *
      * @return mixed
      */
     public function getContentType()
@@ -163,6 +165,8 @@ class Negotiation {
     }
 
     /**
+     * Get all supported content types
+     *
      * @return array
      */
     public function getContentTypes()
@@ -171,6 +175,8 @@ class Negotiation {
     }
 
     /**
+     * Get all supported accept types
+     *
      * @return array
      */
     public function getAccepts()
