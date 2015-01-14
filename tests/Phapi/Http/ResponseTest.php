@@ -126,4 +126,68 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('1.1', $response->getHttpVersion());
     }
 
+    /**
+     * @covers ::setRequestMethod
+     * @covers ::setSerializedBody
+     * @covers ::respond
+     */
+    public function testSetRequestMethod()
+    {
+        $this->expectOutputString('test body');
+
+        $response = new Response(new Header());
+        $response->setRequestMethod('GET');
+        $response->setSerializedBody('test body');
+        $response->respond();
+    }
+
+    /**
+     * @covers ::setRequestMethod
+     * @covers ::setSerializedBody
+     * @covers ::respond
+     */
+    public function testSetRequestMethodHead()
+    {
+        $this->expectOutputString('');
+
+        $response = new Response(new Header());
+        $response->setRequestMethod('HEAD');
+        $response->setSerializedBody('test body');
+        $response->respond();
+    }
+
+    /**
+     * @covers ::setRequestMethod
+     * @covers ::setSerializedBody
+     * @covers ::respond
+     */
+    public function testRespondNoContent()
+    {
+        $this->expectOutputString('');
+
+        $response = new Response(new Header());
+        $response->setRequestMethod('GET');
+        $response->setStatus(Response::STATUS_NO_CONTENT);
+        $response->setSerializedBody('test body');
+        $response->respond();
+    }
+
+    /**
+     * @runInSeparateProcess
+     * @covers ::respond
+     */
+    public function testResponseHeaders()
+    {
+        $response = new Response(new Header());
+        $response->setRequestMethod('GET');
+        $response->setStatus(Response::STATUS_OK);
+        $response->setContentType('text/html');
+        $response->setSerializedBody('test body');
+        $response->respond();
+        $this->assertEquals([
+            'Content-Type: text/html; charset=utf-8',
+            'Content-Length: 9'
+        ], xdebug_get_headers());
+    }
+
 }
