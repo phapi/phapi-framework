@@ -276,11 +276,11 @@ class Response
     }
 
     /**
-     * Send the response to the client
+     * Check if status indicates that the body should be removed
      */
-    public function respond()
+    protected function checkNoContent()
     {
-        // Check if status indicates that an eventual body should be removed
+        // Check if status indicates that the body should be removed
         if (in_array($this->status, [
             self::STATUS_NO_CONTENT,
             self::STATUS_NOT_MODIFIED,
@@ -293,6 +293,15 @@ class Response
             // Remove body
             $this->serializedBody = '';
         }
+    }
+
+    /**
+     * Send the response to the client
+     */
+    public function respond()
+    {
+        // Check if status indicates that an eventual body should be removed
+        $this->checkNoContent();
 
         // Send headers
         if (headers_sent() === false) {
