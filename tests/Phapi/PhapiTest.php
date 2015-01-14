@@ -7,6 +7,8 @@ use Phapi\Exception\Error\InternalServerError;
 use Phapi\Exception\Redirect\MovedPermanently;
 use Phapi\Exception\Success\Ok;
 use Phapi\Phapi;
+use Phapi\Serializer\Json;
+use Phapi\Serializer\Jsonp;
 use Psr\Log\NullLogger;
 
 
@@ -223,10 +225,11 @@ class PhapiTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * @covers ::exceptionHandler
+     * @covers ::getSerializer
      */
     public function testExceptionHandlerSuccess()
     {
-        $phapi = new Phapi([]);
+        $phapi = new Phapi(['serializers' => [new Json(), new Jsonp()]]);
         $phapi->getResponse()->setBody(['content' => 'array']);
         $phapi->exceptionHandler(new Ok());
         // Use response object to check status code

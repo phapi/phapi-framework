@@ -62,10 +62,12 @@ class RequestTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers ::__construct
      * @covers ::getRawContent
+     * @covers ::hasRawContent
      */
     public function testConstructor()
     {
         $request = new Request([], [], [], 'this is the raw content');
+        $this->assertTrue($request->hasRawContent());
         $this->assertEquals('this is the raw content', $request->getRawContent());
     }
 
@@ -279,5 +281,27 @@ class RequestTest extends \PHPUnit_Framework_TestCase
 
         $request = new Request([], [], $server, '');
         $this->assertEquals(['"cc14a5-3ab-48e527e3975c0"'], $request->getEtags());
+    }
+
+    /**
+     * @covers ::setContentType
+     * @covers ::getContentType
+     */
+    public function testContentType()
+    {
+        $request = new Request([], [], [], '');
+        $request->setContentType('application/xml');
+        $this->assertEquals('application/xml', $request->getContentType());
+    }
+
+    /**
+     * @covers ::setAccept
+     * @covers ::getAccept
+     */
+    public function testAccept()
+    {
+        $request = new Request([], [], [], '');
+        $request->setAccept('application/json');
+        $this->assertEquals('application/json', $request->getAccept());
     }
 }
