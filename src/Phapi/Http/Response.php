@@ -438,6 +438,7 @@ class Response
     public function setLocation($location)
     {
         $this->location = $location;
+        $this->headers->set('Location', $location);
         $this->clearBody();
     }
 
