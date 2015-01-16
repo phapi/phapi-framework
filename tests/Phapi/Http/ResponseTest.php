@@ -191,4 +191,19 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
         ], xdebug_get_headers());
     }
 
+    /**
+     * @runInSeparateProcess
+     * @covers ::respond
+     */
+    public function testRedirectHeaders()
+    {
+        $response = new Response(new Header());
+        $response->setRequestMethod('GET');
+        $response->setStatus(Response::STATUS_MOVED_PERMANENTLY);
+        $response->setLocation('https://github.com/ahinko/phapi');
+        $response->respond();
+        $this->assertEquals([
+            'Location: https://github.com/ahinko/phapi'
+        ], xdebug_get_headers());
+    }
 }
