@@ -160,7 +160,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
      * @covers ::setRequestMethod
      * @covers ::setSerializedBody
      * @covers ::respond
-     * @covers ::checkNoContent
+     * @covers ::isNoContent
      */
     public function testRespondNoContent()
     {

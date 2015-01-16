@@ -278,21 +278,24 @@ class Response
     /**
      * Check if status indicates that the body should be removed
      */
-    protected function checkNoContent()
+    protected function isNoContent()
     {
         // Check if status indicates that the body should be removed
         if (in_array($this->status, [
             self::STATUS_NO_CONTENT,
             self::STATUS_NOT_MODIFIED,
-            self::STATUS_MOVED_PERMANENTLY,
-            self::STATUS_TEMPORARY_REDIRECT
+            self::STATUS_TEMPORARY_REDIRECT,
+            self::STATUS_MOVED_PERMANENTLY
         ])) {
             // Remove content-* headers
             $this->headers->remove('Content-Type');
             $this->headers->remove('Content-Length');
             // Remove body
             $this->serializedBody = '';
+
+            return true;
         }
+        return false;
     }
 
     /**
@@ -301,7 +304,7 @@ class Response
     public function respond()
     {
         // Check if status indicates that an eventual body should be removed
-        $this->checkNoContent();
+        $this->isNoContent();
 
         // Send headers
         if (headers_sent() === false) {
