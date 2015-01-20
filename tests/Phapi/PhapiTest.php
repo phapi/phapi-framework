@@ -22,6 +22,7 @@ class PhapiTest extends \PHPUnit_Framework_TestCase {
      * @covers ::getDefaultConfiguration
      * @covers ::setCache
      * @covers ::handleNegotiation
+     * @covers ::unserializeBody
      */
     public function testConstruct()
     {

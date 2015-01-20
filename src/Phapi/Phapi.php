@@ -120,10 +120,11 @@ class Phapi {
         // Handle format negotiation
         $this->handleNegotiation();
 
-
         // Set up cache
         $this->setCache($this->configuration->get('cache'));
 
+        // Unserialize incoming body if a body exists
+        $this->unserializeBody();
     }
 
     /**
@@ -167,6 +168,30 @@ class Phapi {
                 );
             }
         }
+    }
+
+    /**
+     * Unserialize the body based on content negotiation
+     */
+    protected function unserializeBody()
+    {
+        // Check if any raw content (body) can be found.
+        if ($this->request->hasRawContent()) {
+            // Get serializer, since content negotiation has already been done
+            // we can take for granted that we have a serializer that can handle
+            // the content type, otherwise an exception has already been thrown.
+            $serializer = $this->getSerializer($this->request->getContentType());
+
+            // Get the raw content and unserialize it before setting it as the
+            // body on the request object.
+            $this->request->setBody($serializer->unserialize($this->request->getRawContent()));
+
+            // Exit function
+            return;
+        }
+
+        // No raw content found, set body to an empty array
+        $this->request->setBody([]);
     }
 
     /**
