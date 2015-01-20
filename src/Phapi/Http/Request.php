@@ -245,6 +245,16 @@ class Request
     }
 
     /**
+     * Set body (unserialized POST) params
+     *
+     * @param array $body
+     */
+    public function setBody(array $body)
+    {
+        $this->body = new Bucket($body);
+    }
+
+    /**
      * Get query (GET) params
      *
      * @return Bucket

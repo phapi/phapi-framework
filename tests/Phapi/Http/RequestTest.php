@@ -201,6 +201,20 @@ class RequestTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers ::getBody
+     * @covers ::setBody
+     */
+    public function testBody()
+    {
+        $array = ['testKey' => 'a value', 'key' => 'another value'];
+
+        $this->request->setBody($array);
+        $this->assertEquals('another value', $this->request->getBody()->get('key'));
+        $this->assertEquals('a value', $this->request->getBody()->get('testKey'));
+        $this->assertEquals(['testKey', 'key'], $this->request->getBody()->keys());
+    }
+
+    /**
      * @covers ::getClientIp
      */
     public function testGetClientIp()
