@@ -31,12 +31,12 @@ class FormUrlEncoded extends Serializer
      * Converts input to an php array
      *
      * @param $input
-     *
      * @return array|mixed
      */
     public function unserialize($input)
     {
-        return $input;
+        parse_str($input, $array);
+        return $array;
     }
 
     /**
@@ -47,6 +47,6 @@ class FormUrlEncoded extends Serializer
      */
     public function serialize($input)
     {
-        return $input;
+        return http_build_query($input);
     }
 }

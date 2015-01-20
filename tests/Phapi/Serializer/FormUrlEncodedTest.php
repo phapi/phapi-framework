@@ -17,7 +17,7 @@ class FormUrlEncodedTest extends \PHPUnit_Framework_TestCase {
         $array = ['key' => 'value', 'another key' => 'second value'];
         $serializer = new FormUrlEncoded();
 
-        $this->assertEquals($array, $serializer->serialize($array));
+        $this->assertEquals('key=value&another+key=second+value', $serializer->serialize($array));
     }
 
     /**
@@ -25,10 +25,10 @@ class FormUrlEncodedTest extends \PHPUnit_Framework_TestCase {
      */
     public function testUnserialize()
     {
-        $array = ['key' => 'value', 'another key' => 'second value'];
+        $array = ['key' => 'value', 'another_key' => 'second value'];
         $serializer = new FormUrlEncoded();
 
-        $this->assertEquals($array, $serializer->unserialize($array));
+        $this->assertEquals($array, $serializer->unserialize('key=value&another+key=second+value'));
     }
 }
  
