@@ -176,12 +176,17 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
     /**
      * @runInSeparateProcess
      * @covers ::respond
+     * @covers ::setRequestMethod
+     * @covers ::setStatus
+     * @covers ::setContentType
+     * @covers ::setCharset
      */
     public function testResponseHeaders()
     {
         $response = new Response(new Header());
         $response->setRequestMethod('GET');
         $response->setStatus(Response::STATUS_OK);
+        $response->setCharset('utf-8');
         $response->setContentType('text/html');
         $response->setSerializedBody('test body');
         $response->respond();

@@ -222,6 +222,13 @@ class Response
     protected $status;
 
     /**
+     * Charset
+     *
+     * @var string
+     */
+    protected $charset;
+
+    /**
      * Content/mime type
      *
      * @var string
@@ -413,6 +420,16 @@ class Response
     }
 
     /**
+     * Set charset
+     *
+     * @param $charset
+     */
+    public function setCharset($charset)
+    {
+        $this->charset = $charset;
+    }
+
+    /**
      * Set the content type of the response
      *
      * @param $contentType
@@ -420,7 +437,7 @@ class Response
     public function setContentType($contentType)
     {
         $this->contentType = $contentType;
-        $this->headers->set('Content-Type', $contentType ."; charset=utf-8");
+        $this->headers->set('Content-Type', $contentType .'; charset='. $this->charset);
     }
 
     /**

@@ -104,6 +104,7 @@ class Phapi {
         $this->response->setHttpVersion($this->configuration->get('httpVersion'));
         $this->response->addHeaders(['Request-ID' => $this->request->getUuid()]);
         $this->response->setRequestMethod($this->request->getMethod());
+        $this->response->setCharset($this->configuration->get('charset'));
 
         // Handle format negotiation
         $this->handleNegotiation();
@@ -212,6 +213,7 @@ class Phapi {
             'mode' => self::MODE_DEVELOPMENT,
             'httpVersion' => '1.1',
             'defaultAccept' => 'application/json',
+            'charset' => 'utf-8',
             'serializers' => [
                 new Json(),
                 new Jsonp(),
