@@ -180,6 +180,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
      * @covers ::setStatus
      * @covers ::setContentType
      * @covers ::setCharset
+     * @covers ::isNoContent
      */
     public function testResponseHeaders()
     {
