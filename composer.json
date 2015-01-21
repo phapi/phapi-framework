@@ -1,11 +1,15 @@
 {
   "name": "ahinko/phapi",
   "description": "Phapi is a PHP based framework aiming at simplifying API development and a the same time being fast and small and not include functionality that others to better.",
+  "keywords": [
+    "api", "framework", "phapi"
+  ],
   "type": "framework",
   "version": "0.1.0",
   "time": "2014-12-29",
   "minimum-stability": "stable",
   "license": "MIT",
+  "homepage": "https://github.com/ahinko/phapi",
   "authors": [
     {
       "name": "Peter Ahinko",
