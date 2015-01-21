@@ -82,8 +82,6 @@ class Phapi {
      */
     public function __construct($configuration)
     {
-        // As a default we don't want to display error messages, unless we are in development mode (see bellow).
-        ini_set('display_errors', false);
         // Register exception handler
         set_exception_handler([$this, 'exceptionHandler']);
         // Register error handler
@@ -92,16 +90,6 @@ class Phapi {
         // Merge the default configuration with provided configuration and
         // create a new Bucket to save the configuration in.
         $this->configuration = new Bucket(array_merge($this->getDefaultConfiguration(), $configuration));
-
-        // Check if we are in development mode
-        if ($this->configuration->get('mode') === self::MODE_DEVELOPMENT) {
-            // Show all errors
-            error_reporting(E_ALL);
-            // Display errors for easier development
-            ini_set('display_errors', true);
-            // Turn opcache off if mode is development
-            ini_set('opcache.enable', false);
-        }
 
         // Set up loggers
         $this->setLogWriter($this->configuration->get('logWriter'));
@@ -125,6 +113,9 @@ class Phapi {
 
         // Unserialize incoming body if a body exists
         $this->unserializeBody();
+
+        //$this->response->setBody(['yes' => 'test']);
+        //throw new Success\Ok();
     }
 
     /**

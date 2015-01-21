@@ -24,6 +24,11 @@ Phapi requires PHP 5.5 or above.
 
 **Phapi is under development and it's not ready to use yet.**
 
+#### PHP settings
+It's suggested to turn off displaying of errors in production environments and rely on logging instead since Phapi has an error handler that will display serialized error messages.
+
+During development it's beneficial however to display errors and setting error reporting to E_ALL. 
+
 ### Configuration
 Configuration is easy with Phapi. Create an array and pass it to the Phapi constructor and you are done. As an example we will set up basic logging with [Monolog](https://github.com/Seldaek/monolog):
 ```php
