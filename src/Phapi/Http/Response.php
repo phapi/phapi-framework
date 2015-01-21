@@ -140,6 +140,7 @@ class Response
      * The requested method is not implemented.
      */
     const STATUS_NOT_IMPLEMENTED = 501;
+
     /**
      * The API is down or being upgraded
      */
@@ -392,11 +393,7 @@ class Response
      */
     public static function getMessageForCode($status)
     {
-        if (isset(self::$messages[$status])) {
-            return self::$messages[$status];
-        } else {
-            return null;
-        }
+        return (isset(self::$messages[$status])) ? self::$messages[$status]: null;
     }
 
     /**
