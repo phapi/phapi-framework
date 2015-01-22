@@ -47,6 +47,45 @@ $api = new \Phapi\Phapi($configuration);
 
 ```
 
+### Routes
+Phapi will invoke the first route that matches the current HTTP request’s URI and method.
+
+If Phapi does not find routes with URIs that match the HTTP request URI and method, it will automatically return a 404 Not Found response.
+
+#### Defining routes
+Routes can be added by passing an array (with the route as the key and the name of the resource as the value) to the **addRoutes** function. It's also possible to add single routes using the **addRoute($route, $resource)** function.
+
+```php
+// Create a list of routes
+$routes = [
+  '/users'                  => '\\Phapi\\Resource\\Users',
+  '/users/{name:a}'         => '\\Phapi\\Resource\\User',
+  '/articles/{id:[0-9]+}'   => '\\Phapi\\Resource\\Article',
+  '/blog/{slug}/{title:c}?' => '\\Phapi\\Resource\\Blog\\Post',
+];
+
+// Add routes to the router
+$phapi->getRouter()->addRoutes($routes);
+```
+
+By default a route pattern syntax is used where **{foo}** specified a placeholder with name **foo** and matching the string **[^/]+**. To adjust the pattern the placeholder matches, you can specify a custom pattern by writing **{bar:[0-9]+}**.
+
+##### Regex Shortcuts
+```
+ :i => :/d+                # numbers only
+ :a => :[a-zA-Z0-9]+       # alphanumeric
+ :c => :[a-zA-Z0-9+_-\.]+  # alnumnumeric and +-_. characters
+ :h => :[a-fA-F0-9]+       # hex
+```
+
+use in routes:
+```php
+$routes = [
+  '/user/{id:i}'
+  '/blog/{title:c}'
+]
+```
+
 ### Logging
 See the [Configuration](#configuration) section for an example of how to configure a logger. Loggers must implement the PSR-3 LoggerInterface.
 
