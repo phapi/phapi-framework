@@ -82,6 +82,14 @@ class Phapi {
      * @var array
      */
     protected $middleware;
+
+    /**
+     * Router
+     *
+     * @var Router
+     */
+    protected $router;
+
     /**
      * Negotiator
      *
@@ -125,6 +133,10 @@ class Phapi {
 
         // Set up cache
         $this->setCache($this->configuration->get('cache'));
+
+        // Create Router
+        $this->router = new Router(new RouteParser());
+        $this->router->setCache($this->cache);
 
         // Deserialize incoming body if a body exists
         $this->deserializeBody();
@@ -359,6 +371,15 @@ class Phapi {
     }
 
     /**
+     * Get router
+     *
+     * @return Router
+     */
+    public function getRouter()
+    {
+        return $this->router;
+    }
+
     /**
      * Add middleware
      *
@@ -383,6 +404,12 @@ class Phapi {
      */
     public function run()
     {
+        // match request to route
+        $this->router->match($this->request->getUri(), $this->request->getMethod());
+
+        // take router params and add them to the request object
+        $this->request->addAttributes($this->router->getParams());
+
         // call the first middleware and start the chain
         $this->middleware[0]->call();
     }
