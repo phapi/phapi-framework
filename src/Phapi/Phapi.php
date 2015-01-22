@@ -6,7 +6,7 @@ use Negotiation\FormatNegotiator;
 use Phapi\Cache\NullCache;
 use Phapi\Exception\Error;
 use Phapi\Exception\Error\InternalServerError;
-use Phapi\Exception\Error\NotAcceptable;
+use Phapi\Exception\Error\UnsupportedMediaType;
 use Phapi\Exception\Redirect;
 use Phapi\Exception\Success;
 use Phapi\Http\Header;
@@ -153,9 +153,9 @@ class Phapi {
                 $this->request->setContentType($contentType);
             } else {
                 // The application can't handle this content type. Respond with a Not Acceptable response
-                throw new NotAcceptable(
+                throw new UnsupportedMediaType(
                     $this->request->getHeaders()->get('content-type') .
-                    ' is not an acceptable Content-Type header. Supported types are: ' .
+                    ' is not an supported Content-Type header. Supported types are: ' .
                     implode(', ', $negotiation->getContentTypes())
                 );
             }
