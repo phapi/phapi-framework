@@ -286,6 +286,21 @@ class Request
     }
 
     /**
+     * Get attribute by key
+     *
+     * @param $key
+     * @param null $default
+     * @return mixed|null
+     */
+    public function getAttribute($key, $default = null)
+    {
+        if ($this->attributes->has($key)) {
+            return $this->attributes->get($key, $default);
+        }
+        return $default;
+    }
+
+    /**
      * Get the current request method
      *
      * @return string
