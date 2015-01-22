@@ -77,12 +77,19 @@ class Phapi {
     protected $response;
 
     /**
+     * Middlewares
+     *
+     * @var array
+     */
+    protected $middleware;
     /**
      * Negotiator
      *
      * @var Negotiator
      */
     protected $negotiator;
+
+    /**
      * Create application
      *
      * @param $configuration
@@ -122,8 +129,8 @@ class Phapi {
         // Deserialize incoming body if a body exists
         $this->deserializeBody();
 
-        //$this->response->setBody(['yes' => 'test']);
-        //throw new Success\Ok();
+        // Define default middleware stack
+        $this->middleware = [$this];
     }
 
     /**
@@ -349,6 +356,48 @@ class Phapi {
     public function getResponse()
     {
         return $this->response;
+    }
+
+    /**
+    /**
+     * Add middleware
+     *
+     * This method prepends new middleware to the application middleware stack.
+     * The argument must be an instance that subclasses Slim_Middleware.
+     *
+     * @param Middleware $newMiddleware
+     */
+    public function addMiddleware(Middleware $newMiddleware)
+    {
+        $newMiddleware->setApplication($this);
+        $newMiddleware->setNextMiddleware($this->middleware[0]);
+        array_unshift($this->middleware, $newMiddleware);
+    }
+
+    /**
+     * Run
+     *
+     * This method invokes the middleware stack, including the core Phapi application;
+     * the result is an array of HTTP status, header, and body. These three items
+     * are returned to the HTTP client.
+     */
+    public function run()
+    {
+        // call the first middleware and start the chain
+        $this->middleware[0]->call();
+    }
+
+    /**
+     * Call
+     *
+     * Call function that applies hooks and asks the router
+     * to dispatch the request. If no matching route and resource
+     * could be found a not found error will be thrown.
+     */
+    public function call()
+    {
+        // Trigger response
+        throw new Success\Ok;
     }
 
     /**
