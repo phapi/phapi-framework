@@ -91,6 +91,13 @@ class Phapi {
     protected $router;
 
     /**
+     * Dispatcher
+     *
+     * @var Dispatcher
+     */
+    protected $dispatcher;
+
+    /**
      * Negotiator
      *
      * @var Negotiator
@@ -137,6 +144,9 @@ class Phapi {
         // Create Router
         $this->router = new Router(new RouteParser());
         $this->router->setCache($this->cache);
+
+        // Create dispatcher
+        $this->dispatcher = new Dispatcher($this->router);
 
         // Deserialize incoming body if a body exists
         $this->deserializeBody();
@@ -423,6 +433,9 @@ class Phapi {
      */
     public function call()
     {
+        // dispatch and set content to response object
+        $this->response->setBody($this->dispatcher->dispatch($this));
+
         // Trigger response
         throw new Success\Ok;
     }
