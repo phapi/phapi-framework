@@ -453,39 +453,26 @@ class Phapi {
      */
     public function errorHandler($errno, $errstr, $errfile, $errline, array $errcontext)
     {
+        $codes = array(
+            256   => 'E_USER_ERROR',
+            512   => 'E_USER_WARNING',
+            1024  => 'E_USER_NOTICE',
+            2048  => 'E_STRICT',
+            4096  => 'E_RECOVERABLE_ERROR',
+            8192  => 'E_DEPRECATED',
+            16384 => 'E_USER_DEPRECATED',
+            8     => 'E_NOTICE',
+            2     => 'E_WARNING'
+        );
+
         $message = 'Error of level ';
 
-        switch ($errno) {
-            case E_USER_ERROR:
-                $message .= 'E_USER_ERROR';
-                break;
-            case E_USER_WARNING:
-                $message .= 'E_USER_WARNING';
-                break;
-            case E_USER_NOTICE:
-                $message .= 'E_USER_NOTICE';
-                break;
-            case E_STRICT:
-                $message .= 'E_STRICT';
-                break;
-            case E_RECOVERABLE_ERROR:
-                $message .= 'E_RECOVERABLE_ERROR';
-                break;
-            case E_DEPRECATED:
-                $message .= 'E_DEPRECATED';
-                break;
-            case E_USER_DEPRECATED:
-                $message .= 'E_USER_DEPRECATED';
-                break;
-            case E_NOTICE:
-                $message .= 'E_NOTICE';
-                break;
-            case E_WARNING:
-                $message .= 'E_WARNING';
-                break;
-            default:
-                $message .= sprintf('Unknown error level, code of %d passed', $errno);
+        if (array_key_exists($errno, $codes)) {
+            $message .= $codes[$errno];
+        } else {
+            $message .= sprintf('Unknown error level, code of %d passed', $errno);
         }
+        
         $message .= sprintf(
             '. Error message was "%s" in file %s at line %d.',
             $errstr,
