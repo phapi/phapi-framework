@@ -3,12 +3,12 @@
 namespace Phapi\Tests;
 
 use Negotiation\FormatNegotiator;
-use Phapi\Negotiation;
+use Phapi\Negotiator;
 use Phapi\Serializer\Json;
 use Phapi\Serializer\Jsonp;
 
 /**
- * @coversDefaultClass \Phapi\Negotiation
+ * @coversDefaultClass \Phapi\Negotiator
  */
 class NegotiationTest extends \PHPUnit_Framework_TestCase {
 
@@ -27,7 +27,7 @@ class NegotiationTest extends \PHPUnit_Framework_TestCase {
         $serializers = [ new Json([], ['text/html']), new Jsonp() ];
         $contentTypeHeader = 'application/json';
         $acceptHeader = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8';
-        $negotiation = new Negotiation(new FormatNegotiator(), $serializers, $acceptHeader, $contentTypeHeader);
+        $negotiation = new Negotiator(new FormatNegotiator(), $serializers, $acceptHeader, $contentTypeHeader);
 
         $this->assertEquals('application/json', $negotiation->getContentType());
         $this->assertEquals('text/html', $negotiation->getAccept());

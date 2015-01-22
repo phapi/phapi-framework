@@ -77,6 +77,12 @@ class Phapi {
     protected $response;
 
     /**
+    /**
+     * Negotiator
+     *
+     * @var Negotiator
+     */
+    protected $negotiator;
      * Create application
      *
      * @param $configuration
@@ -108,7 +114,7 @@ class Phapi {
         $this->response->setCharset($this->configuration->get('charset'));
 
         // Handle format negotiation
-        $this->handleNegotiation();
+        $this->negotiate();
 
         // Set up cache
         $this->setCache($this->configuration->get('cache'));
@@ -127,9 +133,9 @@ class Phapi {
      * @throws NotAcceptable
      * @throws UnsupportedMediaType
      */
-    protected function handleNegotiation()
+    protected function negotiate()
     {
-        $negotiation = new Negotiation(
+        $this->negotiator = new Negotiator(
             new FormatNegotiator(),
             $this->configuration->get('serializers'),
             $this->request->getHeaders()->get('accept', ''),
@@ -141,7 +147,7 @@ class Phapi {
 
         // Check if the application can deliver the response in a format
         // that the client has asked for
-        if (null === $accept = $negotiation->getAccept()) {
+        if (null === $accept = $this->negotiator->getAccept()) {
             // If not, use the first type from the first configured serializer
             $accept = $this->configuration->get('defaultAccept');
 
@@ -160,24 +166,34 @@ class Phapi {
             throw new NotAcceptable(
                 $this->request->getHeaders()->get('accept') .
                 ' is not an supported Accept header. Supported types are: ' .
-                implode(', ', $negotiation->getAccepts())
+                implode(', ', $this->negotiator->getAccepts())
             );
         }
 
         // Check if we have a body in the request
         if ($this->request->hasRawContent()) {
             // Check if the application can handle the format that the request body is in.
-            if (null !== $contentType = $negotiation->getContentType()) {
+            if (null !== $contentType = $this->negotiator->getContentType()) {
                 $this->request->setContentType($contentType);
             } else {
                 // The application can't handle this content type. Respond with a Not Acceptable response
                 throw new UnsupportedMediaType(
                     $this->request->getHeaders()->get('content-type') .
                     ' is not an supported Content-Type header. Supported types are: ' .
-                    implode(', ', $negotiation->getContentTypes())
+                    implode(', ', $this->negotiator->getContentTypes())
                 );
             }
         }
+    }
+
+    /**
+     * Get negotiator
+     *
+     * @return Negotiator
+     */
+    public function getNegotiator()
+    {
+        return $this->negotiator;
     }
 
     /**

@@ -13,7 +13,7 @@ namespace Phapi;
  * @license  MIT (http://opensource.org/licenses/MIT)
  * @link     https://github.com/ahinko/phapi
  */
-class Negotiation {
+class Negotiator {
 
     /**
      * The format negotiator
@@ -83,8 +83,8 @@ class Negotiation {
         $this->createContentTypeList();
 
         // Negotiate formats
-        $this->negotiateAccept();
-        $this->negotiateContentType();
+        $this->accept = $this->negotiateAccept();
+        $this->contentType = $this->negotiateContentType();
     }
 
     /**
@@ -99,9 +99,10 @@ class Negotiation {
 
             // Save the result
             if ($format !== null) {
-                $this->accept = $format->getValue();
+                return $format->getValue();
             }
         }
+        return null;
     }
 
     /**
@@ -116,9 +117,10 @@ class Negotiation {
 
             // Save the result
             if ($format !== null) {
-                $this->contentType = $format->getValue();
+                return $format->getValue();
             }
         }
+        return null;
     }
 
     /**
@@ -132,7 +134,7 @@ class Negotiation {
             if ($serializer instanceof Serializer) {
                 // Get all content types that the serializer can serialize and deserialize
                 foreach ($serializer->getContentTypes() as $contentType) {
-                    // Add to the list of unserializable content types
+                    // Add to the list of deserializable content types
                     $this->contentTypes[] = $contentType;
                 }
                 // Get all content types that the serializer can only serialize
