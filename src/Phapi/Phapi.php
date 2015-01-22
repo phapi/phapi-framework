@@ -472,7 +472,7 @@ class Phapi {
         } else {
             $message .= sprintf('Unknown error level, code of %d passed', $errno);
         }
-        
+
         $message .= sprintf(
             '. Error message was "%s" in file %s at line %d.',
             $errstr,
