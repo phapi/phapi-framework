@@ -10,11 +10,13 @@ Phapi is a PHP based framework aiming at simplifying API development and a the s
 1. [Requirements](#requirements)
 2. [Installation](#installation)
 3. [Configuration](#configuration)
-4. [Logging](#logging)
-5. [Cache](#cache)
-6. [Serializers](#serializers)
-7. [Request](#request)
-8. [Trigger response and error handling](#trigger-response-and-error-handling)
+4. [Routes](#routes)
+5. [Resources](#resources)
+6. [Logging](#logging)
+7. [Cache](#cache)
+8. [Serializers](#serializers)
+9. [Request](#request)
+10. [Trigger response and error handling](#trigger-response-and-error-handling)
 
 ### Requirements
 Phapi requires PHP 5.5 or above.
@@ -85,6 +87,82 @@ $routes = [
   '/blog/{title:c}'
 ]
 ```
+
+### Resources
+*TODO*
+
+Set up autoloading by editing *composer.json*. Example:
+```json
+{
+  ...
+  "autoload": {
+    "psr-4": {
+      "Phapi\\Resource\\": "app/resource",
+    }
+  }
+}
+```
+
+Resources must extend **Phapi\Resource**. A resource implements http methods. For example, if a resource should be able to respond to a **GET request** it must implement a method named **get**:
+```php
+namespace Phapi\Resource;
+
+use Phapi\Resource;
+
+class User extends Resource {
+
+  public function get()
+  {
+    return [
+      'user' => [
+          'id' => 1,
+          'name' => 'John Doe',
+          'username' => 'johndoe99'
+        ]
+    ];
+  }
+}
+
+```
+
+Each method returns an array with the data that should be returned to the client (see example above). The array will be serialized based on the clients accept header. Json example:
+```json
+{
+  "user":
+  {
+    "id": 1,
+    "name": "John Doe",
+    "username": "johndoe99"
+  }
+}
+```
+
+It's possible to access the request and response objects by calling:
+
+```php
+// Get the request
+$request = $this->getRequest();
+// Get the response
+$response = $this->getResponse();
+```
+
+#### OPTIONS and API documentation
+There is a predefined options method that will respond to OPTIONS requests. The method returns supported content types, allowed methods as well as API documentation (if documentation exists).
+
+Documenting the API is done by using PHPDoc and using tags that starts with **@api**.
+
+```php
+/**
+ * @apiDescription Get information about a user
+ * @apiUrl /users/:id
+ */
+ public function get()
+ ...
+```
+
+It's possible to do quite advanced documentation this way.
+
+*It might be slightly unusual to return a body on an OPTIONS request but this makes the API self-describing. It makes it possible to browse, use and look at the documentation of the API by actually using the API itself.*
 
 ### Logging
 See the [Configuration](#configuration) section for an example of how to configure a logger. Loggers must implement the PSR-3 LoggerInterface.
