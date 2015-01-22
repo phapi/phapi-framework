@@ -27,7 +27,7 @@ Phapi requires PHP 5.5 or above.
 #### PHP settings
 It's suggested to turn off displaying of errors in production environments and rely on logging instead since Phapi has an error handler that will display serialized error messages.
 
-During development it's beneficial however to display errors and setting error reporting to E_ALL. 
+During development it's beneficial however to display errors and setting error reporting to E_ALL.
 
 ### Configuration
 Configuration is easy with Phapi. Create an array and pass it to the Phapi constructor and you are done. As an example we will set up basic logging with [Monolog](https://github.com/Seldaek/monolog):
@@ -122,7 +122,7 @@ $api = new \Phapi\Phapi($configuration);
 
 Use the **defaultAccept** configuration to specify the type used if the client asks for a type that aren't supported.
 
-It is possible to add more supported content types as you can see in the example above. The Json serializer accepts **application/vn.phapi+json** for both serialization and unserialization. The second parameter, **text/html** indicates that the Json serializer should be used if the client has sent an **Accept** header with the content text/html. However, the Json serializer will NOT unserialize request bodies with the **Content-Type** header set to text/html.
+It is possible to add more supported content types as you can see in the example above. The Json serializer accepts **application/vnd.phapi+json** for both serialization and unserialization. The second parameter, **text/html** indicates that the Json serializer should be used if the client has sent an **Accept** header with the content text/html. However, the Json serializer will NOT unserialize request bodies with the **Content-Type** header set to text/html.
 
 #### Implementing serializers
 Serializers must extend the abstract **Phapi\Serializer** class and implement the **serialize()** and **unserialize()** functions.
