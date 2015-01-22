@@ -99,9 +99,9 @@ class Resource
 
         foreach ($methods as $verb) {
             // Reflect the method
-            $rm = new \ReflectionMethod($this, $verb);
+            $reflectionMethod = new \ReflectionMethod($this, $verb);
             // Get method documentation
-            $doc = $rm->getDocComment();
+            $doc = $reflectionMethod->getDocComment();
 
             // Prepare output
             $verbOutput = [];
