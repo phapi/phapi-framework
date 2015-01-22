@@ -45,11 +45,11 @@ class JsonpTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @covers ::unserialize
+     * @covers ::deserialize
      */
-    public function testUnserialize()
+    public function testDeserialize()
     {
-        $this->assertEquals([ 'key' => 'value', 'another key' => 'second value'], $this->serializer->unserialize('{"key":"value","another key":"second value"}'));
+        $this->assertEquals([ 'key' => 'value', 'another key' => 'second value'], $this->serializer->deserialize('{"key":"value","another key":"second value"}'));
     }
 
 }

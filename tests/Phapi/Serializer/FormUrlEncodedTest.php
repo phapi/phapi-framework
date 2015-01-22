@@ -21,14 +21,14 @@ class FormUrlEncodedTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @covers ::unserialize
+     * @covers ::deserialize
      */
-    public function testUnserialize()
+    public function testDeserialize()
     {
         $array = ['key' => 'value', 'another_key' => 'second value'];
         $serializer = new FormUrlEncoded();
 
-        $this->assertEquals($array, $serializer->unserialize('key=value&another+key=second+value'));
+        $this->assertEquals($array, $serializer->deserialize('key=value&another+key=second+value'));
     }
 }
  

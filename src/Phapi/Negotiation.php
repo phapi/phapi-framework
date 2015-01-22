@@ -130,7 +130,7 @@ class Negotiation {
         foreach ($this->serializers as $serializer) {
             // Make sure it's a valid serializer
             if ($serializer instanceof Serializer) {
-                // Get all content types that the serializer can serialize and unserialize
+                // Get all content types that the serializer can serialize and deserialize
                 foreach ($serializer->getContentTypes() as $contentType) {
                     // Add to the list of unserializable content types
                     $this->contentTypes[] = $contentType;

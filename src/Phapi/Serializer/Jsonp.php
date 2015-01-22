@@ -50,7 +50,7 @@ class Jsonp extends Serializer
      * @param $input
      * @return array|mixed
      */
-    public function unserialize($input)
+    public function deserialize($input)
     {
         return json_decode($input, true);
     }

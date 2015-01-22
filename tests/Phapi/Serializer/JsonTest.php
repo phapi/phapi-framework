@@ -78,14 +78,14 @@ class JsonTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @covers ::unserialize
+     * @covers ::Deserialize
      * @depends testConstruct
      *
      * @param $serializer
      */
-    public function testUnserialize($serializer)
+    public function testDeserialize($serializer)
     {
-        $this->assertEquals([ 'key' => 'value', 'another key' => 'second value'], $serializer->unserialize('{"key":"value","another key":"second value"}'));
+        $this->assertEquals([ 'key' => 'value', 'another key' => 'second value'], $serializer->deserialize('{"key":"value","another key":"second value"}'));
     }
 
 }

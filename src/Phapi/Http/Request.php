@@ -245,7 +245,7 @@ class Request
     }
 
     /**
-     * Set body (unserialized POST) params
+     * Set body (deserialized POST) params
      *
      * @param array $body
      */

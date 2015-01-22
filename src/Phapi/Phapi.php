@@ -112,8 +112,8 @@ class Phapi {
         // Set up cache
         $this->setCache($this->configuration->get('cache'));
 
-        // Unserialize incoming body if a body exists
-        $this->unserializeBody();
+        // Deserialize incoming body if a body exists
+        $this->deserializeBody();
 
         //$this->response->setBody(['yes' => 'test']);
         //throw new Success\Ok();
@@ -163,9 +163,9 @@ class Phapi {
     }
 
     /**
-     * Unserialize the body based on content negotiation
+     * Deserialize the body based on content negotiation
      */
-    protected function unserializeBody()
+    protected function deserializeBody()
     {
         // Check if any raw content (body) can be found.
         if ($this->request->hasRawContent()) {
@@ -174,9 +174,9 @@ class Phapi {
             // the content type, otherwise an exception has already been thrown.
             $serializer = $this->getSerializer($this->request->getContentType());
 
-            // Get the raw content and unserialize it before setting it as the
+            // Get the raw content and deserialize it before setting it as the
             // body on the request object.
-            $this->request->setBody($serializer->unserialize($this->request->getRawContent()));
+            $this->request->setBody($serializer->deserialize($this->request->getRawContent()));
 
             // Exit function
             return;

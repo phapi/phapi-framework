@@ -50,7 +50,7 @@ abstract class Serializer
      * It's possible to pass extra content/mime types that should be supported.
      * Good to use when, for example, adding vendor specific mime types.
      *
-     * @param array $contentTypes       Extra content types that the serializer can both serialize and unserialize
+     * @param array $contentTypes       Extra content types that the serializer can both serialize and deserialize
      * @param array $acceptOnlyTypes    Extra content types that the serializer can only serialize
      */
     public function __construct($contentTypes = [], $acceptOnlyTypes = [])
@@ -86,8 +86,8 @@ abstract class Serializer
 
     /**
      * Check if the serializer can handle the specified content/mime type.
-     * Second parameter defines if the check if for serialization or unserialization.
-     * Default is to check for content types the serializer can unserialize (request).
+     * Second parameter defines if the check if for serialization or deserialization.
+     * Default is to check for content types the serializer can deserialize (request).
      * Pass TRUE as the second parameter and the function will check for what content
      * types it can serialize.
      *
@@ -108,8 +108,8 @@ abstract class Serializer
 
     /**
      * Get the content types that the serializer can handle. The parameter defines
-     * if the check if for serialization or unserialization. Default is to check for
-     * content types the serializer can unserialize (request). Pass TRUE as the
+     * if the check if for serialization or deserialization. Default is to check for
+     * content types the serializer can deserialize (request). Pass TRUE as the
      * parameter and the function will check for what content types it can serialize.
      *
      * @param bool $serialize
@@ -131,7 +131,7 @@ abstract class Serializer
      * @param $input
      * @return array
      */
-    abstract public function unserialize($input);
+    abstract public function deserialize($input);
 
     /**
      * Abstract function. When implemented it should convert

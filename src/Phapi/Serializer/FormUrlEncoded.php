@@ -33,7 +33,7 @@ class FormUrlEncoded extends Serializer
      * @param $input
      * @return array|mixed
      */
-    public function unserialize($input)
+    public function deserialize($input)
     {
         parse_str($input, $array);
         return $array;
