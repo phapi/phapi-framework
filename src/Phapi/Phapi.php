@@ -502,14 +502,10 @@ class Phapi {
     public function exceptionHandler(\Exception $exception)
     {
         if ($exception instanceof Success) {
-            $this->response->setStatus($exception->getStatusCode());
-
             // Do nothing, must look for Success since "else" needs to pick up all other exception types
         } elseif ($exception instanceof Redirect) {
-            $this->response->setStatus($exception->getStatusCode());
             // Set redirect location
             $this->response->setLocation($exception->getLocation());
-
         } else {
             // Prepare log message
             $message = sprintf(
@@ -539,10 +535,11 @@ class Phapi {
                 );
             }
             // Set response status, and body (message, code, description, link)
-            $this->response->setStatus($exception->getStatusCode());
             $this->response->setBody($this->prepareErrorBody($exception));
         }
 
+        // Set status code
+        $this->response->setStatus($exception->getStatusCode());
         // Get the serializer for the response content type
         $serializer = $this->getSerializer($this->response->getContentType(), true);
         // Give the serializer information about the content type we are using
