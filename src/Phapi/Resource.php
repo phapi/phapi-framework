@@ -167,50 +167,66 @@ class Resource
                 continue;
             }
 
-            // check if we already have a key/identifier in the output
-            if (array_key_exists($key, $output)) {
-                // check if value is an array (has multiple values)
-                if (is_array($output[$key])) {
+            $output = $this->prepareOutput($output, $key, $value, $longKey);
+        }
 
-                    // remove the key from the value and remove whitespace
-                    $newValue = str_replace($longKey.' ', '', trim($value));
+        return $output;
+    }
 
-                    // check if there was a key to remove
-                    if (trim($value) !== $newValue) {
-                        // the key was removed and that means we wasn't to add the line as a new row in the array
-                        $output[$key][] = $newValue;
-                    } else {
-                        // the key wasn't removed so we want to merge this line with the previous one
-                        // count rows in array to get the last key
-                        $last = count($output[$key]) -1;
-                        // merge this line with the previous one
-                        $output[$key][$last] = $output[$key][$last]. ' '. $newValue;
-                    }
+    /**
+     * Prepare output
+     *
+     * @param $output
+     * @param $key
+     * @param $value
+     * @param $longKey
+     * @return array
+     */
+    protected function prepareOutput(array $output, $key, $value, $longKey)
+    {
+        // check if we already have a key/identifier in the output
+        if (array_key_exists($key, $output)) {
+            // check if value is an array (has multiple values)
+            if (is_array($output[$key])) {
+
+                // remove the key from the value and remove whitespace
+                $newValue = str_replace($longKey.' ', '', trim($value));
+
+                // check if there was a key to remove
+                if (trim($value) !== $newValue) {
+                    // the key was removed and that means we wasn't to add the line as a new row in the array
+                    $output[$key][] = $newValue;
                 } else {
-                    // value is not an array
-
-                    // save the current value
-                    $oldValue = $output[$key];
-
-                    // remove the key from the value and remove whitespace
-                    $newValue = trim(str_replace($longKey.' ', '', trim($value)));
-
-                    // check if there was a key to remove
-                    if (trim($value) !== $newValue) {
-                        // the key was removed so we want to create an array with the previous and new value
-                        $output[$key] = [$oldValue, $newValue];
-                    } else {
-                        // the wasn't a key to remove so we want to merge this line with the previous one
-                        $output[$key] .= ' '. $newValue;
-                    }
+                    // the key wasn't removed so we want to merge this line with the previous one
+                    // count rows in array to get the last key
+                    $last = count($output[$key]) -1;
+                    // merge this line with the previous one
+                    $output[$key][$last] = $output[$key][$last]. ' '. $newValue;
                 }
             } else {
-                // this is a new key/identifier
-                // check if we have a key/identifier
-                if (isset($longKey)) {
-                    // add key and value to output
-                    $output[$key] = str_replace($longKey.' ', '', trim($value));
+                // value is not an array
+
+                // save the current value
+                $oldValue = $output[$key];
+
+                // remove the key from the value and remove whitespace
+                $newValue = trim(str_replace($longKey.' ', '', trim($value)));
+
+                // check if there was a key to remove
+                if (trim($value) !== $newValue) {
+                    // the key was removed so we want to create an array with the previous and new value
+                    $output[$key] = [$oldValue, $newValue];
+                } else {
+                    // the wasn't a key to remove so we want to merge this line with the previous one
+                    $output[$key] .= ' '. $newValue;
                 }
+            }
+        } else {
+            // this is a new key/identifier
+            // check if we have a key/identifier
+            if (isset($longKey)) {
+                // add key and value to output
+                $output[$key] = str_replace($longKey.' ', '', trim($value));
             }
         }
 
