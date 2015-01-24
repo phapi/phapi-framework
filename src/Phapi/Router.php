@@ -144,8 +144,7 @@ class Router {
      */
     protected function matchDirect()
     {
-        // check if we can find a direct match in the routes table
-
+        // Create variable used to keep track on progress
         $resource = false;
 
         // check without a trailing slash
@@ -177,6 +176,8 @@ class Router {
             // we found our match, stop looking for more
             return true;
         }
+
+        return false;
     }
 
     /**
@@ -306,6 +307,7 @@ class Router {
                 return true;
             }
         }
+
         return false;
     }
     /**
