@@ -267,6 +267,7 @@ class PhapiTest extends \PHPUnit_Framework_TestCase {
     /**
      * @covers ::exceptionHandler
      * @covers ::prepareErrorBody
+     * @covers ::logErrorException
      */
     public function testExceptionHandlerError()
     {
@@ -291,6 +292,7 @@ class PhapiTest extends \PHPUnit_Framework_TestCase {
     /**
      * @covers ::exceptionHandler
      * @covers ::prepareErrorBody
+     * @covers ::logErrorException
      */
     public function testExceptionHandlerUnknownException()
     {

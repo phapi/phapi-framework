@@ -507,21 +507,8 @@ class Phapi {
             // Set redirect location
             $this->response->setLocation($exception->getLocation());
         } else {
-            // Prepare log message
-            $message = sprintf(
-                'Uncaught exception of type %s thrown in file %s at line %s%s.',
-                get_class($exception),
-                $exception->getFile(),
-                $exception->getLine(),
-                $exception->getMessage() ? sprintf(' with message "%s"', $exception->getMessage()) : ''
-            );
-
-            // Log error
-            $this->getLogWriter()->error($message, array(
-                'Exception file'  => $exception->getFile(),
-                'Exception line'  => $exception->getLine(),
-                'Exception trace' => $exception->getTraceAsString()
-            ));
+            // Create a log entry
+            $this->logErrorException($exception);
 
             // Check if the Exception is a Phapi Exception
             if (!($exception instanceof Error)) {
@@ -553,6 +540,30 @@ class Phapi {
         if ($prev = $exception->getPrevious()) {
             $this->exceptionHandler($prev);
         }
+    }
+
+    /**
+     * Create a log entry about the error exception
+     *
+     * @param $exception
+     */
+    protected function logErrorException($exception)
+    {
+        // Prepare log message
+        $message = sprintf(
+            'Uncaught exception of type %s thrown in file %s at line %s%s.',
+            get_class($exception),
+            $exception->getFile(),
+            $exception->getLine(),
+            $exception->getMessage() ? sprintf(' with message "%s"', $exception->getMessage()) : ''
+        );
+
+        // Log error
+        $this->getLogWriter()->error($message, array(
+            'Exception file'  => $exception->getFile(),
+            'Exception line'  => $exception->getLine(),
+            'Exception trace' => $exception->getTraceAsString()
+        ));
     }
 
     /**
