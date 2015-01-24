@@ -253,12 +253,13 @@ class Phapi {
      * Get serializer based on content type
      *
      * @param $contentType
+     * @param $serialize
      * @return null|Serializer
      */
-    protected function getSerializer($contentType)
+    protected function getSerializer($contentType, $serialize = false)
     {
         foreach ($this->configuration->get('serializers') as $serializer) {
-            if ($serializer->supports($contentType, true)) {
+            if ($serializer->supports($contentType, $serialize)) {
                 return $serializer;
             }
         }
@@ -542,8 +543,8 @@ class Phapi {
             $this->response->setBody($this->prepareErrorBody($exception));
         }
 
-        // Get the serializer for the content type
-        $serializer = $this->getSerializer($this->response->getContentType());
+        // Get the serializer for the response content type
+        $serializer = $this->getSerializer($this->response->getContentType(), true);
         // Give the serializer information about the content type we are using
         $serializer->setContentType($this->response->getContentType());
         // Get the body from the response, serialize it, give it back to the response
