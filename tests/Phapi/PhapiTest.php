@@ -34,6 +34,17 @@ class PhapiTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
+     * @expectedException \Phapi\Exception\Error\NotAcceptable
+     * @covers ::negotiate
+     */
+    public function testNegotiateNotAcceptable()
+    {
+        $phapi = new Phapi([
+            'serializers' => [ new Jsonp() ]
+        ]);
+    }
+
+    /**
      * @covers ::setCache
      * @covers ::getCache
      */
