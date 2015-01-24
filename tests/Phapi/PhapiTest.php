@@ -299,4 +299,22 @@ class PhapiTest extends \PHPUnit_Framework_TestCase {
 
         $this->assertEquals($expectedArray, $phapi->getResponse()->getBody());
     }
+
+    /**
+     * @covers ::getRouter
+     */
+    public function testGetRouter()
+    {
+        $phapi = new Phapi([]);
+        $this->assertInstanceOf('Phapi\Router', $phapi->getRouter());
+    }
+
+    /**
+     * @covers ::getNegotiator
+     */
+    public function testGetNegotiator()
+    {
+        $phapi = new Phapi([]);
+        $this->assertInstanceOf('Phapi\Negotiator', $phapi->getNegotiator());
+    }
 }
