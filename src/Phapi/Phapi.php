@@ -37,10 +37,6 @@ class Phapi {
     const MODE_STAGING = 1;
     const MODE_PRODUCTION = 2;
 
-    const STORAGE_CONFIGURATION = 0;
-    const STORAGE_REGISTRY = 1;
-    const STORAGE_BOTH = 2;
-
     /**
      * Configuration
      *
@@ -297,7 +293,7 @@ class Phapi {
      *
      * @param $cache
      */
-    public function setCache($cache)
+    protected function setCache($cache)
     {
         // Check if its an actual cache
         if ($cache instanceof Cache) {
@@ -395,7 +391,7 @@ class Phapi {
      * Add middleware
      *
      * This method prepends new middleware to the application middleware stack.
-     * The argument must be an instance that subclasses Slim_Middleware.
+     * The argument must be an instance that subclasses Middleware.
      *
      * @param Middleware $newMiddleware
      */
