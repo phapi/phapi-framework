@@ -43,4 +43,23 @@ class NegotiationTest extends \PHPUnit_Framework_TestCase {
             'application/javascript'
         ], $negotiation->getContentTypes());
     }
+
+    /**
+     * @covers ::__construct
+     * @covers ::negotiateAccept
+     * @covers ::negotiateContentType
+     * @covers ::createContentTypeList
+     * @covers ::getContentType
+     * @covers ::getAccept
+     */
+    public function testFail()
+    {
+        $serializers = [ new Json([], ['text/html']), new Jsonp() ];
+        $contentTypeHeader = 'application/xml';
+        $acceptHeader = 'application/xhtml+xml,application/xml;q=0.9,image/webp';
+        $negotiation = new Negotiator(new FormatNegotiator(), $serializers, $acceptHeader, $contentTypeHeader);
+
+        $this->assertEquals(null, $negotiation->getContentType());
+        $this->assertEquals(null, $negotiation->getAccept());
+    }
 }
