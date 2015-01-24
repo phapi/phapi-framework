@@ -490,24 +490,24 @@ class Phapi {
     /**
      * Custom exception handler.
      *
-     * Exceptions are used to trigger the response no matter if
-     * an error occurred or if everything went 200 OK.
+     * Exceptions are used to trigger the response no matter if an error occurred or if everything went 200 OK.
+     *
+     * Exceptions (response codes) should be handled differently depending on the response code.
+     * The first set of codes are Redirects and should set the Location header. The second set of
+     * codes are errors and should therefor change the response content to the exceptions error
+     * information and a log entry should be created. Success codes should not log or modify the body.
      *
      * @param \Exception $exception
      */
     public function exceptionHandler(\Exception $exception)
     {
-        // Exceptions (response codes) should be handled differently depending on the
-        // response code. The first set of codes should not modify the response content.
-        // The second set of codes are errors and should therefor change the response
-        // content to the exceptions error information and a log entry should be created.
         if ($exception instanceof Success) {
-            // Set response status and leave the body as is
             $this->response->setStatus($exception->getStatusCode());
 
+            // Do nothing, must look for Success since "else" needs to pick up all other exception types
         } elseif ($exception instanceof Redirect) {
-            // Set response status and redirect location
             $this->response->setStatus($exception->getStatusCode());
+            // Set redirect location
             $this->response->setLocation($exception->getLocation());
 
         } else {
