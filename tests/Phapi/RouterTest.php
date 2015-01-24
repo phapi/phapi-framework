@@ -66,6 +66,66 @@ class RouterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @expectedException \Phapi\Exception\Error\NotFound
+     *
+     * @covers ::match
+     * @covers ::matchCache
+     * @throws \Phapi\Exception\Error\NotFound
+     */
+    public function testCacheMatchFail()
+    {
+        $router = new Router(new RouteParser(), []);
+        $router->addRoutes($this->routes);
+
+        $this->assertInstanceOf('\\Phapi\\Router', $router);
+
+        $cache = new Memcache([['host' => 'localhost', 'port' => 11211]]);
+        $cache->connect();
+        $cache->flush();
+
+        $cached = [
+            '/color/54/' => [
+                'matchedRoute' => '/color/{id:h}',
+                'matchedResource' => '\\Phapi\\Tests\\Color'
+            ]
+        ];
+
+        $cache->set('routes', $cached);
+        $router->setCache($cache);
+        $router->match('/color/54', 'GET');
+    }
+
+    /**
+     * @expectedException \Phapi\Exception\Error\MethodNotAllowed
+     *
+     * @covers ::match
+     * @covers ::matchCache
+     * @throws \Phapi\Exception\Error\NotFound
+     */
+    public function testCacheMatchFail2()
+    {
+        $router = new Router(new RouteParser(), []);
+        $router->addRoutes($this->routes);
+
+        $this->assertInstanceOf('\\Phapi\\Router', $router);
+
+        $cache = new Memcache([['host' => 'localhost', 'port' => 11211]]);
+        $cache->connect();
+        $cache->flush();
+
+        $cached = [
+            '/users/phapi/' => [
+                'matchedRoute' => '/users/{name:a}',
+                'matchedResource' => '\\Phapi\\Tests\\Users'
+            ]
+        ];
+
+        $cache->set('routes', $cached);
+        $router->setCache($cache);
+        $router->match('/users/phapi', 'PUT');
+    }
+
+    /**
      * @depends testConstructor
      * @covers ::setRoutes
      * @covers ::addRoutes
