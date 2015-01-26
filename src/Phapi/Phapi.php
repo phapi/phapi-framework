@@ -430,11 +430,38 @@ class Phapi {
      */
     public function call()
     {
-        // dispatch and set content to response object
-        $this->response->setBody($this->dispatcher->dispatch($this));
+        // Dispatch and get result
+        $result = $this->dispatcher->dispatch($this);
+
+        // Check if a status is included in the result
+        if (isset($result['status'])) {
+            // Set body
+            $this->response->setBody($result['body']);
+
+            // Create the appropriate response status
+            if ($result['status'] == Response::STATUS_ACCEPTED) {
+                // It's a accepted status
+                $status = new Success\Accepted();
+            } elseif ($result['status'] == Response::STATUS_CREATED) {
+                // It's a created status
+                $status = new Success\Created();
+            } else {
+                // It's a status that shouldn't be included so assume that an OK status
+                // should be used. This indicates that the developer tries to set the
+                // status in a way that isn't supported. Errors\*, Redirects\* and NoContent
+                // and NotModified should be thrown directly in the resource method since
+                // the resource body should not be returned.
+                $status = new Success\Ok();
+            }
+        } else {
+            // Only a body is returned (no status included in the result) so create
+            // a OK response status and set the body
+            $this->response->setBody($result);
+            $status = new Success\Ok();
+        }
 
         // Trigger response
-        throw new Success\Ok;
+        throw new $status;
     }
 
     /**
