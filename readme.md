@@ -89,8 +89,6 @@ $routes = [
 ```
 
 ### Resources
-*TODO*
-
 Set up autoloading by editing *composer.json*. Example:
 ```json
 {
@@ -145,6 +143,29 @@ $request = $this->getRequest();
 // Get the response
 $response = $this->getResponse();
 ```
+
+#### POST, PUT, and PATCH with Created or Accepted responses
+In the GET example above (when a 200 OK is returned to the client) an array with the response body is returned from the function. This is how Phapi expects to get the body for 200 OK responses.
+
+There are however two other response codes that needs some special treatment: 201 Created and 202 Accepted. These responses should in most cases include a body. Created should usually include a copy of the newly created entity while Accepted SHOULD include an indication of the request's current status and either a pointer to a status monitor or some estimate of when the user can expect the request to be fulfilled.
+
+To be able to do this the response from the function needs to be a little bit different:
+
+```php
+public function post()
+{
+  return [
+    'body' => [
+      ... // Copy of the created entity
+    ]
+    'status' => Phapi\Http\Response::STATUS_CREATED
+  ];
+}
+```
+The body and status needs to be wrapped in an array.
+
+See the [Trigger response and error handling](#trigger-response-and-error-handling) section for more information about how to handl errors and redirects.
+
 
 #### OPTIONS and API documentation
 There is a predefined options method that will respond to OPTIONS requests. The method returns supported content types, allowed methods as well as API documentation (if documentation exists).
@@ -260,9 +281,9 @@ $origin = $request->getHeaders()->get('origin');
 
 There are four types of parameters that can be retrieved from the Request object:
 
-- **get**, usually populated by the global $_GET variable.
-- **post**, usually populated by the global $_POST variable.
-- **server**, usually populated by the global $_SERVER variable.
+- **get**, usually populated by the global GET variable.
+- **post**, usually populated by the global POST variable.
+- **server**, usually populated by the global SERVER variable.
 - **attributes**, attributes are discovered via decomposing the URI path. Example: http://localhost/users/phapi where phapi are the username of a user.
 
 These four types are all stored in a Phapi\Bucket object and can there for be accessed and used in the same way:
@@ -338,10 +359,22 @@ Valid responses are:
 * NoContent
 * NotModified
 
-An example usage in a resource might be that a POST has been made and a new user should be created. When the user has been created the following code can be used to trigger a 201 Created response (no arguments are needed):
+NoContent and NotModified should be used as Error\* and Redirect\* should be used. Just throw the exception and Phapi will take care of the rest.
+
+Created, Accepted on the other hand must be used in a different maner. An example usage in a resource might be that a POST has been made and a new user should be created. When the user has been created two things should be included in the response to the client, a 201 status code and a copy of the newly created entity.
 ```php
-throw new \Phapi\Exception\Created();
+public function post()
+{
+  return [
+    'body' => [
+        ... // Copy of the created entity
+      ]
+    'status' => Phapi\Http\Response::STATUS_CREATED
+  ];
+}
 ```
+
+See the section about [Resources](#resources) for more information and examples.
 
 #### Redirect
 Redirects are used when a resource has moved, permanently or temporarily.
