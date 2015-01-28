@@ -2,6 +2,7 @@
 <phpunit colors="true" bootstrap="./vendor/autoload.php">
     <php>
         <server name="HTTP_ACCEPT" value="application/json" />
+        <server name="CONTENT_TYPE" value="application/json" />
     </php>
     <testsuites>
         <testsuite name="The project's test suite">

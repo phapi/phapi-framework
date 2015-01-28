@@ -28,8 +28,10 @@ class PhapiTest extends \PHPUnit_Framework_TestCase {
     {
         $phapi = new Phapi([
             'httpVersion' => '1.1',
-            'mode' => Phapi::MODE_DEVELOPMENT
+            'mode' => Phapi::MODE_DEVELOPMENT,
+            'rawContent' => '{ "foo": "bar" }'
         ]);
+
         $this->assertEquals('1.1', $phapi->configuration->get('httpVersion', null));
     }
 
