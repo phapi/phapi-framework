@@ -120,7 +120,12 @@ class Phapi {
         $this->setLogWriter($this->configuration->get('logWriter'));
 
         // Create the request object
-        $this->request = new Request();
+        $this->request = new Request(
+            $this->configuration->get('post'),
+            $this->configuration->get('get'),
+            $this->configuration->get('server'),
+            $this->configuration->get('rawContent')
+        );
         // Generate an UUID to use for both the request and response
         $this->request->setUuid((new UUID())->v4());
 
@@ -278,7 +283,11 @@ class Phapi {
                 new Json(),
                 new Jsonp(),
                 new FormUrlEncoded(),
-            ]
+            ],
+            'post' => $_POST,
+            'get' => $_GET,
+            'server' => $_SERVER,
+            'rawContent' => file_get_contents('php://input')
         ];
     }
 
