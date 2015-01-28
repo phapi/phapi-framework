@@ -21,7 +21,6 @@ class PhapiTest extends \PHPUnit_Framework_TestCase {
      * @covers ::__construct
      * @covers ::getDefaultConfiguration
      * @covers ::setCache
-     * @covers ::negotiate
      * @covers ::deserializeBody
      */
     public function testConstruct()
@@ -37,7 +36,6 @@ class PhapiTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * @expectedException \Phapi\Exception\Error\NotAcceptable
-     * @covers ::negotiate
      */
     public function testNegotiateNotAcceptable()
     {

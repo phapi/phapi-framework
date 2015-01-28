@@ -6,8 +6,6 @@ use Negotiation\FormatNegotiator;
 use Phapi\Cache\NullCache;
 use Phapi\Exception\Error;
 use Phapi\Exception\Error\InternalServerError;
-use Phapi\Exception\Error\NotAcceptable;
-use Phapi\Exception\Error\UnsupportedMediaType;
 use Phapi\Exception\Redirect;
 use Phapi\Exception\Success;
 use Phapi\Http\Header;
@@ -137,7 +135,8 @@ class Phapi {
         $this->response->setCharset($this->configuration->get('charset'));
 
         // Handle format negotiation
-        $this->negotiate();
+        $this->negotiator = new Negotiator(new FormatNegotiator(), $this->configuration, $this->request, $this->response);
+        $this->negotiator->negotiate();
 
         // Set up cache
         $this->setCache($this->configuration->get('cache'));
@@ -154,66 +153,6 @@ class Phapi {
 
         // Define default middleware stack
         $this->middleware = [$this];
-    }
-
-    /**
-     * Handle the format negotiation of both the
-     * accept and content type headers.
-     *
-     * @throws NotAcceptable
-     * @throws UnsupportedMediaType
-     */
-    protected function negotiate()
-    {
-        $this->negotiator = new Negotiator(
-            new FormatNegotiator(),
-            $this->configuration->get('serializers'),
-            $this->request->getHeaders()->get('accept', ''),
-            $this->request->getHeaders()->get('content-type', '')
-        );
-
-        // Create variable that will be used if the provided accept type isn't supported
-        $notAcceptable = false;
-
-        // Check if the application can deliver the response in a format
-        // that the client has asked for
-        if (null === $accept = $this->negotiator->getAccept()) {
-            // If not, use the first type from the first configured serializer
-            $accept = $this->configuration->get('defaultAccept');
-
-            // Since we need to set the default accept value to be able to return something to client
-            // we need to throw the exception later than now
-            $notAcceptable = true;
-        }
-
-        // Save negotiated accept to the request
-        $this->request->setAccept($accept);
-        // Set the content type of the response
-        $this->response->setContentType($accept);
-
-        // Check if the client supplied an non acceptable accept type
-        if ($notAcceptable) {
-            throw new NotAcceptable(
-                $this->request->getHeaders()->get('accept') .
-                ' is not an supported Accept header. Supported types are: ' .
-                implode(', ', $this->negotiator->getAccepts())
-            );
-        }
-
-        // Check if we have a body in the request
-        if ($this->request->hasRawContent()) {
-            // Check if the application can handle the format that the request body is in.
-            if (null !== $contentType = $this->negotiator->getContentType()) {
-                $this->request->setContentType($contentType);
-            } else {
-                // The application can't handle this content type. Respond with a Not Acceptable response
-                throw new UnsupportedMediaType(
-                    $this->request->getHeaders()->get('content-type') .
-                    ' is not an supported Content-Type header. Supported types are: ' .
-                    implode(', ', $this->negotiator->getContentTypes())
-                );
-            }
-        }
     }
 
     /**
