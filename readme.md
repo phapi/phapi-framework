@@ -5,8 +5,7 @@ Phapi is a PHP based framework aiming at simplifying API development and a the s
 [![Author](https://img.shields.io/badge/author-%40ahinko-blue.svg?style=flat-square)](https://twitter.com/ahinko)
 [![Source](https://img.shields.io/badge/source-ahinko/phapi-blue.svg?style=flat-square)](https://github.com/ahinko/phapi)
 [![Release](https://img.shields.io/github/release/ahinko/phapi.svg?style=flat-square)](https://github.com/ahinko/phapi/releases)
-[![License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](https://github.com/ahinko/phapi/blob/master/LICENSE)
-
+[![License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](https://github.com/ahinko/phapi/blob/master/LICENSE)  
 [![Build Status](https://img.shields.io/travis/ahinko/phapi.svg?style=flat-square)](https://travis-ci.org/ahinko/phapi)
 [![HHVM](https://img.shields.io/hhvm/ahinko/phapi.svg?style=flat-square)](http://hhvm.h4cc.de/package/ahinko/phapi)
 [![Code Climate](https://img.shields.io/codeclimate/github/ahinko/phapi.svg?style=flat-square)](https://codeclimate.com/github/ahinko/phapi)
