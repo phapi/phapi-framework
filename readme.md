@@ -171,7 +171,7 @@ public function post()
 ```
 The body and status needs to be wrapped in an array.
 
-See the [Trigger response and error handling](#trigger-response-and-error-handling) section for more information about how to handl errors and redirects.
+See the [Trigger response and error handling](#trigger-response-and-error-handling) section for more information about how to handle errors and redirects.
 
 
 #### OPTIONS and API documentation
