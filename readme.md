@@ -110,7 +110,6 @@ $routes = [
 Set up autoloading by editing *composer.json*. Example:
 ```json
 {
-  ...
   "autoload": {
     "psr-4": {
       "Phapi\\Resource\\": "app/resource",
@@ -220,7 +219,11 @@ Create a cache and add it to the configuration:
 ```php
 // Configuration
 $configuration = [
-    'cache' = new \Phapi\Cache\Memcache('localhost', 11211);
+    'cache'         => new \Phapi\Cache\Memcache(
+      [
+          ['host' => 'localhost', 'port' => 11211]
+      ]
+    ),
 ];
 ```
 
