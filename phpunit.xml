@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<phpunit colors="true" bootstrap="./vendor/autoload.php">
+    <php>
+        <server name="HTTP_ACCEPT" value="application/json" />
+        <server name="CONTENT_TYPE" value="application/json" />
+    </php>
+    <testsuites>
+        <testsuite name="The project's test suite">
+            <directory>./tests</directory>
+        </testsuite>
+    </testsuites>
+    <filter>
+        <blacklist>
+            <directory suffix=".php">./</directory>
+            <exclude>
+                <directory suffix=".php">./src</directory>
+            </exclude>
+        </blacklist>
+    </filter>
+    <logging>
+        <log type="coverage-clover" target="build/logs/clover.xml"/>
+    </logging>
+</phpunit>
