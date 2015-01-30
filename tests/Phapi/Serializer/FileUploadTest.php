@@ -14,10 +14,10 @@ class FileUploadTest extends \PHPUnit_Framework_TestCase {
      */
     public function testSerialize()
     {
-        $input = 'a simple text string';
+        $input = ['a simple output file text string'];
         $serializer = new FileUpload();
 
-        $this->assertEquals($input, $serializer->serialize($input));
+        $this->assertEquals('a simple output file text string', $serializer->serialize($input));
     }
 
     /**
@@ -25,7 +25,7 @@ class FileUploadTest extends \PHPUnit_Framework_TestCase {
      */
     public function testDeserialize()
     {
-        $input = 'a simple output file text string';
+        $input = 'a simple file text string';
         $serializer = new FileUpload();
 
         $this->assertEquals($input, $serializer->deserialize($input));
