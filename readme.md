@@ -10,6 +10,7 @@ Phapi is a PHP based framework aiming at simplifying API development and a the s
 [![HHVM](https://img.shields.io/hhvm/ahinko/phapi.svg?style=flat-square)](http://hhvm.h4cc.de/package/ahinko/phapi)
 [![Code Climate](https://img.shields.io/codeclimate/github/ahinko/phapi.svg?style=flat-square)](https://codeclimate.com/github/ahinko/phapi)
 [![Test Coverage](https://img.shields.io/codeclimate/coverage/github/ahinko/phapi.svg?style=flat-square)](https://codeclimate.com/github/ahinko/phapi)
+[![Downloads](https://img.shields.io/packagist/dt/ahinko/phapi.svg?style=flat-square)](https://packagist.org/packages/ahinko/phapi)
 
 ## Quick start
 See the [Phapi example repo](https://github.com/ahinko/phapi-example) for an example of how to get started really fast.
