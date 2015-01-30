@@ -5,9 +5,9 @@ namespace Phapi\Serializer;
 use Phapi\Serializer;
 
 /**
- * JSON Serializer
+ * FormUrlEncoded Serializer
  *
- * Class handling JSON content
+ * Class handling content in form url encoded format
  *
  * @category Serializer
  * @package  Phapi
