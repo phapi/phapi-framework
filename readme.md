@@ -81,10 +81,10 @@ By default a route pattern syntax is used where **{foo}** specified a placeholde
 
 ##### Regex Shortcuts
 ```
- :i => :/d+                # numbers only
- :a => :[a-zA-Z0-9]+       # alphanumeric
- :c => :[a-zA-Z0-9+_-\.]+  # alnumnumeric and +-_. characters
- :h => :[a-fA-F0-9]+       # hex
+:i => :/d+                # numbers only
+:a => :[a-zA-Z0-9]+       # alphanumeric
+:c => :[a-zA-Z0-9+_-\.]+  # alnumnumeric and +-_. characters
+:h => :[a-fA-F0-9]+       # hex
 ```
 
 use in routes:
