@@ -29,13 +29,6 @@ class Json extends Serializer
     ];
 
     /**
-     * Extra content types only for output
-     *
-     * @var array
-     */
-    protected $acceptOnlyTypes = [];
-
-    /**
      * Converts a JSON document to an php array
      *
      * @param $input
