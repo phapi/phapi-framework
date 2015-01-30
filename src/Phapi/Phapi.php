@@ -152,8 +152,41 @@ class Phapi {
         // Deserialize incoming body if a body exists
         $this->deserializeBody();
 
+        // Special treatment of the JsonP serializer
+        $this->addCallbackToJsonPSerializer();
+
         // Define default middleware stack
         $this->middleware = [$this];
+    }
+
+    /**
+     * Special treatment of the JsonP serializer
+     */
+    protected function addCallbackToJsonPSerializer()
+    {
+        // Check if accept header indicates the JsonP serializer
+        if ($this->request->getAccept() === 'application/javascript') {
+            // Find the JsonP serializer
+            foreach ($this->configuration->get('serializers') as $serializer) {
+                if ($serializer instanceof Jsonp) {
+                    // Set callback to null
+                    $callback = null;
+
+                    // Look for callback param in query
+                    if ($this->request->getQuery()->has('callback')) {
+                        $callback = $this->request->getQuery()->get('callback');
+                    } elseif ($this->request->getBody()->has('callback')) {
+                        // Look for callback param in body
+                        $callback = $this->request->getBody()->get('callback');
+                    }
+
+                    // Set callback if it isn't null
+                    if ($callback !== null) {
+                        $serializer->setCallback($callback);
+                    }
+                }
+            }
+        }
     }
 
     /**
