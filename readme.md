@@ -289,8 +289,8 @@ $origin = $request->getHeaders()->get('origin');
 
 There are four types of parameters that can be retrieved from the Request object:
 
-- **get**, usually populated by the global GET variable.
-- **post**, usually populated by the global POST variable.
+- **query**, usually populated by the global GET variable.
+- **body**, usually populated by php://input.
 - **server**, usually populated by the global SERVER variable.
 - **attributes**, attributes are discovered via decomposing the URI path. Example: http://localhost/users/phapi where phapi are the username of a user.
 
