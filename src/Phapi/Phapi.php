@@ -11,6 +11,7 @@ use Phapi\Exception\Success;
 use Phapi\Http\Header;
 use Phapi\Http\Request;
 use Phapi\Http\Response;
+use Phapi\Serializer\FileUpload;
 use Phapi\Serializer\FormUrlEncoded;
 use Phapi\Serializer\Json;
 use Phapi\Serializer\Jsonp;
@@ -222,6 +223,7 @@ class Phapi {
                 new Json(),
                 new Jsonp(),
                 new FormUrlEncoded(),
+                new FileUpload()
             ],
             'post' => $_POST,
             'get' => $_GET,

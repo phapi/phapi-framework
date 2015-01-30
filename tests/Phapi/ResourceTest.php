@@ -23,13 +23,19 @@ class ResourceTest extends \PHPUnit_Framework_TestCase {
                 'application/json',
                 'text/json',
                 'application/javascript',
-                'application/x-www-form-urlencoded'
+                'application/x-www-form-urlencoded',
+                'application/octet-stream'
             ],
             'accept' => [
                 'application/json',
                 'text/json',
                 'application/javascript',
-                'application/x-www-form-urlencoded'
+                'application/x-www-form-urlencoded',
+                'application/octet-stream',
+                'image/jpg',
+                'image/jpeg',
+                'image/gif',
+                'image/png'
             ],
             'methods' => [
                 'GET' => [

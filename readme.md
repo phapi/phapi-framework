@@ -22,6 +22,8 @@ Phapi is a PHP based framework aiming at simplifying API development and a the s
 8. [Serializers](#serializers)
 9. [Request](#request)
 10. [Trigger response and error handling](#trigger-response-and-error-handling)
+11. [Uploading files](#uploading-files)
+12. [Retrieving files](#retrieving-files)
 
 ### Requirements
 Phapi requires PHP 5.5 or above.
@@ -254,9 +256,10 @@ Serializers have two tasks: unserialize response body and serialize response bod
 $configuration = [
   'defaultAccept' => 'application/json',
   'serializers' => [
-    new Json(['application/vnd.phapi+json'], ['text/html']),
-    new Jsonp(['application/vnd.phapi+javascript']),
-    new FormUrlEncoded(),
+    new \Phapi\Serializer\Json(['application/vnd.phapi+json'], ['text/html']),
+    new \Phapi\Serializer\Jsonp(['application/vnd.phapi+javascript']),
+    new \Phapi\Serializer\FormUrlEncoded(),
+    new \Phapi\Serializer\FileUpload(),
   ]
 ];
 
@@ -395,6 +398,72 @@ throw new \Phapi\Exception\Redirect\MovedPermanently('/users/peter');
 ```
 
 This will result in a 301 Moved Permanently response with the passed argument (***/users/peter***) assigned to the location header.
+
+## Uploading files
+The basic workflow for handling file uploads are as follows:
+
+- The client does a POST request to a resource (in this example: **Resource\Avatar** and the user id is **johndoe**) including information about the file that the client wants to upload. Filename, mime type, file size etc. Example:  
+
+```json
+
+POST /avatar/johndoe
+{
+  "filename": "johndoe.jpg",
+  "mime-type": "image/jpg",
+  "filesize": 123455
+}
+
+```
+
+- The resource saves the information and generates (and returns) a unique URL to a resource that accepts PUT requests. Example:
+
+```json
+{
+  "putUrl": "/avatar/johndoe"
+}
+
+```
+
+- The client does a PUT request to the unique URL with the file content. Content type header should be set to **application/octet-stream**.
+
+```
+PUT /avatar/johndoe
+
+...file content...
+
+
+```
+
+- The resource handling the PUT request can receive the file content from the request body:
+
+```php
+public function put()
+{
+  $fileContent = $this->getRequest()->getBody();
+}
+```
+
+## Retrieving files
+If the client expects to get a .jpg file then the accept header should be set to **image/jpg**. Since resources needs to return arrays the file content should be returned as the only value in the array:
+```php
+public function get()
+{
+  return [$fileContent];
+}
+```
+
+The FileUpload serializer handles the serialization of files (i.e. it just passes through the file content without modifying it). The FileUpload serializer supports **image/jpg**, **image/jpeg**, **image/gif** and **image/png** by default so if more content/mime types needs to be supported those types needs to be [configured](#serializers):
+```php
+
+$configuration = [
+  ...
+  'serializers' => [
+      ...
+      new \Phapi\Serializer\FileUpload([], [ 'video/wmv '])
+  ]
+];
+
+```
 
 ## License
 Phapi is licensed under the MIT License - see the LICENSE file for details
