@@ -20,7 +20,7 @@ class UUIDTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers ::generate
-     * @covers ::v4
+     * @covers ::uuid4
      */
     public function testGenerateV4()
     {
@@ -31,7 +31,7 @@ class UUIDTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers ::generate
-     * @covers ::v5
+     * @covers ::uuid5
      */
     public function testGenerateV5()
     {
@@ -42,7 +42,7 @@ class UUIDTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers ::generate
-     * @covers ::v5
+     * @covers ::uuid5
      */
     public function testGenerateV5Fail()
     {

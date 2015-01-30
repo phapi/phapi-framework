@@ -22,6 +22,7 @@ class PhapiTest extends \PHPUnit_Framework_TestCase {
      * @covers ::getDefaultConfiguration
      * @covers ::setCache
      * @covers ::deserializeBody
+     * @covers ::addCallbackToJsonPSerializer
      */
     public function testConstruct()
     {
