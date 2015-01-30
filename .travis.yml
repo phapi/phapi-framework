@@ -28,7 +28,7 @@ branches:
 notifications:
   email: false
   slack:
-    secure: lv5Ih2lfcchQzBV9nyWMuoV4HLZh9fjBZwzbfWS9XKSnzLADwhMFXgDS0FCbptUx6qj7SjKPzAhZWcmPN/9skSg/8Vlnsj1S2XdxZnWTq+9CjAbo0lkcIWS8Q+YreB6bOV23s6i6fvX2zI0O5aRLrYma5eSgBuuwCmJp8zIht6k=
+    secure: "bNwTztUCIF4HgKnaIPuqe8qGEUgx+7AEG55AyW1yKgd7vpYHMqzTh7kEFOx6Cjf9AapYGoO7i/WzOnG4M0CusRwPV7YJvLr+yqqXqNh2ksSHWIzR8+Q13tCpxYiTz2q9EFUls5ISAuy/+MhSSSiAFgA0Xud71Vd4x0opgn8wkuM="
 
 addons:
   code_climate:
