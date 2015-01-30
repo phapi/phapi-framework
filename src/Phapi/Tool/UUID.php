@@ -25,10 +25,10 @@ class UUID
     public static function generate($namespace = null, $name = null)
     {
         if ($namespace !== null && $name !== null) {
-            return self::v5($namespace, $name);
+            return self::uuid5($namespace, $name);
         }
 
-        return self::v4();
+        return self::uuid4();
     }
 
     /**
@@ -39,7 +39,7 @@ class UUID
      *
      * @return  string
      */
-    public static function v4()
+    public static function uuid4()
     {
         if (function_exists('openssl_random_pseudo_bytes')) {
             $data = openssl_random_pseudo_bytes(16);
@@ -64,7 +64,7 @@ class UUID
      * @param	string	$name
      * @return  string
      */
-    public static function v5($namespace, $name)
+    public static function uuid5($namespace, $name)
     {
         if (!self::isValid($namespace)) {
             return false;

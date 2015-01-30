@@ -126,7 +126,7 @@ class Phapi {
             $this->configuration->get('rawContent')
         );
         // Generate an UUID to use for both the request and response
-        $this->request->setUuid((new UUID())->v4());
+        $this->request->setUuid((new UUID())->uuid4());
 
         // Create the response object
         $this->response = new Response(new Header());
