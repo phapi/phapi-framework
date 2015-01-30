@@ -29,9 +29,20 @@ Phapi is a PHP based framework aiming at simplifying API development and a the s
 Phapi requires PHP 5.5 or above.
 
 ### Installation
-*TODO.*
-
-**Phapi is under development and it's not ready to use yet.**
+Use composer by editing your composer.json:
+```json
+...
+{
+    "require": {
+        "ahinko/phapi": "1.0.*"
+    }
+}
+...
+```
+or add requirement from command line:
+```
+php composer.phar require ahinko/phapi:1.0.*
+```
 
 #### PHP settings
 It's suggested to turn off displaying of errors in production environments and rely on logging instead since Phapi has an error handler that will display serialized error messages.
