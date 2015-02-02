@@ -2,6 +2,8 @@
 
 namespace Phapi\Serializer;
 
+use Phapi\Exception\Error\BadRequest;
+use Phapi\Exception\Error\InternalServerError;
 use Phapi\Serializer;
 
 /**
@@ -32,24 +34,29 @@ class Json extends Serializer
      * Converts a JSON document to an php array
      *
      * @param $input
-     * @return array|mixed
+     * @return mixed
+     * @throws BadRequest
      */
     public function deserialize($input)
     {
-        return json_decode($input, true);
+        if (null === $array = json_decode($input, true)) {
+            throw new BadRequest('Could not deserialize Json');
+        }
+        return $array;
     }
 
     /**
      * Converts an array to a JSON document
      *
      * @param $input
-     * @return mixed|string
+     * @return string
+     * @throws InternalServerError
      */
     public function serialize($input)
     {
-        if (in_array($this->accept, $this->acceptOnlyTypes)) {
-            return json_encode($input, JSON_PRETTY_PRINT);
+        if (false === $json = json_encode($input)) {
+            throw new InternalServerError('Could not serialize data to Json');
         }
-        return json_encode($input);
+        return $json;
     }
 }
