@@ -278,6 +278,7 @@ $configuration = [
     new \Phapi\Serializer\Jsonp(['application/vnd.phapi+javascript']),
     new \Phapi\Serializer\FormUrlEncoded(),
     new \Phapi\Serializer\FileUpload(),
+    new \Phapi\Serializer\XML(),
   ]
 ];
 
