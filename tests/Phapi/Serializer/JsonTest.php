@@ -65,20 +65,7 @@ class JsonTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @covers ::serialize
-     * @depends testConstruct
-     */
-    public function testSerializePretty($serializer)
-    {
-        $serializer->setAccept('text/html');
-        $this->assertEquals('{
-    "key": "value",
-    "another key": "second value"
-}', $serializer->serialize([ 'key' => 'value', 'another key' => 'second value']));
-    }
-
-    /**
-     * @covers ::Deserialize
+     * @covers ::deserialize
      * @depends testConstruct
      *
      * @param $serializer
@@ -88,5 +75,28 @@ class JsonTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals([ 'key' => 'value', 'another key' => 'second value'], $serializer->deserialize('{"key":"value","another key":"second value"}'));
     }
 
+    /**
+     * @covers ::deserialize
+     * @depends testConstruct
+     * @expectedException \Phapi\Exception\Error\BadRequest
+     *
+     * @param $serializer
+     */
+    public function testDeserializeFail($serializer)
+    {
+        $serializer->deserialize('{"key":"value","anotherkey","value}');
+    }
+
+    /**
+     * @covers ::serialize
+     * @depends testConstruct
+     * @expectedException \Phapi\Exception\Error\InternalServerError
+     *
+     * @param $serializer
+     */
+    public function testSerializeFail($serializer)
+    {
+        $serializer->serialize("\xB1\x31");
+    }
 }
  

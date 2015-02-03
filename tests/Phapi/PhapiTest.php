@@ -7,6 +7,7 @@ use Phapi\Exception\Error\InternalServerError;
 use Phapi\Exception\Redirect\MovedPermanently;
 use Phapi\Exception\Success\Ok;
 use Phapi\Phapi;
+use Phapi\Resource;
 use Phapi\Serializer\Json;
 use Phapi\Serializer\Jsonp;
 use Psr\Log\NullLogger;
@@ -330,5 +331,25 @@ class PhapiTest extends \PHPUnit_Framework_TestCase {
     {
         $phapi = new Phapi([]);
         $this->assertInstanceOf('Phapi\Negotiator', $phapi->getNegotiator());
+    }
+
+    /**
+     * @covers ::run
+     * @covers ::call
+     * @expectedException \Phapi\Exception\Success\Ok
+     */
+    public function testRun()
+    {
+        $phapi = new Phapi([]);
+        $phapi->getRouter()->addRoutes([ '/' => '\\Phapi\\Tests\\Home' ]);
+        $phapi->run();
+    }
+}
+
+class Home extends Resource {
+
+    public function get()
+    {
+        return [];
     }
 }

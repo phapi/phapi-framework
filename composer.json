@@ -5,7 +5,7 @@
     "api", "framework", "phapi"
   ],
   "type": "framework",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "minimum-stability": "stable",
   "license": "MIT",
   "homepage": "https://github.com/ahinko/phapi",

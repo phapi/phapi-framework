@@ -52,4 +52,21 @@ class JsonpTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals([ 'key' => 'value', 'another key' => 'second value'], $this->serializer->deserialize('{"key":"value","another key":"second value"}'));
     }
 
+    /**
+     * @covers ::deserialize
+     * @expectedException \Phapi\Exception\Error\BadRequest
+     */
+    public function testDeserializeFail()
+    {
+        $this->serializer->deserialize('{"key":"value","anotherkey","value}');
+    }
+
+    /**
+     * @covers ::serialize
+     * @expectedException \Phapi\Exception\Error\InternalServerError
+     */
+    public function testSerializeFail()
+    {
+        $this->serializer->serialize("\xB1\x31");
+    }
 }
