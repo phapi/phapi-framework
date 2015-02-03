@@ -15,6 +15,8 @@ class ResourceTest extends \PHPUnit_Framework_TestCase {
      * @covers ::options
      * @covers ::parseMethodDoc
      * @covers ::prepareOutput
+     * @covers ::outputMultipleValues
+     * @covers ::outputSingleValue
      */
     public function testConstruct()
     {

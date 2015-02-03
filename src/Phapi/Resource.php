@@ -152,7 +152,7 @@ class Resource
                 // remove whitespace from the line
                 $value = trim($line);
 
-                // check if line doesnt have a annotation
+                // check if line doesn't have a annotation
             } elseif (!in_array(substr($line, 0, 1), ['@', '/']) && !empty($line)) {
                 // check if we have the key/identifier from last loop
                 if (!empty($longKey)) {
@@ -188,38 +188,10 @@ class Resource
         if (array_key_exists($key, $output)) {
             // check if value is an array (has multiple values)
             if (is_array($output[$key])) {
-
-                // remove the key from the value and remove whitespace
-                $newValue = str_replace($longKey.' ', '', trim($value));
-
-                // check if there was a key to remove
-                if (trim($value) !== $newValue) {
-                    // the key was removed and that means we wasn't to add the line as a new row in the array
-                    $output[$key][] = $newValue;
-                } else {
-                    // the key wasn't removed so we want to merge this line with the previous one
-                    // count rows in array to get the last key
-                    $last = count($output[$key]) -1;
-                    // merge this line with the previous one
-                    $output[$key][$last] = $output[$key][$last]. ' '. $newValue;
-                }
+                $output = $this->outputMultipleValues($output, $key, $value, $longKey);
             } else {
                 // value is not an array
-
-                // save the current value
-                $oldValue = $output[$key];
-
-                // remove the key from the value and remove whitespace
-                $newValue = trim(str_replace($longKey.' ', '', trim($value)));
-
-                // check if there was a key to remove
-                if (trim($value) !== $newValue) {
-                    // the key was removed so we want to create an array with the previous and new value
-                    $output[$key] = [$oldValue, $newValue];
-                } else {
-                    // the wasn't a key to remove so we want to merge this line with the previous one
-                    $output[$key] .= ' '. $newValue;
-                }
+                $output = $this->outputSingleValue($output, $key, $value, $longKey);
             }
         } else {
             // this is a new key/identifier
@@ -228,6 +200,64 @@ class Resource
                 // add key and value to output
                 $output[$key] = str_replace($longKey.' ', '', trim($value));
             }
+        }
+
+        return $output;
+    }
+
+    /**
+     * Handle output with multiple values
+     *
+     * @param array $output
+     * @param $key
+     * @param $value
+     * @param $longKey
+     * @return array
+     */
+    protected function outputMultipleValues(array $output, $key, $value, $longKey)
+    {
+        // remove the key from the value and remove whitespace
+        $newValue = str_replace($longKey.' ', '', trim($value));
+
+        // check if there was a key to remove
+        if (trim($value) !== $newValue) {
+            // the key was removed and that means we wasn't to add the line as a new row in the array
+            $output[$key][] = $newValue;
+        } else {
+            // the key wasn't removed so we want to merge this line with the previous one
+            // count rows in array to get the last key
+            $last = count($output[$key]) -1;
+            // merge this line with the previous one
+            $output[$key][$last] = $output[$key][$last]. ' '. $newValue;
+        }
+
+        return $output;
+    }
+
+    /**
+     * Handle output with single value
+     *
+     * @param array $output
+     * @param $key
+     * @param $value
+     * @param $longKey
+     * @return array
+     */
+    protected function outputSingleValue(array $output, $key, $value, $longKey)
+    {
+        // save the current value
+        $oldValue = $output[$key];
+
+        // remove the key from the value and remove whitespace
+        $newValue = trim(str_replace($longKey.' ', '', trim($value)));
+
+        // check if there was a key to remove
+        if (trim($value) !== $newValue) {
+            // the key was removed so we want to create an array with the previous and new value
+            $output[$key] = [$oldValue, $newValue];
+        } else {
+            // the wasn't a key to remove so we want to merge this line with the previous one
+            $output[$key] .= ' '. $newValue;
         }
 
         return $output;
