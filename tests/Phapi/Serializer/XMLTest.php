@@ -139,23 +139,12 @@ class XMLTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @covers ::deserialize
-     * @expectedException \Phapi\Exception\Error\BadRequest
-     */
-    public function testDeserializeFail2()
-    {
-        $xml_string = "<breakfast_menu></breakfast_menu>";
-
-        $this->serializer->deserialize($xml_string);
-    }
-
-    /**
      * @covers ::serialize
      * @expectedException \Phapi\Exception\Error\InternalServerError
      */
     public function testSerializeFail()
     {
-        //$serializer->serialize("\xB1\x31");
+        $this->serializer->serialize("\xB1\x31");
     }
 }
  
