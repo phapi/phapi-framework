@@ -46,12 +46,14 @@ class NegotiationTest extends \PHPUnit_Framework_TestCase {
             'application/json',
             'text/json',
             'text/html',
-            'application/javascript'
+            'application/javascript',
+            'text/javascript',
         ], $negotiation->getAccepts());
         $this->assertEquals([
             'application/json',
             'text/json',
-            'application/javascript'
+            'application/javascript',
+            'text/javascript',
         ], $negotiation->getContentTypes());
     }
 
