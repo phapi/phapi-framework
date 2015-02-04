@@ -27,6 +27,8 @@ class ResourceTest extends \PHPUnit_Framework_TestCase {
                 'application/javascript',
                 'application/x-www-form-urlencoded',
                 'application/octet-stream'
+                'text/x-php',
+                'application/x-php',
             ],
             'accept' => [
                 'application/json',
@@ -38,6 +40,8 @@ class ResourceTest extends \PHPUnit_Framework_TestCase {
                 'image/jpeg',
                 'image/gif',
                 'image/png'
+                'text/x-php',
+                'application/x-php',
             ],
             'methods' => [
                 'GET' => [

@@ -279,6 +279,7 @@ $configuration = [
     new \Phapi\Serializer\FormUrlEncoded(),
     new \Phapi\Serializer\FileUpload(),
     new \Phapi\Serializer\XML(),
+    new \Phapi\Serializer\PHP(),
   ]
 ];
 

@@ -15,6 +15,7 @@ use Phapi\Serializer\FileUpload;
 use Phapi\Serializer\FormUrlEncoded;
 use Phapi\Serializer\Json;
 use Phapi\Serializer\Jsonp;
+use Phapi\Serializer\PHP;
 use Phapi\Serializer\XML;
 use Phapi\Tool\UUID;
 use Psr\Log\LoggerInterface;
@@ -258,7 +259,8 @@ class Phapi {
                 new Jsonp(),
                 new FormUrlEncoded(),
                 new FileUpload(),
-                new XML()
+                new XML(),
+                new PHP(),
             ],
             'post' => $_POST,
             'get' => $_GET,
