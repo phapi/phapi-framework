@@ -23,7 +23,7 @@ class RateLimitTest extends \PHPUnit_Framework_TestCase {
     {
         $rateLimitBuckets = array(
             'default' => new RateLimit\Bucket(),
-            '\\Phapi\\Resource\\Page' => new RateLimit\Bucket(800, 60, 10, false),
+            '\\Phapi\\Tests\\Page' => new RateLimit\Bucket(800, 60, 10, false),
         );
 
         $phapi = new Phapi([
@@ -39,7 +39,7 @@ class RateLimitTest extends \PHPUnit_Framework_TestCase {
             ]
         ]);
         $phapi->getRouter()->setRoutes([
-            '/page/{slug}/{id:[0-9]+}?' => '\\Phapi\\Resource\\Page',
+            '/page/{slug}/{id:[0-9]+}?' => '\\Phapi\\Tests\\Page',
         ]);
         $phapi->getRouter()->match('/page/slug/3456', 'GET');
 
@@ -64,7 +64,7 @@ class RateLimitTest extends \PHPUnit_Framework_TestCase {
     {
         $rateLimitBuckets = array(
             'default' => new RateLimit\Bucket(),
-            '\\Phapi\\Resource\\Page' => new RateLimit\Bucket(800, 60, 10, false),
+            '\\Phapi\\Tests\\Page' => new RateLimit\Bucket(800, 60, 10, false),
         );
 
         $phapi = new Phapi([
@@ -75,7 +75,7 @@ class RateLimitTest extends \PHPUnit_Framework_TestCase {
             ]
         ]);
         $phapi->getRouter()->setRoutes([
-            '/page/{slug}/{id:[0-9]+}?' => '\\Phapi\\Resource\\Page',
+            '/page/{slug}/{id:[0-9]+}?' => '\\Phapi\\Tests\\Page',
         ]);
         $phapi->getRouter()->match('/page/slug/3456', 'GET');
 
@@ -104,7 +104,7 @@ class RateLimitTest extends \PHPUnit_Framework_TestCase {
             ]
         ]);
         $phapi->getRouter()->setRoutes([
-            '/page/{slug}/{id:[0-9]+}?' => '\\Phapi\\Resource\\Page',
+            '/page/{slug}/{id:[0-9]+}?' => '\\Phapi\\Tests\\Page',
         ]);
         $phapi->getRouter()->match('/page/slug/3456', 'GET');
 
@@ -140,7 +140,7 @@ class RateLimitTest extends \PHPUnit_Framework_TestCase {
             ]
         ]);
         $phapi->getRouter()->setRoutes([
-            '/page/{slug}/{id:[0-9]+}?' => '\\Phapi\\Resource\\Page',
+            '/page/{slug}/{id:[0-9]+}?' => '\\Phapi\\Tests\\Page',
         ]);
         $phapi->getRouter()->match('/page/slug/3456', 'GET');
 
@@ -206,7 +206,7 @@ class RateLimitTest extends \PHPUnit_Framework_TestCase {
     {
         $rateLimitBuckets = array(
             'default' => new RateLimit\Bucket(),
-            '\\Phapi\\Resource\\Page' => new RateLimit\Bucket(1, 1, 1, true),
+            '\\Phapi\\Tests\\Page' => new RateLimit\Bucket(1, 1, 1, true),
         );
 
         $phapi = new Phapi([
@@ -222,12 +222,13 @@ class RateLimitTest extends \PHPUnit_Framework_TestCase {
             ]
         ]);
         $phapi->getRouter()->setRoutes([
-            '/page/{slug}/{id:[0-9]+}?' => '\\Phapi\\Resource\\Page',
+            '/page/{slug}/{id:[0-9]+}?' => '\\Phapi\\Tests\\Page',
         ]);
         $phapi->getRouter()->match('/page/slug/3456', 'GET');
 
         $middleware = new RateLimit('X-Rate-Limit-Identifier', $rateLimitBuckets);
         $middleware->setApplication($phapi);
+        $middleware->call();
         $middleware->call();
         $middleware->call();
     }
@@ -239,7 +240,7 @@ class RateLimitTest extends \PHPUnit_Framework_TestCase {
     {
         $rateLimitBuckets = array(
             'default' => new RateLimit\Bucket(),
-            '\\Phapi\\Resource\\Page' => new RateLimit\Bucket(1, 1, 1, false),
+            '\\Phapi\\Tests\\Page' => new RateLimit\Bucket(1, 1, 1, false),
         );
 
         $phapi = new Phapi([
@@ -255,12 +256,13 @@ class RateLimitTest extends \PHPUnit_Framework_TestCase {
             ]
         ]);
         $phapi->getRouter()->setRoutes([
-            '/page/{slug}/{id:[0-9]+}?' => '\\Phapi\\Resource\\Page',
+            '/page/{slug}/{id:[0-9]+}?' => '\\Phapi\\Tests\\Page',
         ]);
         $phapi->getRouter()->match('/page/slug/3456', 'GET');
 
         $middleware = new RateLimit('X-Rate-Limit-Identifier', $rateLimitBuckets);
         $middleware->setApplication($phapi);
+        $middleware->call();
         $middleware->call();
         $middleware->call();
     }
