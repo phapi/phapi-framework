@@ -3,10 +3,10 @@
 All notable changes to Phapi will be documented below.
 
 ## 1.1.0
-* Added serializers:
-  * XML
-  * PHP
-  * Yaml
+* Added XML serializer
+* Added PHP serializer
+* Added Yaml serializer
+* Added middleware for handling rate limits
 
 ## 1.0.1
 * Added error handling to Json and Jsonp serializers.

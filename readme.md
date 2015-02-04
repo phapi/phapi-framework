@@ -28,6 +28,8 @@ See the [Phapi example repo](https://github.com/ahinko/phapi-example) for an exa
 10. [Trigger response and error handling](#trigger-response-and-error-handling)
 11. [Uploading files](#uploading-files)
 12. [Retrieving files](#retrieving-files)
+13. [Middleware](#middleware)
+  * [Rate limit](#rate-limit)
 
 ### Requirements
 Phapi requires PHP 5.5 or above.
@@ -484,6 +486,41 @@ $configuration = [
   ]
 ];
 
+```
+
+## Middleware
+
+### Rate limit
+The rate limit middleware handles how many times a client are allowed to do requests to different resources. Different settings can be done to different resources so it is possible that a client are allowed to do more requests to one resource than another resource. **Please note** that this middleware uses different counters for each resource and client. So if a client hits the limit on one resource doesn't stop the client from doing request to other resources.
+
+#### Configuration
+There are a few settings that needs to be configured before the rate limit middleware works.
+
+**The rate limit middleware requires a cache, for example Memcache**.
+
+The middleware constructor needs two parameters, the name of the header that should be used as the identifier for each client, and rate limit buckets.
+
+The unique identifier can for example be a client id or something else that is used for identification.
+
+The rate limit buckets are essentially settings on a resource level. The \Phapi\Middleware\RateLimit\Bucket() constructor takes four parameters:
+
+* Total number of tokens in bucket (default: 800),
+* Number of new tokens that should be added within a time window (default: 400),
+* Time window in number of seconds (default: 60),
+* If new tokens should be added continuously (true) or if the time window needs to pass (false) before new tokens are added (default: false).
+
+A default bucket is required. This bucket will act as a fallback if the requested resource does not have an own bucket. Example:
+```php
+
+$api = new \Phapi\Phapi($configuration);
+
+// config rate limit middleware resources
+$rateLimitBuckets = array(
+    'default' => new \Phapi\Middleware\RateLimit\Bucket(),
+    '\\Phapi\\Resource\\Page' => new \Phapi\Middleware\RateLimit\Bucket(600, 60, 10, false),
+);
+// Add Middleware
+$api->addMiddleware(new \Phapi\Middleware\RateLimit('Client-ID', $rateLimitBuckets));
 ```
 
 ## License
