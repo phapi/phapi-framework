@@ -6,6 +6,7 @@ All notable changes to Phapi will be documented below.
 * Added serializers:
   * XML
   * PHP
+  * Yaml
 
 ## 1.0.1
 * Added error handling to Json and Jsonp serializers.

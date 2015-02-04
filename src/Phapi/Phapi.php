@@ -17,6 +17,7 @@ use Phapi\Serializer\Json;
 use Phapi\Serializer\Jsonp;
 use Phapi\Serializer\PHP;
 use Phapi\Serializer\XML;
+use Phapi\Serializer\Yaml;
 use Phapi\Tool\UUID;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
@@ -261,6 +262,7 @@ class Phapi {
                 new FileUpload(),
                 new XML(),
                 new PHP(),
+                new Yaml(),
             ],
             'post' => $_POST,
             'get' => $_GET,

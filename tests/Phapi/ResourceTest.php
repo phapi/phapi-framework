@@ -31,6 +31,9 @@ class ResourceTest extends \PHPUnit_Framework_TestCase {
                 'application/xml',
                 'text/x-php',
                 'application/x-php',
+                'application/x-yaml',
+                'text/x-yaml',
+                'text/yaml',
             ],
             'accept' => [
                 'application/json',
@@ -46,6 +49,9 @@ class ResourceTest extends \PHPUnit_Framework_TestCase {
                 'application/xml',
                 'text/x-php',
                 'application/x-php',
+                'application/x-yaml',
+                'text/x-yaml',
+                'text/yaml',
             ],
             'methods' => [
                 'GET' => [

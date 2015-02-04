@@ -280,6 +280,7 @@ $configuration = [
     new \Phapi\Serializer\FileUpload(),
     new \Phapi\Serializer\XML(),
     new \Phapi\Serializer\PHP(),
+    new \Phapi\Serializer\Yaml(),
   ]
 ];
 
