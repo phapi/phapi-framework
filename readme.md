@@ -41,14 +41,14 @@ Use composer by editing your composer.json:
 ...
 {
     "require": {
-        "ahinko/phapi": "1.0.*"
+        "ahinko/phapi": "1.1.*"
     }
 }
 ...
 ```
 or add requirement from command line:
 ```
-php composer.phar require ahinko/phapi:1.0.*
+php composer.phar require ahinko/phapi:1.1.*
 ```
 
 #### PHP settings
