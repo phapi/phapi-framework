@@ -26,7 +26,8 @@ class Jsonp extends Serializer
      * @var array
      */
     protected $contentTypes = [
-        'application/javascript'
+        'application/javascript',
+        'text/javascript'
     ];
 
     /**

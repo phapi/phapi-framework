@@ -28,6 +28,9 @@ See the [Phapi example repo](https://github.com/ahinko/phapi-example) for an exa
 10. [Trigger response and error handling](#trigger-response-and-error-handling)
 11. [Uploading files](#uploading-files)
 12. [Retrieving files](#retrieving-files)
+13. [Middleware](#middleware)
+  * [Rate limit](#rate-limit)
+  * [CORS](#cors)
 
 ### Requirements
 Phapi requires PHP 5.5 or above.
@@ -38,14 +41,14 @@ Use composer by editing your composer.json:
 ...
 {
     "require": {
-        "ahinko/phapi": "1.0.*"
+        "ahinko/phapi": "1.1.*"
     }
 }
 ...
 ```
 or add requirement from command line:
 ```
-php composer.phar require ahinko/phapi:1.0.*
+php composer.phar require ahinko/phapi:1.1.*
 ```
 
 #### PHP settings
@@ -278,6 +281,9 @@ $configuration = [
     new \Phapi\Serializer\Jsonp(['application/vnd.phapi+javascript']),
     new \Phapi\Serializer\FormUrlEncoded(),
     new \Phapi\Serializer\FileUpload(),
+    new \Phapi\Serializer\XML(),
+    new \Phapi\Serializer\PHP(),
+    new \Phapi\Serializer\Yaml(),
   ]
 ];
 
@@ -448,8 +454,6 @@ POST /avatar/johndoe
 PUT /avatar/johndoe
 
 ...file content...
-
-
 ```
 
 - The resource handling the PUT request can receive the file content from the request body:
@@ -472,7 +476,6 @@ public function get()
 
 The FileUpload serializer handles the serialization of files (i.e. it just passes through the file content without modifying it). The FileUpload serializer supports **image/jpg**, **image/jpeg**, **image/gif** and **image/png** by default so if more content/mime types needs to be supported those types needs to be [configured](#serializers):
 ```php
-
 $configuration = [
   ...
   'serializers' => [
@@ -482,6 +485,75 @@ $configuration = [
 ];
 
 ```
+
+## Middleware
+
+### Rate limit
+The rate limit middleware handles how many times a client are allowed to do requests to different resources. Different settings can be done to different resources so it is possible that a client are allowed to do more requests to one resource than another resource. **Please note** that this middleware uses different counters for each resource and client. So if a client hits the limit on one resource doesn't stop the client from doing request to other resources.
+
+#### Configuration
+There are a few settings that needs to be configured before the rate limit middleware works.
+
+**The rate limit middleware requires a cache, for example Memcache**.
+
+The middleware constructor needs two parameters, the name of the header that should be used as the identifier for each client, and rate limit buckets.
+
+The unique identifier can for example be a client id or something else that is used for identification.
+
+The rate limit buckets are essentially settings on a resource level. The \Phapi\Middleware\RateLimit\Bucket() constructor takes four parameters:
+
+* Total number of tokens in bucket (default: 800),
+* Number of new tokens that should be added within a time window (default: 400),
+* Time window in number of seconds (default: 60),
+* If new tokens should be added continuously (true) or if the time window needs to pass (false) before new tokens are added (default: false).
+
+A default bucket is required. This bucket will act as a fallback if the requested resource does not have an own bucket. Example:
+```php
+$api = new \Phapi\Phapi($configuration);
+
+// config rate limit middleware resources
+$rateLimitBuckets = array(
+    'default' => new \Phapi\Middleware\RateLimit\Bucket(),
+    '\\Phapi\\Resource\\Page' => new \Phapi\Middleware\RateLimit\Bucket(600, 60, 10, false),
+);
+// Add Middleware
+$api->addMiddleware(new \Phapi\Middleware\RateLimit('Client-ID', $rateLimitBuckets));
+```
+
+### CORS
+> Cross-site HTTP requests are HTTP requests for resources from a different domain than the domain of the resource making the request.  For instance, a resource loaded from Domain A (http://domaina.example) such as an HTML web page, makes a request for a resource on Domain B (http://domainb.foo), such as an image, using the img element (http://domainb.foo/image.jpg).  This occurs very commonly on the web today — pages load a number of resources in a cross-site manner, including CSS stylesheets, images and scripts, and other resources.
+
+> Cross-site HTTP requests initiated from within scripts have been subject to well-known restrictions, for well-understood security reasons.  For example HTTP Requests made using the XMLHttpRequest object were subject to the same-origin policy. In particular, this meant that a web application using XMLHttpRequest could only make HTTP requests to the domain it was loaded from, and not to other domains.  Developers expressed the desire to safely evolve capabilities such as XMLHttpRequest to make cross-site requests, for better, safer mash-ups within web applications.
+
+Source: https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS
+
+The CORS middleware handles these requests for the application. In it's simplest form the configuration of the middleware is simple:
+
+```php
+$api = new \Phapi\Phapi($configuration);
+
+$corsOptions = [
+    'allowedOrigins' => ['*'],
+    'allowedMethods' => ['*'],
+    'allowedHeaders' => ['*'],
+    'exposedHeaders' => [],
+    'maxAge' => 3600,
+    'supportsCredentials' => false,
+];
+$api->addMiddleware(new \Phapi\Middleware\Cors($corsOptions));
+```
+
+- **allowedOrigins** specifies the different origins that are allowed to make CORS requests to the API. "*" means that there is no restrictions. Add each origin as a separate value in the array: ['http://foo.bar', 'http://domain.example']
+
+- **allowedMethods** is a list of methods that are allowed. Example: ['GET', 'POST', 'OPTIONS']
+
+- **allowedHeaders** specifies headers that the client are allowed to send during a CORS request. Example: ['Client-ID', 'X-Modified']. Please note that some default headers are allowed, see the [Mozilla Developer](https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS) page for more information.
+
+- **exposedHeaders** is a list of headers that the browser are allowed to expose for the user/script. Example ['X-Rate-Limit-Remaining']
+
+- **maxAge** specifies how long (in seconds) the client can cache this information.
+
+- **supportsCredentials** specifies if the API allows/supports credentials in a CORS request.
 
 ## License
 Phapi is licensed under the MIT License - see the LICENSE file for details

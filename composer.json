@@ -5,7 +5,7 @@
     "api", "framework", "phapi"
   ],
   "type": "framework",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "minimum-stability": "stable",
   "license": "MIT",
   "homepage": "https://github.com/ahinko/phapi",
@@ -19,7 +19,8 @@
   "require": {
     "php": ">=5.5.0",
     "psr/log": "1.*",
-    "willdurand/negotiation": "1.*"
+    "willdurand/negotiation": "1.*",
+    "symfony/yaml": "2.6.*"
   },
   "require-dev": {
     "phpunit/phpunit": "4.4.*",
