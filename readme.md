@@ -523,6 +523,42 @@ $rateLimitBuckets = array(
 $api->addMiddleware(new \Phapi\Middleware\RateLimit('Client-ID', $rateLimitBuckets));
 ```
 
+### Cross-Origin Resource Sharing (CORS)
+> Cross-site HTTP requests are HTTP requests for resources from a different domain than the domain of the resource making the request.  For instance, a resource loaded from Domain A (http://domaina.example) such as an HTML web page, makes a request for a resource on Domain B (http://domainb.foo), such as an image, using the img element (http://domainb.foo/image.jpg).  This occurs very commonly on the web today — pages load a number of resources in a cross-site manner, including CSS stylesheets, images and scripts, and other resources.
+
+> Cross-site HTTP requests initiated from within scripts have been subject to well-known restrictions, for well-understood security reasons.  For example HTTP Requests made using the XMLHttpRequest object were subject to the same-origin policy. In particular, this meant that a web application using XMLHttpRequest could only make HTTP requests to the domain it was loaded from, and not to other domains.  Developers expressed the desire to safely evolve capabilities such as XMLHttpRequest to make cross-site requests, for better, safer mash-ups within web applications.
+
+Source: https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS
+
+The CORS middleware handles these requests for the application. In it's simplest form the configuration of the middleware is simple:
+
+```php
+
+$api = new \Phapi\Phapi($configuration);
+
+$corsOptions = [
+    'allowedOrigins' => ['*'],
+    'allowedMethods' => ['*'],
+    'allowedHeaders' => ['*'],
+    'exposedHeaders' => [],
+    'maxAge' => 3600,
+    'supportsCredentials' => false,
+];
+$api->addMiddleware(new \Phapi\Middleware\Cors($corsOptions));
+```
+
+- **allowedOrigins** specifies the different origins that are allowed to make CORS requests to the API. "*" means that there is no restrictions. Add each origin as a separate value in the array: ['http://foo.bar', 'http://domain.example']
+
+- **allowedMethods** is a list of methods that are allowed. Example: ['GET', 'POST', 'OPTIONS']
+
+- **allowedHeaders** specifies headers that the client are allowed to send during a CORS request. Example: ['Client-ID', 'X-Modified']. Please note that some default headers are allowed, see the [Mozilla Developer](https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS) page for more information.
+
+- **exposedHeaders** is a list of headers that the browser are allowed to expose for the user/script. Example ['X-Rate-Limit-Remaining']
+
+- **maxAge** specifies how long (in seconds) the client can cache this information.
+
+- **supportsCredentials** specifies if the API allows/supports credentials in a CORS request.
+
 ## License
 Phapi is licensed under the MIT License - see the LICENSE file for details
 

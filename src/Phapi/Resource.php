@@ -89,7 +89,6 @@ class Resource
         }
 
         // Set accept header
-        $this->response->addHeaders(['Access-Control-Allow-Methods' => implode(', ', $methods)]);
         $this->response->addHeaders(['Accept' => implode(', ', $methods)]);
 
         // Prepare output
