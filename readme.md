@@ -454,8 +454,6 @@ POST /avatar/johndoe
 PUT /avatar/johndoe
 
 ...file content...
-
-
 ```
 
 - The resource handling the PUT request can receive the file content from the request body:
@@ -478,7 +476,6 @@ public function get()
 
 The FileUpload serializer handles the serialization of files (i.e. it just passes through the file content without modifying it). The FileUpload serializer supports **image/jpg**, **image/jpeg**, **image/gif** and **image/png** by default so if more content/mime types needs to be supported those types needs to be [configured](#serializers):
 ```php
-
 $configuration = [
   ...
   'serializers' => [
@@ -512,7 +509,6 @@ The rate limit buckets are essentially settings on a resource level. The \Phapi\
 
 A default bucket is required. This bucket will act as a fallback if the requested resource does not have an own bucket. Example:
 ```php
-
 $api = new \Phapi\Phapi($configuration);
 
 // config rate limit middleware resources
@@ -534,7 +530,6 @@ Source: https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS
 The CORS middleware handles these requests for the application. In it's simplest form the configuration of the middleware is simple:
 
 ```php
-
 $api = new \Phapi\Phapi($configuration);
 
 $corsOptions = [
