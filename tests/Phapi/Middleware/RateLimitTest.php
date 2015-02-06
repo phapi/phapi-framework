@@ -45,6 +45,7 @@ class RateLimitTest extends \PHPUnit_Framework_TestCase {
 
         $middleware = new RateLimit('X-Rate-Limit-Identifier', $rateLimitBuckets);
         $middleware->setApplication($phapi);
+        $middleware->setNextMiddleware(new MockMiddleware());
         $middleware->call();
 
         $this->assertTrue($phapi->getResponse()->getHeaders()->has('X-Rate-Limit-Limit'));
@@ -81,6 +82,7 @@ class RateLimitTest extends \PHPUnit_Framework_TestCase {
 
         $middleware = new RateLimit('X-Rate-Limit-Identifier', $rateLimitBuckets);
         $middleware->setApplication($phapi);
+        $middleware->setNextMiddleware(new MockMiddleware());
         $middleware->call();
     }
 
@@ -110,6 +112,7 @@ class RateLimitTest extends \PHPUnit_Framework_TestCase {
 
         $middleware = new RateLimit('X-Rate-Limit-Identifier', $rateLimitBuckets);
         $middleware->setApplication($phapi);
+        $middleware->setNextMiddleware(new MockMiddleware());
         $middleware->call();
     }
 
@@ -146,6 +149,7 @@ class RateLimitTest extends \PHPUnit_Framework_TestCase {
 
         $middleware = new RateLimit('X-Rate-Limit-Identifier', $rateLimitBuckets);
         $middleware->setApplication($phapi);
+        $middleware->setNextMiddleware(new MockMiddleware());
         $middleware->call();
 
         $this->assertTrue($phapi->getResponse()->getHeaders()->has('X-Rate-Limit-Limit'));
@@ -189,6 +193,7 @@ class RateLimitTest extends \PHPUnit_Framework_TestCase {
 
         $middleware = new RateLimit('X-Rate-Limit-Identifier', $rateLimitBuckets);
         $middleware->setApplication($phapi);
+        $middleware->setNextMiddleware(new MockMiddleware());
         $middleware->call();
 
         $this->assertFalse($phapi->getResponse()->getHeaders()->has('X-Rate-Limit-Limit'));
@@ -228,6 +233,7 @@ class RateLimitTest extends \PHPUnit_Framework_TestCase {
 
         $middleware = new RateLimit('X-Rate-Limit-Identifier', $rateLimitBuckets);
         $middleware->setApplication($phapi);
+        $middleware->setNextMiddleware(new MockMiddleware());
         $middleware->call();
         $middleware->call();
         $middleware->call();
@@ -262,6 +268,7 @@ class RateLimitTest extends \PHPUnit_Framework_TestCase {
 
         $middleware = new RateLimit('X-Rate-Limit-Identifier', $rateLimitBuckets);
         $middleware->setApplication($phapi);
+        $middleware->setNextMiddleware(new MockMiddleware());
         $middleware->call();
         $middleware->call();
         $middleware->call();
@@ -296,6 +303,7 @@ class RateLimitTest extends \PHPUnit_Framework_TestCase {
 
         $middleware = new RateLimit('X-Rate-Limit-Identifier', $rateLimitBuckets);
         $middleware->setApplication($phapi);
+        $middleware->setNextMiddleware(new MockMiddleware());
         $middleware->setIdentifier('changedIdentifier');
         $middleware->call();
 
