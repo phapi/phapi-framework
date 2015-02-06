@@ -157,27 +157,28 @@ class Router {
             $resource = $this->routes[$this->requestUri];
         }
 
-        if ($resource !== false) {
-            // check if resource class exists
-            if (!$this->resourceExists($resource)) {
-                throw new NotFound();
-            }
-
-            if (!$this->resourceMethodExists($resource, $this->requestMethod)) {
-                // route found but method can't be found
-                throw new MethodNotAllowed();
-            }
-
-            // found a direct match, set needed properties
-            $this->matchedRoute = $this->requestUri;
-            $this->matchedResource = $resource;
-            $this->matchedMethod = $this->requestMethod;
-
-            // we found our match, stop looking for more
-            return true;
+        // Check if resource is something useful
+        if ($resource === false) {
+            return false;
         }
 
-        return false;
+        // check if resource class exists
+        if (!$this->resourceExists($resource)) {
+            throw new NotFound();
+        }
+
+        if (!$this->resourceMethodExists($resource, $this->requestMethod)) {
+            // route found but method can't be found
+            throw new MethodNotAllowed();
+        }
+
+        // found a direct match, set needed properties
+        $this->matchedRoute = $this->requestUri;
+        $this->matchedResource = $resource;
+        $this->matchedMethod = $this->requestMethod;
+
+        // we found our match, stop looking for more
+        return true;
     }
 
     /**
