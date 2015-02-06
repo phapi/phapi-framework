@@ -30,6 +30,7 @@ See the [Phapi example repo](https://github.com/ahinko/phapi-example) for an exa
 12. [Retrieving files](#retrieving-files)
 13. [Middleware](#middleware)
   * [Rate limit](#rate-limit)
+  * [CORS](#cors)
 
 ### Requirements
 Phapi requires PHP 5.5 or above.
@@ -523,7 +524,7 @@ $rateLimitBuckets = array(
 $api->addMiddleware(new \Phapi\Middleware\RateLimit('Client-ID', $rateLimitBuckets));
 ```
 
-### Cross-Origin Resource Sharing (CORS)
+### CORS
 > Cross-site HTTP requests are HTTP requests for resources from a different domain than the domain of the resource making the request.  For instance, a resource loaded from Domain A (http://domaina.example) such as an HTML web page, makes a request for a resource on Domain B (http://domainb.foo), such as an image, using the img element (http://domainb.foo/image.jpg).  This occurs very commonly on the web today — pages load a number of resources in a cross-site manner, including CSS stylesheets, images and scripts, and other resources.
 
 > Cross-site HTTP requests initiated from within scripts have been subject to well-known restrictions, for well-understood security reasons.  For example HTTP Requests made using the XMLHttpRequest object were subject to the same-origin policy. In particular, this meant that a web application using XMLHttpRequest could only make HTTP requests to the domain it was loaded from, and not to other domains.  Developers expressed the desire to safely evolve capabilities such as XMLHttpRequest to make cross-site requests, for better, safer mash-ups within web applications.
