@@ -119,7 +119,7 @@ class Phapi {
         $this->configuration = new Bucket(array_merge($this->getDefaultConfiguration(), $configuration));
 
         // Set up loggers
-        $this->setLogWriter($this->configuration->get('logWriter'));
+        $this->setLogWriter($this->configuration->get('logWriter', null));
 
         // Create the request object
         $this->request = new Request(
