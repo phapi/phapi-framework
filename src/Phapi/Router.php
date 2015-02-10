@@ -112,11 +112,11 @@ class Router {
      */
     public function match($requestUri, $requestMethod)
     {
-        // remove query string
-        $this->requestUri = strtok($requestUri, '?');
+        // remove query string and trailing slash (if one exists) and then add a new trailing slash
+        $this->requestUri = rtrim(strtok($requestUri, '?'), '/') . '/';
 
+        // set request method
         $this->requestMethod = $requestMethod;
-
 
         // start matching routes
 
@@ -148,26 +148,17 @@ class Router {
         $resource = false;
 
         // check without a trailing slash
-        if (isset($this->routes[rtrim($this->requestUri, '/')])) {
-            $this->requestUri = rtrim($this->requestUri, '/');
+        if (isset($this->routes[$this->requestUri])) {
             $resource = $this->routes[$this->requestUri];
-        } elseif (isset($this->routes[rtrim($this->requestUri, '/') . '/'])) {
-            // check with a trailing slash
-            $this->requestUri = rtrim($this->requestUri, '/') . '/';
-            $resource = $this->routes[$this->requestUri];
-        }
-
-        // Check if resource is something useful
-        if ($resource === false) {
+        } else {
+            // no match return false
             return false;
         }
 
         // check if resource class exists
         if (!$this->resourceExists($resource)) {
             throw new NotFound();
-        }
-
-        if (!$this->resourceMethodExists($resource, $this->requestMethod)) {
+        } elseif (!$this->resourceMethodExists($resource, $this->requestMethod)) {
             // route found but method can't be found
             throw new MethodNotAllowed();
         }
@@ -190,32 +181,29 @@ class Router {
      */
     protected function matchCache()
     {
-        // make sure we have a trailing slash
-        $requestUri = rtrim($this->requestUri, '/') . '/';
-
         // check if we can find a match in cache
         // check if a cache exists
         if ($this->cache instanceof Cache) {
             // check if we have any routes saved in cache
             if ($cachedRoutes = $this->cache->get('routes')) {
                 // check if the requested uri can be found in the cache
-                if (isset($cachedRoutes[$requestUri])) {
+                if (isset($cachedRoutes[$this->requestUri])) {
 
                     // check if resource class exists
-                    if (!$this->resourceExists($cachedRoutes[$requestUri]['matchedResource'])) {
+                    if (!$this->resourceExists($cachedRoutes[$this->requestUri]['matchedResource'])) {
                         throw new NotFound();
                     }
 
-                    if (!$this->resourceMethodExists($cachedRoutes[$requestUri]['matchedResource'], $this->requestMethod)) {
+                    if (!$this->resourceMethodExists($cachedRoutes[$this->requestUri]['matchedResource'], $this->requestMethod)) {
                         // route found but method can't be found
                         throw new MethodNotAllowed();
                     }
 
                     // match found, set info
-                    $this->matchedRoute = $cachedRoutes[$requestUri]['matchedRoute'];
-                    $this->matchedResource = $cachedRoutes[$requestUri]['matchedResource'];
+                    $this->matchedRoute = $cachedRoutes[$this->requestUri]['matchedRoute'];
+                    $this->matchedResource = $cachedRoutes[$this->requestUri]['matchedResource'];
                     $this->matchedMethod  = $this->requestMethod;
-                    $this->params  = $cachedRoutes[$requestUri]['params'];
+                    $this->params  = $cachedRoutes[$this->requestUri]['params'];
 
                     // no need to look for more
                     return true;
@@ -237,9 +225,6 @@ class Router {
      */
     protected function matchRegex()
     {
-        // Make sure we have a trailing slash
-        $requestUri = rtrim($this->requestUri, '/') . '/';
-
         // Match request against route table
         foreach ($this->routes as $route => $resource) {
             $result = $this->routeParser->parse($route);
@@ -249,15 +234,12 @@ class Router {
             // Get param names
             $paramNames = $result[1];
 
-            if (preg_match($regex, $requestUri, $matches)) {
+            if (preg_match($regex, $this->requestUri, $matches)) {
                 // Check if resource class exists
                 if (!$this->resourceExists($resource)) {
                     // Resource class not found
                     throw new NotFound();
-                }
-
-                // Check if method exists
-                if (!$this->resourceMethodExists($resource, $this->requestMethod)) {
+                } elseif (!$this->resourceMethodExists($resource, $this->requestMethod)) {
                     // Route found but method can't be found
                     throw new MethodNotAllowed();
                 }
@@ -282,7 +264,7 @@ class Router {
                 }
 
                 // Match found, add it to the cache for later use
-                $this->addToCache($requestUri);
+                $this->addToCache($this->requestUri);
 
                 // Time to stop looking for more matches
                 return true;
@@ -368,7 +350,10 @@ class Router {
     public function addRoutes(array $routes)
     {
         foreach ($routes as $route => $resource) {
-            $this->routes[$route] = $resource;
+            // Add route as key. Since we always want to work with a trailing slash we need
+            // to first remove an eventual trailing slash and then add a new one since rtrim
+            // will remove if one exists else it does nothing
+            $this->routes[rtrim($route, '/') .'/'] = $resource;
         }
     }
 
