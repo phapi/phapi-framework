@@ -237,80 +237,95 @@ class Router {
      */
     protected function matchRegex()
     {
-        // make sure we have a trailing slash
+        // Make sure we have a trailing slash
         $requestUri = rtrim($this->requestUri, '/') . '/';
 
-        // match request against route table
+        // Match request against route table
         foreach ($this->routes as $route => $resource) {
             $result = $this->routeParser->parse($route);
 
-            // get regex
+            // Get regex
             $regex = $result[0];
-            // get param names
+            // Get param names
             $paramNames = $result[1];
 
             if (preg_match($regex, $requestUri, $matches)) {
-                // check if resource class exists
+                // Check if resource class exists
                 if (!$this->resourceExists($resource)) {
-                    // resource class not found
+                    // Resource class not found
                     throw new NotFound();
                 }
 
-                // check if method exists
+                // Check if method exists
                 if (!$this->resourceMethodExists($resource, $this->requestMethod)) {
-                    // route found but method can't be found
+                    // Route found but method can't be found
                     throw new MethodNotAllowed();
                 }
 
-                // set matched route
+                // Set matched route
                 $this->matchedRoute = $route;
-                // set matched resource
+                // Set matched resource
                 $this->matchedResource = $resource;
-                // set matched request method
+                // Set matched request method
                 $this->matchedMethod = $this->requestMethod;
 
-                // remove all slashes from param values/matches
+                // Remove all slashes from param values/matches
                 $matches = array_diff($matches, ['/']);
 
-                // remove first value in the matches array since it wont be used
+                // Remove first value in the matches array since it wont be used
                 array_shift($matches);
 
-                // loop through all params and match them with values and save the result
+                // Loop through all params and match them with values and save the result
                 // to the params array
                 foreach ($paramNames as $key => $name) {
                     $this->params[$name] = (isset($matches[$key])) ? $matches[$key]: null;
                 }
 
-                // we found our match, stop looking for more and add to cache if cache is configured
-                if ($this->cache instanceof Cache) {
-                    // prepare info to be saved to cache
-                    $toCache = [
-                        'matchedRoute' => $this->matchedRoute,
-                        'matchedResource' => $this->matchedResource,
-                        'params' => $this->params
-                    ];
+                // Match found, add it to the cache for later use
+                $this->addToCache($requestUri);
 
-                    // check if we have any routes saved
-                    if ($cachedRoutes = $this->cache->get('routes')) {
-                        // add this route to cache
-                        $cachedRoutes[$requestUri] = $toCache;
-                    } else {
-                        // no routes found in cache, this is the first one we save
-                        $cachedRoutes = [
-                            $requestUri => $toCache
-                        ];
-                    }
-                    // save to cache
-                    $this->cache->set('routes', $cachedRoutes);
-                }
-
-                // time to stop looking for more matches
+                // Time to stop looking for more matches
                 return true;
             }
         }
 
         return false;
     }
+
+    /**
+     * Add a match to the cache for later use, this makes it
+     * easier for the router to find a match the next time the
+     * same request uri i requested since the router checks in the
+     * cache before it tries to find a match in the route table.
+     *
+     * @param $requestUri
+     */
+    protected function addToCache($requestUri)
+    {
+        // we found our match, stop looking for more and add to cache if cache is configured
+        if ($this->cache instanceof Cache) {
+            // prepare info to be saved to cache
+            $toCache = [
+                'matchedRoute' => $this->matchedRoute,
+                'matchedResource' => $this->matchedResource,
+                'params' => $this->params
+            ];
+
+            // check if we have any routes saved
+            if ($cachedRoutes = $this->cache->get('routes')) {
+                // add this route to cache
+                $cachedRoutes[$requestUri] = $toCache;
+            } else {
+                // no routes found in cache, this is the first one we save
+                $cachedRoutes = [
+                    $requestUri => $toCache
+                ];
+            }
+            // save to cache
+            $this->cache->set('routes', $cachedRoutes);
+        }
+    }
+
     /**
      * Make sure the resource class exists
      *
@@ -346,17 +361,6 @@ class Router {
     }
 
     /**
-     * Add a route to the route table
-     *
-     * @param string $route    Route to add to the route table
-     * @param string $resource Resource that the route points to
-     */
-    public function addRoute($route, $resource)
-    {
-        $this->routes[$route] = $resource;
-    }
-
-    /**
      * Add multiple routes to the router table as the same time
      *
      * @param array $routes Add multiple routes at the same time
@@ -364,7 +368,7 @@ class Router {
     public function addRoutes(array $routes)
     {
         foreach ($routes as $route => $resource) {
-            $this->addRoute($route, $resource);
+            $this->routes[$route] = $resource;
         }
     }
 

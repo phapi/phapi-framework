@@ -51,6 +51,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase
      * @depends testConstructor
      * @covers ::match
      * @covers ::resourceMethodExists
+     * @covers ::addToCache
      *
      * @param Router $router
      * @return Router
@@ -129,7 +130,6 @@ class RouterTest extends \PHPUnit_Framework_TestCase
      * @depends testConstructor
      * @covers ::setRoutes
      * @covers ::addRoutes
-     * @covers ::addRoute
      * @covers ::getRoutes
      *
      * @param Router $router
@@ -141,7 +141,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($router->getRoutes(), $this->routes);
 
         // add a new dummy route to change route table
-        $router->addRoute('/help', '\\Phapi\\Resource\\Help');
+        $router->addRoutes(['/help' => '\\Phapi\\Resource\\Help']);
         $this->assertNotEquals($router->getRoutes(), $this->routes);
 
         // (re)set default routes
@@ -152,7 +152,6 @@ class RouterTest extends \PHPUnit_Framework_TestCase
     /**
      * @depends testConstructor
      * @covers ::addRoutes
-     * @covers ::addRoute
      *
      * @param Router $router
      * @return Router
