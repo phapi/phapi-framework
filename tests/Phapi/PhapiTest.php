@@ -6,6 +6,8 @@ use Phapi\Cache\Memcache;
 use Phapi\Exception\Error\InternalServerError;
 use Phapi\Exception\Redirect\MovedPermanently;
 use Phapi\Exception\Success\Ok;
+use Phapi\Http\Response;
+use Phapi\Middleware\Cors;
 use Phapi\Phapi;
 use Phapi\Resource;
 use Phapi\Serializer\Json;
@@ -104,7 +106,7 @@ class PhapiTest extends \PHPUnit_Framework_TestCase {
      */
     public function testSetLogWriter2()
     {
-        $phapi = new Phapi([ 'logger' => new \stdClass() ]);
+        $phapi = new Phapi([ 'logWriter' => new \stdClass() ]);
         $this->assertInstanceOf('Psr\Log\NullLogger', $phapi->getLogWriter());
     }
 
@@ -114,7 +116,7 @@ class PhapiTest extends \PHPUnit_Framework_TestCase {
      */
     public function testSetLogWriter3()
     {
-        $phapi = new Phapi([ 'logger' => new NullLogger() ]);
+        $phapi = new Phapi([ 'logWriter' => new NullLogger() ]);
         $this->assertInstanceOf('Psr\Log\NullLogger', $phapi->getLogWriter());
     }
 
@@ -344,12 +346,150 @@ class PhapiTest extends \PHPUnit_Framework_TestCase {
         $phapi->getRouter()->addRoutes([ '/' => '\\Phapi\\Tests\\Home' ]);
         $phapi->run();
     }
+
+    /**
+     * @covers ::addCallbackToJsonPSerializer
+     */
+    public function testAddCallbackToJsonPSerializer()
+    {
+        $config = [
+            'server' => [
+                'HTTP_ACCEPT' => 'application/javascript',
+            ],
+            'get' => [
+                'callback' => 'someFunction'
+            ]
+        ];
+        $phapi = new Phapi($config);
+    }
+
+    /**
+     * @covers ::addCallbackToJsonPSerializer
+     */
+    public function testAddCallbackToJsonPSerializer2()
+    {
+        $config = [
+            'server' => [
+                'HTTP_ACCEPT' => 'application/javascript',
+                'CONTENT_TYPE' => 'application/json'
+            ],
+            'rawContent' => '{ "callback": "someFunction" }'
+
+        ];
+        $phapi = new Phapi($config);
+    }
+
+    /**
+     * @covers ::run
+     * @covers ::call
+     * @expectedException \Phapi\Exception\Success\Created
+     */
+    public function testCallCreated()
+    {
+        $phapi = new Phapi([
+            'server' => [
+                'REQUEST_METHOD' => 'POST',
+                'HTTP_ACCEPT' => 'application/json'
+            ]
+        ]);
+        $phapi->getRouter()->addRoutes([ '/' => '\\Phapi\\Tests\\Home' ]);
+        $phapi->run();
+    }
+
+    /**
+     * @covers ::run
+     * @covers ::call
+     * @expectedException \Phapi\Exception\Success\Accepted
+     */
+    public function testCallAccepted()
+    {
+        $phapi = new Phapi([
+            'server' => [
+                'REQUEST_METHOD' => 'PUT',
+                'HTTP_ACCEPT' => 'application/json'
+            ]
+        ]);
+        $phapi->getRouter()->addRoutes([ '/' => '\\Phapi\\Tests\\Home' ]);
+        $phapi->run();
+    }
+
+    /**
+     * @covers ::run
+     * @covers ::call
+     * @expectedException \Phapi\Exception\Success\Ok
+     */
+    public function testCallOther()
+    {
+        $phapi = new Phapi([
+            'server' => [
+                'REQUEST_METHOD' => 'DELETE',
+                'HTTP_ACCEPT' => 'application/json'
+            ]
+        ]);
+        $phapi->getRouter()->addRoutes([ '/' => '\\Phapi\\Tests\\Home' ]);
+        $phapi->run();
+    }
+
+    /**
+     * @covers ::addMiddleware
+     * @expectedException \Phapi\Exception\Success\Ok
+     */
+    public function testAddMiddleware()
+    {
+        $options = [
+            'allowedOrigins' => ['*'],
+            'allowedMethods' => ['*'],
+            'allowedHeaders' => ['*'],
+            'exposedHeaders' => ['Request-ID'],
+            'maxAge' => 3600,
+            'supportsCredentials' => true,
+        ];
+
+        $phapi = new Phapi([
+            'server' => [
+                'HTTP_ORIGIN' => 'http://foo.bar',
+                'HTTP_ACCEPT' => 'application/json',
+                'REQUEST_METHOD' => 'GET',
+                'REQUEST_URI' => '/'
+            ]
+        ]);
+        $phapi->addMiddleware(new Cors($options));
+        $phapi->getRouter()->addRoutes([ '/' => '\\Phapi\\Tests\\Home' ]);
+        $phapi->run();
+
+        $this->assertTrue($phapi->getResponse()->getHeaders()->has('Access-Control-Allow-Origin'));
+        $this->assertTrue($phapi->getResponse()->getHeaders()->has('Access-Control-Allow-Credentials'));
+        $this->assertTrue($phapi->getResponse()->getHeaders()->has('Access-Control-Expose-Headers'));
+        $this->assertFalse($phapi->getResponse()->getHeaders()->has('Access-Control-Allow-Methods'));
+        $this->assertFalse($phapi->getResponse()->getHeaders()->has('Access-Control-Allow-Headers'));
+        $this->assertFalse($phapi->getResponse()->getHeaders()->has('Access-Control-Max-Age'));
+        $this->assertFalse($phapi->getResponse()->getHeaders()->has('Vary'));
+
+        $this->assertEquals('*', $phapi->getResponse()->getHeaders()->get('Access-Control-Allow-Origin'));
+        $this->assertEquals('Request-ID', $phapi->getResponse()->getHeaders()->get('Access-Control-Expose-Headers'));
+        $this->assertEquals('true', $phapi->getResponse()->getHeaders()->get('Access-Control-Allow-Credentials'));
+    }
 }
 
 class Home extends Resource {
 
     public function get()
     {
-        return [];
+        return [ 'key' => 'value' ];
+    }
+
+    public function post()
+    {
+        return [ 'body' => [], 'status' => Response::STATUS_CREATED];
+    }
+
+    public function put()
+    {
+        return [ 'body' => [], 'status' => Response::STATUS_ACCEPTED];
+    }
+
+    public function delete()
+    {
+        return [ 'body' => [], 'status' => Response::STATUS_NO_CONTENT];
     }
 }
