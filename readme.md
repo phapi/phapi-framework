@@ -268,6 +268,7 @@ There is an interface that can be implemented if a storage type is missing. Only
 The following storage types are included in Phapi:
 
 - **Memache**
+- **Redis**
 - **NullCache**, an empty class simulating a cache. It's used in those cases where no cache is configured. This simplifies using the cache functions since we don't need to check if a cache actually exists.
 
 ### Serializers

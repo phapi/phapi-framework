@@ -10,6 +10,7 @@ matrix:
 
 services:
   - memcached
+  - redis-server
 
 before_script:
   - travis_retry composer self-update
