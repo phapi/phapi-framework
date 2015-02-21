@@ -19,14 +19,14 @@ class RouterTest extends \PHPUnit_Framework_TestCase
     {
         $this->routes = [
             '/' => '\\Phapi\\Tests\\Home',
-            '/users' => '\\Phapi\\Tests\\Users',
-            '/users/{name:a}' => '\\Phapi\\Tests\\User',
-            '/articles/{id:[0-9]+}' => '\\Phapi\\Tests\\Article',
-            '/color/{id:h}' => '\\Phapi\\Tests\\Color',
-            '/products/{name}' => '\\Phapi\\Tests\\Product',
+            '/users/' => '\\Phapi\\Tests\\Users',
+            '/users/{name:a}/' => '\\Phapi\\Tests\\User',
+            '/articles/{id:[0-9]+}/' => '\\Phapi\\Tests\\Article',
+            '/color/{id:h}/' => '\\Phapi\\Tests\\Color',
+            '/products/{name}/' => '\\Phapi\\Tests\\Product',
             '/products/' => '\\Phapi\\Tests\\Products',
-            '/blog/{date:c}?/{title:c}?' => '\\Phapi\\Tests\\Blog\\Post',
-            '/page/{slug}/{id:[0-9]+}?' => '\\Phapi\\Tests\\Page',
+            '/blog/{date:c}?/{title:c}?/' => '\\Phapi\\Tests\\Blog\\Post',
+            '/page/{slug}/{id:[0-9]+}?/' => '\\Phapi\\Tests\\Page',
         ];
     }
 
@@ -51,6 +51,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase
      * @depends testConstructor
      * @covers ::match
      * @covers ::resourceMethodExists
+     * @covers ::addToCache
      *
      * @param Router $router
      * @return Router
@@ -129,7 +130,6 @@ class RouterTest extends \PHPUnit_Framework_TestCase
      * @depends testConstructor
      * @covers ::setRoutes
      * @covers ::addRoutes
-     * @covers ::addRoute
      * @covers ::getRoutes
      *
      * @param Router $router
@@ -141,7 +141,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($router->getRoutes(), $this->routes);
 
         // add a new dummy route to change route table
-        $router->addRoute('/help', '\\Phapi\\Resource\\Help');
+        $router->addRoutes(['/help' => '\\Phapi\\Resource\\Help']);
         $this->assertNotEquals($router->getRoutes(), $this->routes);
 
         // (re)set default routes
@@ -152,7 +152,6 @@ class RouterTest extends \PHPUnit_Framework_TestCase
     /**
      * @depends testConstructor
      * @covers ::addRoutes
-     * @covers ::addRoute
      *
      * @param Router $router
      * @return Router
@@ -206,8 +205,8 @@ class RouterTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetMatchedRoute(Router $router)
     {
-        $this->assertEquals('/page/{slug}/{id:[0-9]+}?', $router->getMatchedRoute());
-        $this->assertNotEquals('/articles/{id:[0-9]+}', $router->getMatchedRoute());
+        $this->assertEquals('/page/{slug}/{id:[0-9]+}?/', $router->getMatchedRoute());
+        $this->assertNotEquals('/articles/{id:[0-9]+}/', $router->getMatchedRoute());
     }
 
     /**

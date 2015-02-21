@@ -6,11 +6,10 @@ Phapi is a PHP based framework aiming at simplifying API development and a the s
 [![Source](https://img.shields.io/badge/source-ahinko/phapi-blue.svg?style=flat-square)](https://github.com/ahinko/phapi)
 [![Release](https://img.shields.io/github/release/ahinko/phapi.svg?style=flat-square)](https://github.com/ahinko/phapi/releases)
 [![License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](https://github.com/ahinko/phapi/blob/master/LICENSE)  
-[![Build Status](https://img.shields.io/travis/ahinko/phapi.svg?style=flat-square)](https://travis-ci.org/ahinko/phapi)
+[![Build Status](https://img.shields.io/travis/ahinko/phapi/master.svg?style=flat-square)](https://travis-ci.org/ahinko/phapi)
 [![HHVM](https://img.shields.io/hhvm/ahinko/phapi.svg?style=flat-square)](http://hhvm.h4cc.de/package/ahinko/phapi)
 [![Code Climate](https://img.shields.io/codeclimate/github/ahinko/phapi.svg?style=flat-square)](https://codeclimate.com/github/ahinko/phapi)
 [![Test Coverage](https://img.shields.io/codeclimate/coverage/github/ahinko/phapi.svg?style=flat-square)](https://codeclimate.com/github/ahinko/phapi)
-[![Downloads](https://img.shields.io/packagist/dt/ahinko/phapi.svg?style=flat-square)](https://packagist.org/packages/ahinko/phapi)
 
 ## Quick start
 See the [Phapi example repo](https://github.com/ahinko/phapi-example) for an example of how to get started really fast.
@@ -41,14 +40,14 @@ Use composer by editing your composer.json:
 ...
 {
     "require": {
-        "ahinko/phapi": "1.1.*"
+        "ahinko/phapi": "1.2.*"
     }
 }
 ...
 ```
 or add requirement from command line:
 ```
-php composer.phar require ahinko/phapi:1.1.*
+php composer.phar require ahinko/phapi:1.2.*
 ```
 
 #### PHP settings
@@ -268,6 +267,7 @@ There is an interface that can be implemented if a storage type is missing. Only
 The following storage types are included in Phapi:
 
 - **Memache**
+- **Redis**
 - **NullCache**, an empty class simulating a cache. It's used in those cases where no cache is configured. This simplifies using the cache functions since we don't need to check if a cache actually exists.
 
 ### Serializers
