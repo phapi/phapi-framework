@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "c4ccbd7c3313ab1e64f991bdc87eec89",
+    "hash": "146506bb3ed955c9ff91aecbfbf1a201",
     "packages": [
         {
             "name": "psr/log",
@@ -148,12 +148,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/codeclimate/php-test-reporter.git",
-                "reference": "2dd8395f81874333d15de3a598f722997ba42fb5"
+                "reference": "2a67d5d940e175fddba15f29c81a646ace26dc38"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/codeclimate/php-test-reporter/zipball/2dd8395f81874333d15de3a598f722997ba42fb5",
-                "reference": "2dd8395f81874333d15de3a598f722997ba42fb5",
+                "url": "https://api.github.com/repos/codeclimate/php-test-reporter/zipball/2a67d5d940e175fddba15f29c81a646ace26dc38",
+                "reference": "2a67d5d940e175fddba15f29c81a646ace26dc38",
                 "shasum": ""
             },
             "require": {
@@ -163,6 +163,7 @@
                 "symfony/console": ">=2.0"
             },
             "require-dev": {
+                "ext-xdebug": "*",
                 "phpunit/phpunit": "3.7.*@stable"
             },
             "bin": [
@@ -197,7 +198,7 @@
                 "codeclimate",
                 "coverage"
             ],
-            "time": "2014-12-29 16:17:04"
+            "time": "2015-02-20 22:40:35"
         },
         {
             "name": "doctrine/instantiator",
