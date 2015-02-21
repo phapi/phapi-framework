@@ -54,7 +54,8 @@ class RedisClientTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals('QUEUED', $client->smembers('unitTest:aKey'));
         $this->assertEquals('QUEUED', $client->smembers('unitTest:aKey'));
         $client->exec();
-        $this->assertEquals(array('another value', 'value'), $client->smembers('unitTest:aKey'));
+        $this->assertContains('another value', $client->smembers('unitTest:aKey'));
+        $this->assertContains('value', $client->smembers('unitTest:aKey'));
     }
 
     /**
