@@ -24,6 +24,20 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('value', $dic->param);
     }
 
+    public function testWithStringAndAccessContainer()
+    {
+        $dic = new Container();
+        $dic->param = 'container value';
+
+        $dic->dicObject = function ($container) {
+            $obj = new DicObject();
+            $obj->value = $container->param;
+            return $obj;
+        };
+
+        $this->assertSame($dic->param, $dic->dicObject->value);
+    }
+
     /**
      * @covers ::__construct
      * @covers ::__set
