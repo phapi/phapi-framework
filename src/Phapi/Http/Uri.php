@@ -35,7 +35,7 @@ class Uri implements UriInterface {
     /**
      * @var int
      */
-    private $port;
+    private $port = null;
     /**
      * @var string
      */
@@ -456,13 +456,7 @@ class Uri implements UriInterface {
      */
     public function __toString()
     {
-        return $this->createUriString(
-            $this->getScheme(),
-            $this->getAuthority(),
-            $this->getPath(),
-            $this->getQuery(),
-            $this->getFragment()
-        );
+        return $this->createUriString();
     }
 
     /**
@@ -474,14 +468,37 @@ class Uri implements UriInterface {
     {
         $parts = parse_url($uri);
 
-        $this->scheme    = (isset($parts['scheme']))     ? $parts['scheme']     : ''; // e.g. http
-        $this->host      = (isset($parts['host']))       ? $parts['host']       : '';
-        $this->port      = (isset($parts['port']))       ? $parts['port']       : null;
-        $this->userInfo  = (isset($parts['user']))       ? $parts['user']       : '';
-        $this->userInfo .= (isset($parts['pass']))       ? ':'. $parts['pass']  : '';
-        $this->path      = (isset($parts['path']))       ? $parts['path']       : '';
-        $this->query     = (isset($parts['query']))      ? $parts['query']      : ''; // after the question mark ?
-        $this->fragment  = (isset($parts['fragment']))   ? $parts['fragment']   : ''; // after the hashmark #
+        if (isset($parts['scheme'])) {
+            $this->scheme = $parts['scheme'];
+        }
+
+        if (isset($parts['host'])) {
+            $this->host = $parts['host'];
+        }
+
+        if (isset($parts['port'])) {
+            $this->port = $parts['port'];
+        }
+
+        if (isset($parts['user'])) {
+            $this->userInfo = $parts['user'];
+        }
+
+        if (isset($parts['pass'])) {
+            $this->userInfo .= ':'. $parts['pass'];
+        }
+
+        if (isset($parts['path'])) {
+            $this->path = $parts['path'];
+        }
+
+        if (isset($parts['query'])) {
+            $this->query = $parts['query'];
+        }
+
+        if (isset($parts['fragment'])) {
+            $this->fragment = $parts['fragment'];
+        }
     }
 
     /**
@@ -526,31 +543,32 @@ class Uri implements UriInterface {
     /**
      * Create a URI string from its various parts
      *
-     * @param string $scheme
-     * @param string $authority
-     * @param string $path
-     * @param string $query
-     * @param string $fragment
      * @return string
      */
-    private static function createUriString($scheme, $authority, $path, $query, $fragment)
+    private function createUriString()
     {
         $uri = '';
-        if (!empty($scheme)) {
-            $uri .= sprintf('%s://', $scheme);
+
+        if (!empty($this->scheme)) {
+            $uri .= sprintf('%s://', $this->scheme);
         }
-        if (! empty($authority)) {
+
+        if (!empty($authority = $this->getAuthority())) {
             $uri .= $authority;
         }
-        if ($path) {
+
+        if ($path = $this->getPath()) {
             $uri .= $path;
         }
-        if ($query) {
+
+        if ($query = $this->getQuery()) {
             $uri .= sprintf('?%s', $query);
         }
-        if ($fragment) {
+
+        if ($fragment = $this->getFragment()) {
             $uri .= sprintf('#%s', $fragment);
         }
+
         return $uri;
     }
 }
