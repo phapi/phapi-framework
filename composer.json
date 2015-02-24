@@ -28,7 +28,7 @@
   "autoload": {
     "psr-4": {
       "Phapi\\": "src/Phapi/",
-      "Phapi\\Tests\\": "tests/"
+      "Phapi\\Tests\\": "tests/Phapi/"
     }
   }
 }
