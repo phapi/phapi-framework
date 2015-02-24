@@ -468,37 +468,28 @@ class Uri implements UriInterface {
     {
         $parts = parse_url($uri);
 
-        if (isset($parts['scheme'])) {
-            $this->scheme = $parts['scheme'];
-        }
+        $this->scheme    = (isset($parts['scheme']))     ? $parts['scheme']     : ''; // e.g. http
+        $this->host      = (isset($parts['host']))       ? $parts['host']       : '';
+        $this->port      = (isset($parts['port']))       ? $parts['port']       : null;
+        $this->path      = (isset($parts['path']))       ? $parts['path']       : '';
+        $this->query     = (isset($parts['query']))      ? $parts['query']      : ''; // after the question mark ?
+        $this->fragment  = (isset($parts['fragment']))   ? $parts['fragment']   : ''; // after the hashmark #
 
-        if (isset($parts['host'])) {
-            $this->host = $parts['host'];
-        }
+        $this->userInfo = $this->parseUserInfo($parts);
+    }
 
-        if (isset($parts['port'])) {
-            $this->port = $parts['port'];
-        }
+    /**
+     * Find and build userInfo parameter
+     *
+     * @param $parts
+     * @return string
+     */
+    private function parseUserInfo($parts)
+    {
+        $userInfo  = (isset($parts['user']))       ? $parts['user']       : '';
+        $userInfo .= (isset($parts['pass']))       ? ':'. $parts['pass']  : '';
 
-        if (isset($parts['user'])) {
-            $this->userInfo = $parts['user'];
-        }
-
-        if (isset($parts['pass'])) {
-            $this->userInfo .= ':'. $parts['pass'];
-        }
-
-        if (isset($parts['path'])) {
-            $this->path = $parts['path'];
-        }
-
-        if (isset($parts['query'])) {
-            $this->query = $parts['query'];
-        }
-
-        if (isset($parts['fragment'])) {
-            $this->fragment = $parts['fragment'];
-        }
+        return $userInfo;
     }
 
     /**

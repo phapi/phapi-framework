@@ -21,6 +21,8 @@ class UriTest extends TestCase
      * @covers ::getQuery
      * @covers ::getFragment
      * @covers ::isStandardPort
+     * @covers ::parse
+     * @covers ::parseUserInfo
      */
     public function testConstructorSetsAllProperties()
     {
