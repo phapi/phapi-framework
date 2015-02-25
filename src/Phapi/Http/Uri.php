@@ -468,28 +468,94 @@ class Uri implements UriInterface {
     {
         $parts = parse_url($uri);
 
-        $this->scheme    = (isset($parts['scheme']))     ? $parts['scheme']     : ''; // e.g. http
-        $this->host      = (isset($parts['host']))       ? $parts['host']       : '';
-        $this->port      = (isset($parts['port']))       ? $parts['port']       : null;
-        $this->path      = (isset($parts['path']))       ? $parts['path']       : '';
-        $this->query     = (isset($parts['query']))      ? $parts['query']      : ''; // after the question mark ?
-        $this->fragment  = (isset($parts['fragment']))   ? $parts['fragment']   : ''; // after the hashmark #
-
+        $this->scheme   = $this->parseScheme($parts);
         $this->userInfo = $this->parseUserInfo($parts);
+        $this->host     = $this->parseHost($parts);
+        $this->port     = $this->parsePort($parts);
+        $this->path     = $this->parsePath($parts);
+        $this->query    = $this->parseQuery($parts);
+        $this->fragment = $this->parseFragment($parts);
+    }
+
+    /**
+     * Find an return scheme parameter
+     *
+     * @param array $parts
+     * @return string
+     */
+    private function parseScheme($parts)
+    {
+        return (isset($parts['scheme'])) ? $parts['scheme'] : ''; // e.g. http
     }
 
     /**
      * Find and build userInfo parameter
      *
-     * @param $parts
+     * @param array $parts
      * @return string
      */
     private function parseUserInfo($parts)
     {
-        $userInfo  = (isset($parts['user']))       ? $parts['user']       : '';
-        $userInfo .= (isset($parts['pass']))       ? ':'. $parts['pass']  : '';
+        return (
+            isset($parts['user'])
+        ) ?
+            (isset($parts['pass'])) ? $parts['user'] .':'. $parts['pass'] : $parts['user'] :
+            '';
+    }
 
-        return $userInfo;
+    /**
+     * Find an return host parameter
+     *
+     * @param array $parts
+     * @return string
+     */
+    private function parseHost($parts)
+    {
+        return (isset($parts['host'])) ? $parts['host'] : '';
+    }
+
+    /**
+     * Find an return port parameter
+     *
+     * @param array $parts
+     * @return string
+     */
+    private function parsePort($parts)
+    {
+        return (isset($parts['port'])) ? $parts['port'] : null;
+    }
+
+    /**
+     * Find an return path parameter
+     *
+     * @param array $parts
+     * @return string
+     */
+    private function parsePath($parts)
+    {
+        return (isset($parts['path'])) ? $parts['path'] : '';
+    }
+
+    /**
+     * Find an return query string parameter
+     *
+     * @param array $parts
+     * @return string
+     */
+    private function parseQuery($parts)
+    {
+        return (isset($parts['query'])) ? $parts['query'] : '';
+    }
+
+    /**
+     * Find an return fragment parameter
+     *
+     * @param array $parts
+     * @return string
+     */
+    private function parseFragment($parts)
+    {
+        return (isset($parts['fragment'])) ? $parts['fragment'] : '';
     }
 
     /**
