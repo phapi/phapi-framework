@@ -65,9 +65,6 @@ class Uri implements UriInterface {
     /**
      * Retrieve the URI scheme.
      *
-     * Returns "http" or "https", unless another scheme is used.
-     * If no scheme is present an empty string is returned.
-     *
      * @return string The scheme of the URI.
      */
     public function getScheme()
@@ -76,15 +73,8 @@ class Uri implements UriInterface {
     }
 
     /**
-     * Retrieve the authority portion of the URI.
-     *
-     * The authority portion of the URI is [user-info@]host[:port]
-     *
-     * If the port component is not set or is the standard port for the current
-     * scheme, it will not be included.
-     *
-     * This method will return an empty string if no authority information is
-     * present.
+     * Retrieve the authority portion of the URI. The authority portion of the
+     * URI is [user-info@]host[:port]
      *
      * @return string Authority portion of the URI, in "[user-info@]host[:port]" format.
      */
@@ -114,10 +104,6 @@ class Uri implements UriInterface {
     /**
      * Retrieve the user information portion of the URI, if present.
      *
-     * If a user is present in the URI, this will return that value; additionally,
-     * if the password is also present, it will be appended to the user value, with
-     * a colon (":") separating the values.
-     *
      * @return string User information portion of the URI, if present, in "username[:password]" format.
      */
     public function getUserInfo()
@@ -127,9 +113,6 @@ class Uri implements UriInterface {
 
     /**
      * Retrieve the host segment of the URI.
-     *
-     * This method will return a string; if no host segment is present, an
-     * empty string MUST be returned.
      *
      * @return string Host segment of the URI.
      */
@@ -141,15 +124,6 @@ class Uri implements UriInterface {
     /**
      * Retrieve the port segment of the URI.
      *
-     * If a port is present, and it is non-standard for the current scheme,
-     * this method will return it as an integer. If the port is the standard port
-     * used with the current scheme, this method will return null.
-     *
-     * If no port is present, and no scheme is present, this method will return
-     * a null value.
-     *
-     * If no port is present, but a scheme is present, this method will return null.
-     *
      * @return null|int The port for the URI.
      */
     public function getPort()
@@ -159,9 +133,6 @@ class Uri implements UriInterface {
 
     /**
      * Retrieve the path segment of the URI.
-     *
-     * This method will return a string; if no path is present it will return
-     * an empty string.
      *
      * @return string The path segment of the URI.
      */
@@ -173,9 +144,6 @@ class Uri implements UriInterface {
     /**
      * Retrieve the query string of the URI.
      *
-     * This method will return a string; if no query string is present, it will
-     * return an empty string.
-     *
      * @return string The URI query string.
      */
     public function getQuery()
@@ -186,9 +154,6 @@ class Uri implements UriInterface {
     /**
      * Retrieve the fragment segment of the URI.
      *
-     * This method returns a string; if no fragment is present, it will return an
-     * empty string. The string returned will omit the leading "#" character.
-     *
      * @return string The URI fragment.
      */
     public function getFragment()
@@ -198,14 +163,6 @@ class Uri implements UriInterface {
 
     /**
      * Create a new instance with the specified scheme.
-     *
-     * This method will retain the state of the current instance, and return
-     * a new instance that contains the specified scheme. If the scheme
-     * provided includes the "://" delimiter, it will be removed.
-     *
-     * Implementations will restrict values to "http", "https", or an empty string.
-     *
-     * An empty scheme is equivalent to removing the scheme.
      *
      * @param string $scheme The scheme to use with the new instance.
      * @return self A new instance with the specified scheme.
@@ -236,13 +193,6 @@ class Uri implements UriInterface {
     /**
      * Create a new instance with the specified user information.
      *
-     * This method will retain the state of the current instance, and return
-     * a new instance that contains the specified user information.
-     *
-     * Password is optional, but the user information MUST include the
-     * user; an empty string for the user is equivalent to removing user
-     * information.
-     *
      * @param string $user User name to use for authority.
      * @param null|string $password Password associated with $user.
      * @return self A new instance with the specified user information.
@@ -262,11 +212,6 @@ class Uri implements UriInterface {
     /**
      * Create a new instance with the specified host.
      *
-     * This method will retain the state of the current instance, and return
-     * a new instance that contains the specified host.
-     *
-     * An empty host value is equivalent to removing the host.
-     *
      * @param string $host Hostname to use with the new instance.
      * @return self A new instance with the specified host.
      */
@@ -279,15 +224,6 @@ class Uri implements UriInterface {
 
     /**
      * Create a new instance with the specified port.
-     *
-     * This method will retain the state of the current instance, and return
-     * a new instance that contains the specified port.
-     *
-     * Implementations will raise an exception for ports outside the
-     * established TCP and UDP port ranges.
-     *
-     * A null value provided for the port is equivalent to removing the port
-     * information.
      *
      * @param null|int $port Port to use with the new instance; a null value
      *     removes the port information.
@@ -321,14 +257,6 @@ class Uri implements UriInterface {
     /**
      * Create a new instance with the specified path.
      *
-     * This method will retain the state of the current instance, and return
-     * a new instance that contains the specified path.
-     *
-     * The path may be prefixed with "/"; if not, the implementation will
-     * provide the prefix itself.
-     *
-     * An empty path value is equivalent to removing the path.
-     *
      * @param string $path The path to use with the new instance.
      * @return self A new instance with the specified path.
      * @throws \InvalidArgumentException for invalid paths.
@@ -342,7 +270,7 @@ class Uri implements UriInterface {
             );
         }
 
-        // Make sure it doesn't contain query string
+        // Make sure it doesn't contain a query string
         if (strpos($path, '?') !== false) {
             throw new \InvalidArgumentException(
                 'Invalid path provided, must not contain a query string'
@@ -368,13 +296,6 @@ class Uri implements UriInterface {
 
     /**
      * Create a new instance with the specified query string.
-     *
-     * This method will retain the state of the current instance, and return
-     * a new instance that contains the specified query string.
-     *
-     * If the query string is prefixed by "?", that character will be removed.
-     *
-     * An empty query string value is equivalent to removing the query string.
      *
      * @param string $query The query string to use with the new instance.
      * @return self A new instance with the specified query string.
@@ -409,13 +330,6 @@ class Uri implements UriInterface {
     /**
      * Create a new instance with the specified URI fragment.
      *
-     * This method will retain the state of the current instance, and return
-     * a new instance that contains the specified URI fragment.
-     *
-     * If the fragment is prefixed by "#", that character will be removed.
-     *
-     * An empty fragment value is equivalent to removing the fragment.
-     *
      * @param string $fragment The URI fragment to use with the new instance.
      * @return self A new instance with the specified URI fragment.
      * @throws \InvalidArgumentException for invalid query strings.
@@ -441,16 +355,6 @@ class Uri implements UriInterface {
 
     /**
      * Return the string representation of the URI.
-     *
-     * Concatenates the various segments of the URI, using the appropriate
-     * delimiters:
-     *
-     * - If a scheme is present, "://" MUST append the value.
-     * - If the authority information is present, that value will be
-     *   concatenated.
-     * - If a path is present, it MUST be prefixed by a "/" character.
-     * - If a query string is present, it MUST be prefixed by a "?" character.
-     * - If a URI fragment is present, it MUST be prefixed by a "#" character.
      *
      * @return string
      */
@@ -567,33 +471,26 @@ class Uri implements UriInterface {
      */
     private function isStandardPort($scheme, $port)
     {
-        // Check if we know the scheme
         if (!$scheme) {
             // If we don't know the scheme then we don't know if it's
             // the standard port so we return true as default.
             return true;
         }
 
-        // Check if we know the port
         if (!$port) {
             // We don't know the port so we cant determine if it's
             // the standard port so we return true as default
             return true;
         }
 
-        // Check if scheme is https and if port is 443
         if ($scheme == 'https' && $port === 443) {
-            // It's https but not 443
             return true;
         }
 
-        // Check if scheme is http and if port is 80
         if ($scheme == 'http' && $port === 80) {
-            // It's http but not 80
             return true;
         }
 
-        // Return false as default
         return false;
     }
 
