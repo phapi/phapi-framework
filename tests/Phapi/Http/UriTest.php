@@ -1,5 +1,5 @@
 <?php
-namespace PhlyTest\Http;
+namespace Phapi\Tests\Http;
 
 use Phapi\Http\Uri;
 use PHPUnit_Framework_TestCase as TestCase;
