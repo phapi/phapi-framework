@@ -24,26 +24,32 @@ class Uri implements UriInterface {
      * @var string
      */
     private $scheme = '';
+
     /**
      * @var string
      */
     private $userInfo = '';
+
     /**
      * @var string
      */
     private $host = '';
+
     /**
      * @var int
      */
     private $port = null;
+
     /**
      * @var string
      */
     private $path = '';
+
     /**
      * @var string
      */
     private $query = '';
+
     /**
      * @var string
      */
@@ -85,7 +91,6 @@ class Uri implements UriInterface {
             return '';
         }
 
-        // Add host to the authority string
         $authority = $this->host;
 
         // Check if we have the userInfo
@@ -170,7 +175,6 @@ class Uri implements UriInterface {
      */
     public function withScheme($scheme)
     {
-        // To lowercase
         $scheme = strtolower($scheme);
 
         // Remove :// if it exists
@@ -263,7 +267,6 @@ class Uri implements UriInterface {
      */
     public function withPath($path)
     {
-        // Make sure path is a string
         if (!is_string($path)) {
             throw new \InvalidArgumentException(
                 'Invalid path provided, must be a string'
@@ -303,8 +306,7 @@ class Uri implements UriInterface {
      */
     public function withQuery($query)
     {
-        // Make sure its a string
-        if (! is_string($query)) {
+        if (!is_string($query)) {
             throw new \InvalidArgumentException(
                 'Query string must be a string'
             );
@@ -336,7 +338,6 @@ class Uri implements UriInterface {
      */
     public function withFragment($fragment)
     {
-        // Check if string
         if (!is_string($fragment)) {
             throw new \InvalidArgumentException(
                 'Fragment must be a string'
