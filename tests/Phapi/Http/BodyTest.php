@@ -202,6 +202,7 @@ class BodyTest extends TestCase
         $stream = new Stream($resource);
         $stream->detach();
         $this->assertFalse($stream->isSeekable());
+        $this->assertFalse($stream->rewind());
     }
 
     public function testSeekAdvancesToGivenOffsetOfStream()
