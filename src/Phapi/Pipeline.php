@@ -42,7 +42,7 @@ class Pipeline implements Middleware {
     public function __construct($container = null)
     {
         $this->queue = new \SplQueue();
-        $this->$container = $container;
+        $this->container = $container;
     }
 
     /**
