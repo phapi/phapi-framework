@@ -107,7 +107,7 @@ class Container {
      *
      * @param $key
      * @return mixed
-     * @throws \Exception
+     * @throws \InvalidArgumentException
      */
     public function __get($key)
     {
