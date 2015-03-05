@@ -72,9 +72,9 @@ class Uri implements UriInterface {
      */
     public function __construct($uri = '')
     {
-        if (! is_string($uri)) {
+        if (!is_string($uri)) {
             throw new \InvalidArgumentException(
-                'URI must be a string'
+                'Unsupported URI, must be a string'
             );
         }
 
