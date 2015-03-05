@@ -7,7 +7,7 @@
 
 namespace Phapi;
 
-use Phapi\Interface\Middleware;
+use Phapi\Contract\Middleware;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 
