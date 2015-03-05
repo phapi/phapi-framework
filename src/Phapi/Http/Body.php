@@ -37,10 +37,39 @@ class Body implements StreamableInterface {
         'writable' => ['r+', 'w', 'w+', 'a', 'a+', 'x', 'x+', 'c', 'c+']
     ];
 
+    /**
+     * Resource
+     *
+     * @var resource
+     */
     protected $resource;
 
+    /**
+     * Stream
+     *
+     * @var string|resource
+     */
+    protected $stream;
+
+    /**
+     * Is readable?
+     *
+     * @var bool
+     */
     protected $readable;
+
+    /**
+     * Is writable?
+     *
+     * @var bool
+     */
     protected $writable;
+
+    /**
+     * Is seekable?
+     *
+     * @var bool
+     */
     protected $seekable;
 
     public function __construct($stream, $mode = 'r')
@@ -86,6 +115,7 @@ class Body implements StreamableInterface {
         $resource = $this->resource;
 
         $this->resource = null;
+        $this->stream   = null;
         $this->seekable = null;
         $this->writable = null;
         $this->readable = null;
@@ -104,6 +134,8 @@ class Body implements StreamableInterface {
     {
         // Detach any existing resource
         $this->detach();
+
+        $this->stream = $stream;
 
         if (is_resource($stream)) {
             $this->resource = $stream;
