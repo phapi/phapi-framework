@@ -177,7 +177,7 @@ trait MessageTrait {
             $value = [$value];
         }
 
-        if (!is_array($value) || !(array_filter($value, 'is_string') === $value)) {
+        if (!$this->isValidHeader($name, $value)) {
             throw new \InvalidArgumentException(
                 'Unsupported header value, must be a string or array of strings'
             );
@@ -207,7 +207,7 @@ trait MessageTrait {
             $value = [$value];
         }
 
-        if (!is_array($value) || !(array_filter($value, 'is_string') === $value)) {
+        if (!$this->isValidHeader($name, $value)) {
             throw new \InvalidArgumentException(
                 'Unsupported header value, must be a string or array of strings'
             );
@@ -258,5 +258,29 @@ trait MessageTrait {
         $clone = clone $this;
         $clone->body = $body;
         return $clone;
+    }
+
+    /**
+     * Check if a header is valid
+     *
+     * @param $name
+     * @param $value
+     * @return bool
+     */
+    private function isValidHeader($name, $value)
+    {
+        if (!is_string($name)) {
+            return false;
+        }
+
+        if (is_string($value)) {
+            return true;
+        }
+
+        if (is_array($value) && (array_filter($value, 'is_string') === $value)) {
+            return true;
+        }
+
+        return false;
     }
 }
