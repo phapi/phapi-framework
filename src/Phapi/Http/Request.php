@@ -385,4 +385,32 @@ class Request implements ServerRequestInterface {
         $clone->uri = $uri;
         return $clone;
     }
+
+    /**
+     * Find headers in the server parameters
+     *
+     * @param array $serverParams
+     * @return array
+     */
+    protected function findHeaders($serverParams = [])
+    {
+        $headers = [];
+        foreach ($serverParams as $key => $value) {
+            if (!$this->isValidHeader($key, $value)) {
+                continue;
+            }
+
+            $key = strtolower($key);
+            if (
+                0 === strpos($key, 'http_') ||
+                isset($this->specialHeaders[$key])
+            ) {
+                $headers[$key] = (is_array($value)) ? $value : [$value];
+            }
+        }
+
+        return $headers;
+    }
+
+
 }

@@ -95,32 +95,6 @@ trait MessageTrait {
     }
 
     /**
-     * Find headers in the server parameters
-     *
-     * @param array $serverParams
-     * @return array
-     */
-    protected function findHeaders($serverParams = [])
-    {
-        $headers = [];
-        foreach ($serverParams as $key => $value) {
-            if ((!is_string($value) && !is_array($value)) || !is_string($key)) {
-                continue;
-            }
-
-            $key = strtolower($key);
-            if (
-                0 === strpos($key, 'http_') ||
-                isset($this->specialHeaders[$key])
-            ) {
-                $headers[$key] = (is_array($value)) ? $value : [$value];
-            }
-        }
-
-        return $headers;
-    }
-
-    /**
      * Checks if a header exists by the given case-insensitive name.
      *
      * @param string $name Case-insensitive header field name.
