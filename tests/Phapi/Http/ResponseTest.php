@@ -15,6 +15,11 @@ class ResponseTest extends TestCase
         $this->response = new Response();
     }
 
+    public function testGetReasonPhrase()
+    {
+        $this->assertEquals('OK', $this->response->getReasonPhrase());
+    }
+
     public function testStatusCodeIs200ByDefault()
     {
         $this->assertEquals(200, $this->response->getStatusCode());

@@ -36,7 +36,7 @@ class RequestTest extends TestCase
     public function testConstructorRaisesExceptionForInvalidStream()
     {
         $this->setExpectedException('InvalidArgumentException');
-        new Request([],[],['TOTALLY INVALID']);
+        new Request([], [], ['TOTALLY INVALID']);
     }
 
     public function invalidUrls()
@@ -338,6 +338,9 @@ class RequestTest extends TestCase
         $new = $request->withoutAttribute('foo');
         $this->assertNotSame($request, $new);
         $this->assertNull($new->getAttribute('foo', null));
+
+        $two = $request->withoutAttribute('bar');
+        $this->assertSame($request, $two);
     }
 
     public function testUsesProvidedConstructorArguments()
@@ -372,5 +375,17 @@ class RequestTest extends TestCase
         $r->setAccessible(true);
         $stream = $r->getValue($body);
         $this->assertEquals('php://memory', $stream);
+    }
+
+    public function testSetCustomValidMethods()
+    {
+        $this->setExpectedException('InvalidArgumentException', 'Unsupported HTTP method');
+        $request = new Request(['REQUEST_METHOD' => 'PUT'], [], 'php://memory', ['POST', 'GET']);
+    }
+    public function testWithInvalidMethod()
+    {
+        $request = new Request(['REQUEST_METHOD' => 'POST'], [], 'php://memory', ['POST', 'GET']);
+        $this->setExpectedException('InvalidArgumentException', 'Unsupported HTTP method');
+        $new = $request->withMethod('PUT');
     }
 }

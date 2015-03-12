@@ -28,6 +28,12 @@ class MessageTraitTest extends TestCase
         $this->assertEquals('1.0', $message->getProtocolVersion());
     }
 
+    public function testWithProtocolException()
+    {
+        $this->setExpectedException('InvalidArgumentException', 'Unsupported HTTP protocol version');
+        $message = $this->message->withProtocolVersion('2.3');
+    }
+
     public function testUsesStreamProvidedInConstructorAsBody()
     {
         $this->assertSame($this->stream, $this->message->getBody());
@@ -46,6 +52,7 @@ class MessageTraitTest extends TestCase
         $message = $this->message->withHeader('X-Foo', ['Foo', 'Bar']);
         $this->assertNotSame($this->message, $message);
         $this->assertEquals(['Foo', 'Bar'], $message->getHeaderLines('X-Foo'));
+        $this->assertEquals([], $message->getHeaderLines('X-Bar'));
     }
 
     public function testGetHeaderReturnsHeaderValueAsCommaConcatenatedString()
@@ -131,12 +138,13 @@ class MessageTraitTest extends TestCase
     }
 
     /**
-     * @dataProvider invalidGeneralHeaderValues
+     * @dataProvider invalidHeaderValues
      */
     public function testAddHeaderRaisesExceptionForNonStringNonArrayValue($value)
     {
         $this->setExpectedException('InvalidArgumentException', 'must be a string');
-        $message = $this->message->withAddedHeader('X-Foo', $value);
+        $message = $this->message->withAddedHeader('X-Foo', 'value');
+        $message = $message->withAddedHeader('X-Foo', $value);
     }
 
     public function testRemoveHeaderDoesNothingIfHeaderDoesNotExist()
