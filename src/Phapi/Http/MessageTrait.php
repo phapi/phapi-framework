@@ -74,7 +74,7 @@ trait MessageTrait {
     {
         if (!in_array($version, $this->validProtocols)) {
             throw new \InvalidArgumentException(
-                'Unsupported HTTP protocol version; supported version are 1.0, 1.1 and 2.0'
+                'Unsupported HTTP protocol version; supported version are '. implode(', ', $this->validProtocols)
             );
         }
 
