@@ -95,9 +95,7 @@ class Request implements ServerRequestInterface {
         $this->getQueryParams = $queryParams;
 
         $this->protocol =
-            (isset($serverParams['SERVER_PROTOCOL'])) ?
-            substr($serverParams['SERVER_PROTOCOL'], -3)
-            : '1.1';
+            (isset($serverParams['SERVER_PROTOCOL'])) ? substr($serverParams['SERVER_PROTOCOL'], -3) : '1.1';
 
         $this->body = ($body instanceof StreamableInterface) ? $body : new Body($body);
         $this->uri = (isset($this->serverParams['REQUEST_URI'])) ? new Uri($this->serverParams['REQUEST_URI']) : null;
@@ -345,7 +343,7 @@ class Request implements ServerRequestInterface {
     {
         if (!in_array($method, $this->validMethods)) {
             throw new \InvalidArgumentException(
-                'Unsupported request method; supported methods: '. implode(', ', $this->validMethods)
+                'Unsupported HTTP method; supported methods: '. implode(', ', $this->validMethods)
             );
         }
 
@@ -406,6 +404,4 @@ class Request implements ServerRequestInterface {
 
         return $headers;
     }
-
-
 }
