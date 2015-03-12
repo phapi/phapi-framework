@@ -325,11 +325,6 @@ class Request implements ServerRequestInterface {
 
         $method = $serverParams['REQUEST_METHOD'];
 
-        // check for x-http-method-override header
-        if ($method === 'POST' && ($override = $this->getHeader('X-HTTP-METHOD-OVERRIDE'))) {
-            $method = strtoupper($override);
-        }
-
         if (!in_array($method, $this->validMethods, true)) {
             throw new \InvalidArgumentException(
                 'Unsupported HTTP method; supported methods: '. implode(', ', $this->validMethods)
