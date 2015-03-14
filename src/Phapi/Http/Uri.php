@@ -301,20 +301,23 @@ class Uri implements UriInterface {
      */
     public function withPort($port)
     {
-        if (is_null($port) ||
-            (is_integer($port) &&
-                $port >= 1 &&
-                $port <= 65535
-            )
-        ) {
-            $clone = clone $this;
-            $clone->port = $port;
-            return $clone;
+        if (is_string($port)) {
+            $port = (int) $port;
         }
 
-        throw new \InvalidArgumentException(
-            'Unsupported port provided; must be null or an integer within 1 to 65535'
-        );
+        if (
+            !is_null($port) &&
+            !is_int($port) ||
+            !($port >= 1 && $port <= 65535)
+        ) {
+            throw new \InvalidArgumentException(
+                'Unsupported port provided; must be null or a number within 1 to 65535'
+            );
+        }
+
+        $clone = clone $this;
+        $clone->port = $port;
+        return $clone;
     }
 
     /**
