@@ -82,14 +82,12 @@ class Pipeline implements Middleware {
     public function __invoke(Request $request, Response $response, callable $next = null)
     {
         // Check if the pipe-line is broken or if we are at the end of the queue
-        if ($next !== null && !$this->queue->isEmpty()) {
+        if (!$this->queue->isEmpty()) {
             // Pick the next middleware from the queue
             $next = $this->queue->dequeue();
 
-            // Call the next middleware
-            if (is_callable($next)) {
-                return $next($request, $response, $this);
-            }
+            // Call the next middleware (if callable)
+            return (is_callable($next)) ? $next($request, $response, $this): $response;
         }
 
         // Nothing left to do, return the response
