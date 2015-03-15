@@ -85,6 +85,14 @@ class Request implements ServerRequestInterface {
         'LOCK', 'UNLOCK'
     ];
 
+    /**
+     * Create a request
+     *
+     * @param array $serverParams
+     * @param array $queryParams
+     * @param string $body
+     * @param array $validMethods
+     */
     public function __construct(
         array $serverParams = [],
         array $queryParams = [],
