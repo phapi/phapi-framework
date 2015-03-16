@@ -31,4 +31,23 @@ class PipelineTest extends TestCase
         $this->assertEquals('modified', $response->getHeader('X-Foo'));
         $this->assertSame(500, $response->getStatusCode());
     }
+
+    /**
+     * @expectedException \RuntimeException
+     * @expectedExceptionMessage Middleware can’t be added once the stack is dequeuing
+     */
+    public function testLock()
+    {
+        $request = new Request();
+        $response = new Response();
+
+        $pipeline = new Pipeline(new \stdClass());
+        $pipeline->pipe(new MiddlewareObject());
+        $pipeline->pipe(function ($request, $response, $next) use ($pipeline) {
+            $pipeline->pipe(new MiddlewareObject());
+            $response = $next($request, $response, $next);
+            return $response->withStatus(500);
+        });
+        $response = $pipeline($request, $response, $pipeline);
+    }
 }

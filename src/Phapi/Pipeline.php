@@ -39,6 +39,13 @@ class Pipeline implements Middleware {
      */
     protected $container;
 
+    /**
+     * Lock status of the pipeline
+     *
+     * @var bool
+     */
+    protected $locked = false;
+
     public function __construct($container = null)
     {
         $this->queue = new \SplQueue();
@@ -57,6 +64,11 @@ class Pipeline implements Middleware {
      */
     public function pipe(callable $middleware)
     {
+        // Check if the pipeline is locked
+        if ($this->locked) {
+            throw new \RuntimeException('Middleware can’t be added once the stack is dequeuing');
+        }
+
         if (method_exists($middleware, 'setDI') && $this->container !== null) {
             $middleware->setDI($this->container);
         }
@@ -81,6 +93,9 @@ class Pipeline implements Middleware {
      */
     public function __invoke(Request $request, Response $response, callable $next = null)
     {
+        // Lock the pipeline
+        $this->locked = true;
+
         // Check if the pipe-line is broken or if we are at the end of the queue
         if (!$this->queue->isEmpty()) {
             // Pick the next middleware from the queue
