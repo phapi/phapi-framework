@@ -18,7 +18,11 @@ namespace Phapi;
  * @license  MIT (http://opensource.org/licenses/MIT)
  * @link     https://github.com/ahinko/phapi
  */
-class Container {
+class Container implements \ArrayAccess {
+
+    const TYPE_DEFAULT = self::TYPE_SINGLETON;
+    const TYPE_SINGLETON = 1;
+    const TYPE_MULTITON = 2;
 
     /**
      * Storage for all keys
@@ -28,21 +32,14 @@ class Container {
     protected $keys = [];
 
     /**
-     * Storage for values
+     * Storage for types
      *
      * @var array
      */
-    protected $values = [];
+    protected $types = [];
 
     /**
-     * Factory storage
-     *
-     * @var \SplObjectStorage
-     */
-    protected $factories;
-
-    /**
-     * Storage for keys of locked values
+     * Storage for locked status
      *
      * @var array
      */
@@ -56,107 +53,113 @@ class Container {
     protected $raw = [];
 
     /**
-     * Create Dependency Injection Container
+     * Storage for resolved values
      *
-     * @param array $values
-     * @throws \Exception
+     * @var array
      */
-    public function __construct(array $values = [])
-    {
-        // Create factory storage
-        $this->factories = new \SplObjectStorage();
-
-        // Add values to the container
-        foreach ($values as $key => $value) {
-            $this->__set($key, $value);
-        }
-    }
+    protected $resolved = [];
 
     /**
-     * Mark callable to use factory
+     * Bind/add something to the container
      *
-     * @param $callable
-     * @return mixed
+     * @param $key      string  Identifier
+     * @param $value    mixed   What to store
+     * @param int $type int     Type, singleton or multiton
      */
-    public function factory($callable)
+    public function bind($key, $value, $type = self::TYPE_DEFAULT)
     {
-        $this->factories->attach($callable);
-
-        return $callable;
-    }
-
-    /**
-     * Set value (parameter or object)
-     *
-     * @param $key
-     * @param $value
-     * @throws \Exception
-     */
-    public function __set($key, $value)
-    {
+        // Check if locked
         if (isset($this->locked[$key])) {
-            throw new \RuntimeException('Cannot override locked service "'. $key .'".');
+            throw new \RuntimeException('Cannot override locked content "'. $key .'".');
         }
 
-        $this->values[$key] = $value;
+        // Save key, type and value
         $this->keys[$key] = true;
+        $this->types[$key] = $type;
+        $this->raw[$key] = $value;
     }
 
     /**
-     * Get value (parameter or object)
+     * Get something from the container
      *
-     * @param $key
+     * @param $key string Identifier
      * @return mixed
-     * @throws \InvalidArgumentException
      */
-    public function __get($key)
+    public function make($key)
     {
+        // Check if set
         if (!isset($this->keys[$key])) {
             throw new \InvalidArgumentException('Identifier "'. $key .'" is not defined.');
         }
 
+        // Check if it is a simple value (string, int etc) that
+        // should be returned
         if (
-            isset($this->raw[$key])
-            || !is_object($this->values[$key])
-            || !method_exists($this->values[$key], '__invoke')
+            !is_object($this->raw[$key])
+            || !method_exists($this->raw[$key], '__invoke')
         ) {
-            return $this->values[$key];
+            return $this->raw[$key];
         }
 
-        if (isset($this->factories[$this->values[$key]])) {
-            return $this->values[$key]($this);
+        if ($this->types[$key] === self::TYPE_SINGLETON) {
+            if (isset($this->resolved[$key])) {
+                return $this->resolved[$key];
+            }
+
+            $this->locked[$key] = true;
+            return $this->resolved[$key] = $this->raw[$key]($this);
         }
 
-        $raw = $this->values[$key];
-        $val = $this->values[$key] = $raw($this);
-        $this->raw[$key] = $raw;
-        $this->locked[$key] = true;
-        return $val;
+        // Return multiton
+        return $this->raw[$key]($this);
     }
 
     /**
-     * Check if key is set (with an object or parameter)
+     * ArrayAccess set/bind
      *
-     * @param string $key The unique key
+     * @param mixed $offset
+     * @param mixed $value
+     */
+    public function offsetSet($offset, $value)
+    {
+        $this->bind($offset, $value);
+    }
+
+    /**
+     * ArrayAccess unset
+     *
+     * @param mixed $offset
+     */
+    public function offsetUnset($offset)
+    {
+        unset(
+            $this->keys[$offset],
+            $this->locked[$offset],
+            $this->raw[$offset],
+            $this->resolved[$offset],
+            $this->types[$offset]
+        );
+    }
+
+    /**
+     * ArrayAccess check if exists
+     *
+     * @param mixed $offset
      * @return bool
      */
-    public function __isset($key)
+    public function offsetExists($offset)
     {
-        return isset($this->keys[$key]);
+        return isset($this->keys[$offset]);
     }
 
     /**
-     * Unset a value based on key
+     * ArrayAccess get/make
      *
-     * @param mixed $key
+     * @param mixed $offset
+     * @return mixed
      */
-    public function __unset($key)
+    public function offsetGet($offset)
     {
-        if (isset($this->keys[$key])) {
-            if (is_object($this->values[$key])) {
-                unset($this->factories[$this->values[$key]]);
-            }
-            unset($this->values[$key], $this->locked[$key], $this->raw[$key], $this->keys[$key]);
-        }
+        return $this->make($offset);
     }
 }

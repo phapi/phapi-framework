@@ -10,223 +10,85 @@ use Phapi\Tests\Fixtures\DicObject;
  */
 class ContainerTest extends \PHPUnit_Framework_TestCase
 {
-
-    /**
-     * @covers ::__construct
-     * @covers ::__set
-     * @covers ::__get
-     */
     public function testWithString()
     {
-        $dic = new Container();
-        $dic->param = 'value';
+        $container = new Container();
+        $container->bind('param', 'value');
 
-        $this->assertEquals('value', $dic->param);
+        $this->assertEquals('value', $container->make('param'));
     }
 
-    public function testWithStringAndAccessContainer()
+    public function testWithStringAndObject()
     {
-        $dic = new Container();
-        $dic->param = 'container value';
+        $container = new Container();
+        $container->bind('param', 'container value');
 
-        $dic->dicObject = function ($container) {
+        $container->bind('dicObject', function ($container) {
             $obj = new DicObject();
-            $obj->value = $container->param;
+            $obj->value = $container->make('param');
             return $obj;
-        };
-
-        $this->assertSame($dic->param, $dic->dicObject->value);
-    }
-
-    /**
-     * @covers ::__construct
-     * @covers ::__set
-     * @covers ::__get
-     */
-    public function testWithClosure()
-    {
-        $dic = new Container();
-        $dic->dicObject = function () {
-            return new DicObject();
-        };
-
-        $this->assertInstanceOf('Phapi\Tests\Fixtures\DicObject', $dic->dicObject);
-    }
-
-    /**
-     * @covers ::__construct
-     * @covers ::__set
-     * @covers ::__get
-     */
-    public function testObjectsShouldBeSame()
-    {
-        $dic = new Container();
-        $dic->dicObject = function () {
-            return new DicObject();
-        };
-
-        $objectOne = $dic->dicObject;
-        $this->assertInstanceOf('Phapi\Tests\Fixtures\DicObject', $objectOne);
-
-        $objectTwo = $dic->dicObject;
-        $this->assertInstanceOf('Phapi\Tests\Fixtures\DicObject', $objectTwo);
-
-        $this->assertSame($objectOne, $objectTwo);
-    }
-
-    /**
-     * @covers ::__construct
-     * @covers ::__set
-     * @covers ::__get
-     * @covers ::factory
-     */
-    public function testObjectsShouldBeDifferent()
-    {
-        $dic = new Container();
-        $dic->dicObject = $dic->factory(function () {
-            return new DicObject();
         });
 
-        $objectOne = $dic->dicObject;
-        $this->assertInstanceOf('Phapi\Tests\Fixtures\DicObject', $objectOne);
+        $one = $container->make('dicObject');
+        $two = $container->make('dicObject');
 
-        $objectTwo = $dic->dicObject;
-        $this->assertInstanceOf('Phapi\Tests\Fixtures\DicObject', $objectTwo);
-
-        $this->assertNotSame($objectOne, $objectTwo);
+        $this->assertSame($one, $two);
+        $this->assertSame('container value', $one->value);
+        $this->assertSame('container value', $two->value);
     }
 
-    /**
-     * @covers ::__isset
-     * @covers ::__set
-     */
-    public function testIsset()
+    public function testSingleton()
     {
-        $dic = new Container();
-        $dic->param = 'value';
-        $dic->object = function () {
-            return new Fixtures\DicObject();
-        };
+        $container = new Container();
+        $container->bind('object', function ($container) {
+            $obj = new DicObject();
+            $obj->value = 'singleton test';
+            return $obj;
+        }, Container::TYPE_MULTITON);
 
-        $dic->null = null;
+        $one = $container->make('object');
+        $two = $container->make('object');
 
-        $this->assertTrue(isset($dic->param));
-        $this->assertTrue(isset($dic->object));
-        $this->assertTrue(isset($dic->null));
-        $this->assertFalse(isset($dic->non_existent));
-    }
-
-    /**
-     * @covers ::__construct
-     */
-    public function testConstructorInjection()
-    {
-        $params = array("param" => "value");
-        $dic = new Container($params);
-
-        $this->assertSame($params['param'], $dic->param);
+        $this->assertNotSame($one, $two);
     }
 
     /**
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Identifier "foo" is not defined.
+     * @expectedExceptionMessage Identifier "Foo" is not defined.
      */
-    public function testOffsetGetValidatesKeyIsPresent()
+    public function testMakeInvalidKey()
     {
-        $dic = new Container();
-        echo $dic->foo;
-    }
-
-    /**
-     * @covers ::__set
-     * @covers ::__get
-     */
-    public function testOffsetGetHonorsNullValues()
-    {
-        $dic = new Container();
-        $dic->foo = null;
-        $this->assertNull($dic->foo);
-    }
-
-    /**
-     * @covers ::__unset
-     * @covers ::__set
-     */
-    public function testUnset()
-    {
-        $dic = new Container();
-        $dic->param = 'value';
-        $dic->object = function () {
-            return new Fixtures\DicObject();
-        };
-
-        unset($dic->param, $dic->object);
-        $this->assertFalse(isset($dic->param));
-        $this->assertFalse(isset($dic->service));
-    }
-
-    /**
-     * @covers ::__set
-     */
-    public function testGlobalFunctionNameAsParameterValue()
-    {
-        $dic = new Container();
-        $dic->globalFunction = 'strlen';
-        $this->assertSame('strlen', $dic->globalFunction);
-    }
-
-    /**
-     * @covers ::__set
-     * @covers ::__get
-     */
-    public function testDefiningNewServiceAfterFreeze()
-    {
-        $dic = new Container();
-        $dic->foo = function () {
-            return 'foo';
-        };
-        $foo = $dic->foo;
-
-        $dic->bar = function () {
-            return 'bar';
-        };
-        $this->assertSame('bar', $dic->bar);
+        $container = new Container();
+        $container->make('Foo');
     }
 
     /**
      * @expectedException \RuntimeException
-     * @expectedExceptionMessage Cannot override locked service "foo".
-     * @covers ::__set
+     * @expectedExceptionMessage Cannot override locked content "dicObject".
      */
-    public function testOverridingServiceAfterFreeze()
+    public function testLocked()
     {
-        $dic = new Container();
-        $dic->foo = function () {
-            return 'foo';
-        };
-        $foo = $dic->foo;
+        $container = new Container();
+        $container->bind('param', 'container value');
 
-        $dic->foo = function () {
-            return 'bar';
-        };
+        $container->bind('dicObject', function ($container) {
+            $obj = new DicObject();
+            $obj->value = $container->make('param');
+            return $obj;
+        });
+
+        $object = $container->make('dicObject');
+
+        $container->bind('dicObject', 'something');
     }
 
-    /**
-     * @covers ::__set
-     * @covers ::__get
-     */
-    public function testRemovingServiceAfterFreeze()
+    public function testArrayAccess()
     {
-        $dic = new Container();
-        $dic->foo = function () {
-            return 'foo';
-        };
-        $foo = $dic->foo;
-
-        unset($dic->foo);
-        $dic->foo = function () {
-            return 'bar';
-        };
-        $this->assertSame('bar', $dic->foo);
+        $container = new Container();
+        $container['param'] = 'value';
+        $this->assertEquals('value', $container['param']);
+        $this->assertTrue(isset($container['param']));
+        unset($container['param']);
+        $this->assertFalse(isset($container['param']));
     }
 }
