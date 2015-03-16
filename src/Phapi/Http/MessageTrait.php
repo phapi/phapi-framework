@@ -55,6 +55,17 @@ trait MessageTrait {
     protected $body;
 
     /**
+     * Disable magic setter to ensure immutability
+     *
+     * @param $name
+     * @param $value
+     */
+    public function __set($name, $value)
+    {
+        // Do nothing
+    }
+
+    /**
      * Retrieves the HTTP protocol version as a string.
      *
      * @return string HTTP protocol version.
