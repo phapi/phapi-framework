@@ -7,6 +7,8 @@
 
 namespace Phapi;
 
+use \Phapi\Contract\Container as Contract;
+
 /**
  * Class Container
  *
@@ -18,7 +20,7 @@ namespace Phapi;
  * @license  MIT (http://opensource.org/licenses/MIT)
  * @link     https://github.com/ahinko/phapi
  */
-class Container implements \ArrayAccess {
+class Container implements Contract {
 
     const TYPE_DEFAULT = self::TYPE_SINGLETON;
     const TYPE_SINGLETON = 1;
