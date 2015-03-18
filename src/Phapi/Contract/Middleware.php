@@ -11,7 +11,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 
 /**
- * Middleware interface.
+ * Interface Middleware
  *
  * Middleware accepts a request and a response and optionally a callback
  * ($next) that is called if the middleware allows further middleware to
