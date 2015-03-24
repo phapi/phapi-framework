@@ -7,6 +7,8 @@
 
 namespace Phapi\Contract;
 
+use Phapi\Contract\Container\Validator;
+
 /**
  * Interface Container
  *
@@ -20,6 +22,15 @@ namespace Phapi\Contract;
  * @link     https://github.com/ahinko/phapi
  */
 interface Container extends \ArrayAccess {
+
+    /**
+     * Add a validator that will validate during the binding
+     * of a new value/callback.
+     *
+     * @param $key
+     * @param Validator $validator
+     */
+    public function addValidator($key, Validator $validator);
 
     /**
      * Add/bind a value or object to the container

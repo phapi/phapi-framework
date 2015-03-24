@@ -8,6 +8,7 @@
 namespace Phapi;
 
 use \Phapi\Contract\Container as Contract;
+use \Phapi\Contract\Container\Validator;
 
 /**
  * Class Container
@@ -62,6 +63,25 @@ class Container implements Contract {
     protected $resolved = [];
 
     /**
+     * Registered validators
+     *
+     * @var array
+     */
+    protected $validators = [];
+
+    /**
+     * Add a validator that will validate during the binding
+     * of a new value/callback.
+     *
+     * @param $key
+     * @param Validator $validator
+     */
+    public function addValidator($key, Validator $validator)
+    {
+        $this->validators[$key] = $validator;
+    }
+
+    /**
      * Bind/add something to the container
      *
      * @param $key      string  Identifier
@@ -73,6 +93,11 @@ class Container implements Contract {
         // Check if locked
         if (isset($this->locked[$key])) {
             throw new \RuntimeException('Cannot override locked content "'. $key .'".');
+        }
+
+        // Check if value should be validated
+        if (isset($this->validators[$key])) {
+            $value = $this->validators[$key]->validate($value);
         }
 
         // Save key, type and value

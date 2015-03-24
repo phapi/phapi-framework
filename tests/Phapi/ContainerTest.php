@@ -3,6 +3,7 @@
 namespace Phapi\Tests;
 
 use Phapi\Container;
+use Phapi\Tests\Fixtures\ContainerValidator;
 use Phapi\Tests\Fixtures\DicObject;
 
 /**
@@ -90,5 +91,13 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(isset($container['param']));
         unset($container['param']);
         $this->assertFalse(isset($container['param']));
+    }
+
+    public function testValidator()
+    {
+        $container = new Container();
+        $container->addValidator('test', new ContainerValidator($container));
+        $container->bind('test', 'value');
+        $this->assertEquals('value', $container['test']);
     }
 }
