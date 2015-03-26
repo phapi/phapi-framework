@@ -3,7 +3,6 @@ namespace Phapi\Tests;
 
 use Phapi\Http\Request;
 use Phapi\Http\Response;
-use Phapi\Middleware\One;
 use Phapi\Pipeline;
 use Phapi\Tests\Fixtures\MiddlewareObject;
 use PHPUnit_Framework_TestCase as TestCase;
