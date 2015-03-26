@@ -5,11 +5,12 @@ namespace Phapi\Tests;
 use Phapi\Container;
 use Phapi\Tests\Fixtures\ContainerValidator;
 use Phapi\Tests\Fixtures\DicObject;
+use PHPUnit_Framework_TestCase as TestCase;
 
 /**
  * @coversDefaultClass \Phapi\Container
  */
-class ContainerTest extends \PHPUnit_Framework_TestCase
+class ContainerTest extends TestCase
 {
     public function testWithString()
     {

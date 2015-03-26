@@ -5,11 +5,12 @@ namespace Phapi\Tests\Container\Validator;
 use Phapi\Container;
 use Phapi\Container\Validator\Log;
 use Psr\Log\NullLogger;
+use PHPUnit_Framework_TestCase as TestCase;
 
 /**
  * @coversDefaultClass \Phapi\Container\Validator\Log
  */
-class LogTest extends \PHPUnit_Framework_TestCase
+class LogTest extends TestCase
 {
 
     public $validator;
