@@ -7,6 +7,9 @@
 
 namespace Phapi;
 
+use Phapi\Container\Validator\Log;
+use Psr\Log\NullLogger;
+
 /**
  * Class Phapi
  *
@@ -26,6 +29,9 @@ class Phapi extends Container {
     {
         // Update configuration with default values
         $this->setDefaultConfiguration();
+
+        // Set default logger
+        $this->setDefaultLogger();
     }
 
     /**
@@ -53,5 +59,25 @@ class Phapi extends Container {
         $this['get'] = $_GET;
         $this['server'] = $_SERVER;
         $this['rawContent'] = file_get_contents('php://input');
+    }
+
+    /**
+     * Set the default logger
+     *
+     * The PSR-3 package includes a NullLogger that doesn't do anything with
+     * the input but it also prevents the application from failing.
+     *
+     * This simplifies the development since we don't have to check if there
+     * actually are a valid cache to use. We can just ask the Cache (even
+     * if its a NullCache) and we will get a response.
+     */
+    protected function setDefaultLogger()
+    {
+        $this['log'] = function ($app) {
+            return new NullLogger();
+        };
+
+        // Register validator
+        $this->addValidator('log', new Log($this));
     }
 }
