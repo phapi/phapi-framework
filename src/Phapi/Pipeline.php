@@ -60,6 +60,7 @@ class Pipeline implements Middleware {
      * callable. A middleware WILL be called with three parameters:
      * Request, Response and Next.
      *
+     * @throws \RuntimeException when adding middleware to the stack to late
      * @param callable $middleware
      */
     public function pipe(callable $middleware)

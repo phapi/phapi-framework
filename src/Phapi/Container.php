@@ -71,7 +71,7 @@ class Container implements Contract {
 
     /**
      * Add a validator that will validate during the binding
-     * of a new value/callback.
+     * of a new value/closure.
      *
      * @param $key
      * @param Validator $validator
@@ -84,6 +84,7 @@ class Container implements Contract {
     /**
      * Bind/add something to the container
      *
+     * @throws \RuntimeException when trying to override locked content
      * @param $key      string  Identifier
      * @param $value    mixed   What to store
      * @param int $type int     Type, singleton or multiton

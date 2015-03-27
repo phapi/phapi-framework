@@ -25,7 +25,7 @@ interface Container extends \ArrayAccess {
 
     /**
      * Add a validator that will validate during the binding
-     * of a new value/callback.
+     * of a new value/closure.
      *
      * @param $key
      * @param Validator $validator

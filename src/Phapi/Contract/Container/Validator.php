@@ -28,9 +28,9 @@ interface Validator {
     public function __construct(Container $container);
 
     /**
-     * Takes the value/callback and validates it.
+     * Takes the value/closure and validates it.
      *
-     * If validation passes the value/callback should be returned.
+     * If validation passes the value/closure should be returned.
      * Else a default should be returned.
      *
      * @param $value
