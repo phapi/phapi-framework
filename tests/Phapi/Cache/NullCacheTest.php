@@ -17,7 +17,6 @@ class NullCacheTest extends \PHPUnit_Framework_TestCase {
     public function testSet()
     {
         $cache = new NullCache();
-        $cache->connect();
         $this->assertFalse($cache->set('key', 'value'));
     }
 

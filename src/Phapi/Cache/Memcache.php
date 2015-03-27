@@ -64,16 +64,7 @@ class Memcache implements Cache
         // Set expire
         $this->expire = $expire;
         $this->servers = $servers;
-    }
 
-    /**
-     * Connect to the Cache server and make sure we are connected.
-     *
-     * @throws \Exception when unable to connect to cache backend
-     * @return bool
-     */
-    public function connect()
-    {
         // Set up the cache
         $this->cache = new \Memcache();
 

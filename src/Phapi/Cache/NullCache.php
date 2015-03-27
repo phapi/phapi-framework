@@ -25,11 +25,6 @@ use Phapi\Contract\Cache;
  */
 class NullCache implements Cache {
 
-    public function connect()
-    {
-        return true;
-    }
-
     public function clear($key)
     {
         return true;

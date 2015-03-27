@@ -28,8 +28,6 @@ class CacheTest extends TestCase
     {
         $cache = $this->validator->validate(new \stdClass());
         $this->assertInstanceOf('Phapi\Cache\NullCache', $cache($this->container));
-
-        //$this->setExpectedException('Exception', 'Unable to connect to Memcache backend');
     }
 
     public function testValidCache()
@@ -41,7 +39,6 @@ class CacheTest extends TestCase
                     'port' => 11211
                 ]
             ]);
-            $cache->connect();
             return $cache;
         };
 
@@ -58,7 +55,6 @@ class CacheTest extends TestCase
                     'port' => 1121
                 ]
             ]);
-            $cache->connect();
             return $cache;
         };
 

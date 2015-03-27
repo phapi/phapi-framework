@@ -25,7 +25,6 @@ class MemcacheTest extends \PHPUnit_Framework_TestCase {
     public function setUp()
     {
         $this->cache = new Memcache([['host' => 'localhost', 'port' => 11211]]);
-        $this->cache->connect();
         $this->key = 'test_'. time();
         $this->value = 'some test value';
         $this->replace = 'replaced test value';
@@ -34,7 +33,6 @@ class MemcacheTest extends \PHPUnit_Framework_TestCase {
     public function testConstructor()
     {
         $cache = new Memcache([['host' => 'localhost', 'port' => 11211]]);
-        $this->assertTrue($cache->connect());
         $this->assertTrue($cache->flush());
     }
 
@@ -43,9 +41,8 @@ class MemcacheTest extends \PHPUnit_Framework_TestCase {
      */
     public function testNotConnected()
     {
-        $cache = new Memcache([['host' => 'localhost', 'port' => 1111]]);
         $this->setExpectedException('Exception', 'Unable to connect to Memcache backend');
-        $this->assertFalse($cache->connect());
+        $cache = new Memcache([['host' => 'localhost', 'port' => 1111]]);
     }
 
     public function testPool()
@@ -54,7 +51,6 @@ class MemcacheTest extends \PHPUnit_Framework_TestCase {
             ['host' => 'localhost', 'port' => 11211],
             ['host' => 'localhost', 'port' => 11211]
         ]);
-        $this->assertTrue($cache->connect());
         $this->assertTrue($cache->flush());
     }
 

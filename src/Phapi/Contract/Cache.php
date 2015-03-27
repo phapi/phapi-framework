@@ -8,10 +8,15 @@
 namespace Phapi\Contract;
 
 /**
- * Interface Container
+ * Cache
  *
- * An interface for the dependency injection container
- * used by Phapi.
+ * If we are unable to connect to the cache backend an Exception should be
+ * thrown. That Exception should be handled by the method calling this connect
+ * method.
+ *
+ * A working cache is NOT a requirement for the application to run so it's
+ * important to handle the exception and let the application keep running.
+ * Suggestion: if the exception below is thrown a new NullCache should be created
  *
  * @category Phapi
  * @package  Phapi\Contract
@@ -20,22 +25,6 @@ namespace Phapi\Contract;
  * @link     https://github.com/ahinko/phapi
  */
 interface Cache {
-
-    /**
-     * Connect to the cache server
-     *
-     * If we are unable to connect to the cache backend an Exception should be
-     * thrown. That Exception should be handled by the method calling this connect
-     * method.
-     *
-     * A working cache is NOT a requirement for the application to run so it's
-     * important to handle the exception and let the application run.
-     * Suggestion: if the exception below is thrown a new NullCache should be created
-     *
-     * @throws \Exception when unable to connect to cache backend
-     * @return boolean
-     */
-    public function connect();
 
     /**
      * Set/add something to the cache
