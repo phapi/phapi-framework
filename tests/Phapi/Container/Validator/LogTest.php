@@ -45,5 +45,4 @@ class LogTest extends TestCase
         $return = $this->validator->validate(new \stdClass());
         $this->assertInstanceOf('\Psr\Log\NullLogger', $return($this->container));
     }
-
 }
