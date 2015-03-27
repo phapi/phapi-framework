@@ -24,4 +24,10 @@ class PhapiTest extends TestCase
         $app = new Phapi();
         $this->assertInstanceOf('\Psr\Log\NullLogger', $app['log']);
     }
+
+    public function testDefaultCache()
+    {
+        $app = new Phapi();
+        $this->assertInstanceOf('\Phapi\Cache\NullCache', $app['cache']);
+    }
 }

@@ -7,6 +7,8 @@
 
 namespace Phapi;
 
+use Phapi\Cache\NullCache;
+use Phapi\Container\Validator\Cache;
 use Phapi\Container\Validator\Log;
 use Psr\Log\NullLogger;
 
@@ -32,6 +34,9 @@ class Phapi extends Container {
 
         // Set default logger
         $this->setDefaultLogger();
+
+        // Set default cache
+        $this->setDefaultCache();
     }
 
     /**
@@ -79,5 +84,22 @@ class Phapi extends Container {
 
         // Register validator
         $this->addValidator('log', new Log($this));
+    }
+
+    /**
+     * Set default cache
+     *
+     * Phapi includes a NullCache that acts like a dummy cache.
+     * Nothing can be saved or retrieved but it makes development
+     * easier since it can be used as a "real" cache.
+     */
+    protected function setDefaultCache()
+    {
+        $this['cache'] = function ($app) {
+            return new NullCache();
+        };
+
+        // Register cache validator
+        $this->addValidator('cache', new Cache($this));
     }
 }
