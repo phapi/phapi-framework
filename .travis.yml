@@ -11,6 +11,9 @@ matrix:
     - php: hhvm
     - php: 7.0
 
+services:
+  - memcached
+
 before_script:
   - travis_retry composer self-update
   - composer --prefer-source install
