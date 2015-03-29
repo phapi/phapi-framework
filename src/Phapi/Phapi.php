@@ -10,6 +10,7 @@ namespace Phapi;
 use Phapi\Cache\NullCache;
 use Phapi\Container\Validator\Cache;
 use Phapi\Container\Validator\Log;
+use Phapi\Container\Validator\Pipeline as PipelineValidator;
 use Psr\Log\NullLogger;
 
 /**
@@ -37,6 +38,8 @@ class Phapi extends Container {
 
         // Set default cache
         $this->setDefaultCache();
+        // Set up middleware pipeline
+        $this->setDefaultPipeline();
     }
 
     /**
@@ -101,5 +104,17 @@ class Phapi extends Container {
 
         // Register cache validator
         $this->addValidator('cache', new Cache($this));
+    }
+
+    /**
+     * Set the default Middleware pipeline
+     */
+    protected function setDefaultPipeline()
+    {
+        $this['pipeline'] = function ($container) {
+            return new Pipeline($container);
+        };
+
+        $this->addValidator('pipeline', new PipelineValidator($this));
     }
 }
