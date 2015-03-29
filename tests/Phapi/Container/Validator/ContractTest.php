@@ -3,14 +3,14 @@
 namespace Phapi\Tests\Container\Validator;
 
 use Phapi\Container;
-use Phapi\Container\Validator\Request as RequestValidator;
-use Phapi\Http\Request;
+use Phapi\Container\Validator\Contract as ContractValidator;
+use Phapi\Pipeline;
 use PHPUnit_Framework_TestCase as TestCase;
 
 /**
- * @coversDefaultClass \Phapi\Container\Validator\Request
+ * @coversDefaultClass \Phapi\Container\Validator\Contract
  */
-class RequestTest extends TestCase
+class ContractTest extends TestCase
 {
 
     public $validator;
@@ -19,13 +19,14 @@ class RequestTest extends TestCase
     public function setUp()
     {
         $this->container = new Container();
-        $this->validator = new RequestValidator($this->container);
+        $this->validator = new ContractValidator($this->container);
+        $this->validator->setContract('Phapi\Contract\Pipeline');
     }
 
     public function testValidPipelineCallable()
     {
         $callable = function () {
-            return new Request();
+            return new Pipeline();
         };
 
         $return = $this->validator->validate($callable);
@@ -34,15 +35,15 @@ class RequestTest extends TestCase
 
     public function testValidPipelineNotCallable()
     {
-        $request = new Request();
+        $pipeline = new Pipeline();
 
-        $return = $this->validator->validate($request);
-        $this->assertSame($request, $return);
+        $return = $this->validator->validate($pipeline);
+        $this->assertSame($pipeline, $return);
     }
 
     public function testInvalidPipeline()
     {
-        $this->setExpectedException('RuntimeException', 'The configured request does not implement PSR-7.');
+        $this->setExpectedException('RuntimeException', 'The configured value does not implement');
         $return = $this->validator->validate(new \stdClass());
     }
 }

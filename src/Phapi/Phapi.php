@@ -9,10 +9,8 @@ namespace Phapi;
 
 use Phapi\Cache\NullCache;
 use Phapi\Container\Validator\Cache as CacheValidator;
+use Phapi\Container\Validator\Contract;
 use Phapi\Container\Validator\Log as LogValidator;
-use Phapi\Container\Validator\Pipeline as PipelineValidator;
-use Phapi\Container\Validator\Request as RequestValidator;
-use Phapi\Container\Validator\Response as ResponseValidator;
 use Phapi\Http\Request;
 use Phapi\Http\Response;
 use Psr\Log\NullLogger;
@@ -130,9 +128,15 @@ class Phapi extends Container {
             return new Response();
         };
 
-        // Register validators
-        $this->addValidator('request', new RequestValidator($this));
-        $this->addValidator('response', new ResponseValidator($this));
+        // Register validator
+        $validator = new Contract($this);
+        $validator->setContract('Psr\Http\Message\ServerRequestInterface');
+        $this->addValidator('request', $validator);
+
+        // Register validator
+        $validator = new Contract($this);
+        $validator->setContract('Psr\Http\Message\ResponseInterface');
+        $this->addValidator('response', $validator);
     }
 
     /**
@@ -146,6 +150,8 @@ class Phapi extends Container {
         };
 
         // Register validator
-        $this->addValidator('pipeline', new PipelineValidator($this));
+        $validator = new Contract($this);
+        $validator->setContract('Phapi\Contract\Pipeline');
+        $this->addValidator('pipeline', $validator);
     }
 }
