@@ -8,8 +8,8 @@
 namespace Phapi;
 
 use Phapi\Cache\NullCache;
-use Phapi\Container\Validator\Cache;
-use Phapi\Container\Validator\Log;
+use Phapi\Container\Validator\Cache as CacheValidator;
+use Phapi\Container\Validator\Log as LogValidator;
 use Phapi\Container\Validator\Pipeline as PipelineValidator;
 use Psr\Log\NullLogger;
 
@@ -81,12 +81,12 @@ class Phapi extends Container {
      */
     protected function setDefaultLogger()
     {
-        $this['log'] = function ($app) {
+        $this['log'] = function ($container) {
             return new NullLogger();
         };
 
         // Register validator
-        $this->addValidator('log', new Log($this));
+        $this->addValidator('log', new LogValidator($this));
     }
 
     /**
@@ -98,12 +98,12 @@ class Phapi extends Container {
      */
     protected function setDefaultCache()
     {
-        $this['cache'] = function ($app) {
+        $this['cache'] = function ($container) {
             return new NullCache();
         };
 
         // Register cache validator
-        $this->addValidator('cache', new Cache($this));
+        $this->addValidator('cache', new CacheValidator($this));
     }
 
     /**
