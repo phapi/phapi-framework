@@ -7,7 +7,7 @@
 
 namespace Phapi;
 
-use Phapi\Contract\Middleware;
+use Phapi\Contract\Pipeline as PipelineContract;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 
@@ -23,7 +23,7 @@ use Psr\Http\Message\ResponseInterface as Response;
  * @license  MIT (http://opensource.org/licenses/MIT)
  * @link     https://github.com/ahinko/phapi
  */
-class Pipeline implements Middleware {
+class Pipeline implements PipelineContract {
 
     /**
      * Queue of middleware
