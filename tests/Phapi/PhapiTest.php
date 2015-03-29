@@ -30,4 +30,16 @@ class PhapiTest extends TestCase
         $app = new Phapi();
         $this->assertInstanceOf('\Phapi\Cache\NullCache', $app['cache']);
     }
+
+    public function testDefaultRequest()
+    {
+        $app = new Phapi();
+        $this->assertInstanceOf('\Psr\Http\Message\ServerRequestInterface', $app['request']);
+    }
+
+    public function testDefaultResponse()
+    {
+        $app = new Phapi();
+        $this->assertInstanceOf('\Psr\Http\Message\ResponseInterface', $app['response']);
+    }
 }

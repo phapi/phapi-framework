@@ -11,6 +11,10 @@ use Phapi\Cache\NullCache;
 use Phapi\Container\Validator\Cache as CacheValidator;
 use Phapi\Container\Validator\Log as LogValidator;
 use Phapi\Container\Validator\Pipeline as PipelineValidator;
+use Phapi\Container\Validator\Request as RequestValidator;
+use Phapi\Container\Validator\Response as ResponseValidator;
+use Phapi\Http\Request;
+use Phapi\Http\Response;
 use Psr\Log\NullLogger;
 
 /**
@@ -38,6 +42,10 @@ class Phapi extends Container {
 
         // Set default cache
         $this->setDefaultCache();
+
+        // Set up request and response objects
+        $this->setDefaultRequestResponse();
+
         // Set up middleware pipeline
         $this->setDefaultPipeline();
     }
@@ -66,7 +74,7 @@ class Phapi extends Container {
         $this['post'] = $_POST;
         $this['get'] = $_GET;
         $this['server'] = $_SERVER;
-        $this['rawContent'] = file_get_contents('php://input');
+        $this['rawContent'] = 'php://input';
     }
 
     /**
@@ -107,14 +115,37 @@ class Phapi extends Container {
     }
 
     /**
+     * Set default request and response objects
+     */
+    protected function setDefaultRequestResponse()
+    {
+        // Set request
+        $this['request'] = function ($container) {
+            $httpMethods = (isset($container['validHttpMethods'])) ? $container['validHttpMethods']: [];
+            return new Request($container['server'], $container['get'], $container['rawContent'], $httpMethods);
+        };
+
+        // Set response
+        $this['response'] = function ($container) {
+            return new Response();
+        };
+
+        // Register validators
+        $this->addValidator('request', new RequestValidator($this));
+        $this->addValidator('response', new ResponseValidator($this));
+    }
+
+    /**
      * Set the default Middleware pipeline
      */
     protected function setDefaultPipeline()
     {
+        // Set default middleware pipeline
         $this['pipeline'] = function ($container) {
             return new Pipeline($container);
         };
 
+        // Register validator
         $this->addValidator('pipeline', new PipelineValidator($this));
     }
 }
