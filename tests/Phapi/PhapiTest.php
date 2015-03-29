@@ -31,6 +31,12 @@ class PhapiTest extends TestCase
         $this->assertInstanceOf('\Phapi\Cache\NullCache', $app['cache']);
     }
 
+    public function testDefaultPipeline()
+    {
+        $app = new Phapi();
+        $this->assertInstanceOf('\Phapi\Contract\Pipeline', $app['pipeline']);
+    }
+
     public function testDefaultRequest()
     {
         $app = new Phapi();
