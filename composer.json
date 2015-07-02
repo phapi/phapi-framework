@@ -34,5 +34,8 @@
     "phapi/middleware-method-override": "1.*",
     "phapi/serializer-json": "1.*",
     "phapi/endpoint": "1.*"
+  },
+  "replace": {
+    "ahinko/phapi": "self.version"
   }
 }
