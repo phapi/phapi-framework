@@ -1,28 +1,31 @@
 # Phapi
 Phapi is a PHP based framework aiming at rapid and simplified API development as well as focusing at performance and keeping the code base small and simple.
 
-## Version 2
-The second version of Phapi is under development. This develop branch contains version 2 while the master branch still contains version 1.
+### What's new in version 2
+This version is [PSR-7 Http Message]() compliant and takes full advantage of that fact by relying on [middleware](https://github.com/phapi/pipeline) for almost every aspect of the framework. Error handling, routing, responding to the client as well as many other functions are all in fact middleware.
 
-This version will take advantage of the relevant PSR standards:
+There is an [Dependency injection container](https://github.com/phapi/di) that's mainly used for configuration. Each endpoint has access to both the container as well as the [https://github.com/phapi/http](request and response) objects.
 
-- PSR-1: Coding Standard
-- PSR-2: Coding Style Guide
-- PSR-3: Logger Interface
-- PSR-4: Autoloading
-- PSR-7: Http Message
+## PHP versions
+Phapi is currently tested on PHP 5.6, PHP 7 and HHVM. The default configuration works on all three versions but there are individual extra packages that does not support all versions. Here are a current list of packages with tests that does not pass on one or more versions:
 
-Phapi will also use a Dependency Injector Container so that middleware can use and store dependencies as well as any other information a middleware needs to be able to share.
+- [phapi/cache-memcache](https://github.com/phapi/cache-memcache) - The memcached extension has not yet been updated for PHP 7.
 
-**Please note that version 2 will be in beta until PSR-7 are finalized and approved. Updates might break backward compatibility.**
+## Installation
+Install the Phapi framework via [Packagist](https://packagist.org) and [Composer](https://getcomposer.org).
 
-It is not regularly tested against HHVM, but there is nothing in this package that should fail against HHVM. However, support is not guaranteed.
+```shell
+$ composer require phapi/phapi-framework:2.*
+```
 
-### Documentation
-The documentation will be moving from the readme.md file to it's own repo and web page. A link will be added here as soon as the repo and webpage is up.
+## Configuration
+See the [documentation](http://phapi.github.io/started/configuration/) for more information about configuration options and how to add extra packages.
+
+## Documentation
+The documentation can be found at [http://phapi.github.io/](http://phapi.github.io/).
 
 ## License
-Phapi is licensed under the MIT License - see the LICENSE file for details
+Phapi is licensed under the MIT License - see the [license.md](https://github.com/phapi/phapi/blob/master/license.md) file for details
 
 ## Contribute
-Contribution, bug fixes etc are [always welcome](https://github.com/ahinko/phapi/issues/new).
+Contribution, bug fixes etc are [always welcome](https://github.com/phapi/phapi/issues/new).
