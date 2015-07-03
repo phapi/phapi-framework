@@ -14,7 +14,7 @@ $ composer require phapi/phapi-framework:2.*
 ```
 
 ## Configuration
-See the [documentation](http://phapi.github.io/started/configuration/) for more information about configuration options and how to add extra packages.
+See the [documentation](http://phapi.github.io/docs/started/configuration/) for more information about configuration options and how to add extra packages.
 
 ## Documentation
 The documentation can be found at [http://phapi.github.io/](http://phapi.github.io/).
