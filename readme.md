@@ -6,7 +6,14 @@ This version is [PSR-7 Http Message]() compliant and takes full advantage of tha
 
 There is an [Dependency injection container](https://github.com/phapi/di) that's mainly used for configuration. Each endpoint has access to both the container as well as the [https://github.com/phapi/http](request and response) objects.
 
-## Installation
+## Install with configuration (recommended)
+The [phapi/phapi-configuration](https://github.com/phapi/phapi-configuration) project includes everything you need to set up a simple hello world example. **[Download the latest version](https://github.com/phapi/phapi-configuration/archive/master.zip)** of the package and extract it to an empty directory. This zip file includes all the default configuration. After you've extracted the zip file you need to run composer:
+
+```bash
+$ composer install
+```
+
+## Installation via Composer
 Install the Phapi framework via [Packagist](https://packagist.org) and [Composer](https://getcomposer.org).
 
 ```shell
